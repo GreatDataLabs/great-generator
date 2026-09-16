@@ -340,3 +340,84 @@ def test_validate_query_coverage_warns_when_selectivity_is_not_close():
     )
 
     assert report["warnings"]
+
+
+# Acceptance-criteria friendly aliases for query-aware examples and coverage docs.
+
+
+def test_required_values_present():
+    df = generate_from_schema(
+        SINGLE_TABLE_SCHEMA,
+        rows=30,
+        required_values={"region": ["SOUTH"], "product_type": ["CHECKING"]},
+        seed=7,
+    )
+
+    assert "SOUTH" in set(df["region"])
+    assert "CHECKING" in set(df["product_type"])
+
+
+def test_partition_values_present():
+    values = ["2026-01-01", "2026-01-02", "2026-01-03"]
+    df = generate_from_schema(
+        SINGLE_TABLE_SCHEMA,
+        rows=30,
+        partition_by={"column": "business_date", "values": values},
+        seed=7,
+    )
+
+    assert set(df["business_date"].map(str)) == set(values)
+
+
+def test_balanced_partition_counts():
+    df = generate_from_schema(
+        SINGLE_TABLE_SCHEMA,
+        rows=30,
+        partition_by={
+            "column": "business_date",
+            "values": ["2026-01-01", "2026-01-02", "2026-01-03"],
+            "distribution": "balanced",
+        },
+        seed=7,
+    )
+
+    counts = df["business_date"].map(str).value_counts()
+    assert counts.max() - counts.min() == 0
+
+
+def test_query_coverage_report():
+    required_values = {"region": ["SOUTH"]}
+    partition_by = {"column": "business_date", "values": ["2026-01-01"]}
+    df = generate_from_schema(
+        SINGLE_TABLE_SCHEMA,
+        rows=25,
+        required_values=required_values,
+        partition_by=partition_by,
+        seed=7,
+    )
+
+    report = validate_query_coverage(
+        data=df,
+        required_values=required_values,
+        partition_by=partition_by,
+        target_selectivity={"region": {"SOUTH": 0.20}},
+    )
+
+    assert set(report).issuperset(
+        {
+            "required_values_status",
+            "partition_coverage_status",
+            "partition_counts",
+            "selectivity_actuals",
+            "selectivity_targets",
+            "join_coverage_status",
+            "warnings",
+        }
+    )
+
+
+def test_existing_behavior_unchanged_without_query_args():
+    first = generate_from_schema(SINGLE_TABLE_SCHEMA, rows=20, seed=77)
+    second = generate_from_schema(SINGLE_TABLE_SCHEMA, rows=20, seed=77)
+
+    pd.testing.assert_frame_equal(first, second)

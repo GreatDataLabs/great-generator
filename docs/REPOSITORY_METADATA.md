@@ -67,7 +67,8 @@ The README uses repository-specific URLs for:
 - [x] Create PyPI-focused long description
 - [x] Create schema-first Wiki pages
 - [x] Reorganize examples around schema-first workflows
-- [ ] Implement full SQL DDL parsing
-- [ ] Implement JSON Schema and YAML schema profiles
+- [x] Implement full SQL DDL parsing
+- [x] Implement JSON Schema ingestion
+- [x] Implement dbt and data dictionary schema-source ingestion
 - [ ] Implement ORM and typed-model schema ingestion
 - [ ] Implement Spark-native arbitrary-schema generation

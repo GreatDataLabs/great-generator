@@ -30,6 +30,51 @@ Supported inputs are plain mappings, Pandas dtype mappings, Pandas DataFrames, c
 
 See [SCHEMA_INPUTS.md](SCHEMA_INPUTS.md) and [CONTRACTS_AND_DDL.md](CONTRACTS_AND_DDL.md) for the exact support matrix and limitations.
 
+## Schema-source ingestion APIs
+
+These APIs normalize external schema documentation into the existing `generate_from_schema` path.
+
+### `generate_from_json_schema(...)`
+
+```python
+from great_generator import generate_from_json_schema
+
+df = generate_from_json_schema(json_schema, rows=1000)
+```
+
+Supports the documented v1 JSON Schema subset: top-level object, properties, required fields, scalar types, `format: email`, `format: date`, `format: date-time`, enums, and numeric min/max bounds.
+
+### `generate_from_dbt_schema(...)`
+
+```python
+from great_generator import generate_from_dbt_schema
+
+df = generate_from_dbt_schema("models/schema.yml", model_name="customers", rows=1000)
+```
+
+Maps common dbt column metadata, including `data_type`, `not_null`, `unique`, and `accepted_values` tests.
+
+### `generate_from_dbt_manifest(...)`
+
+```python
+from great_generator import generate_from_dbt_manifest
+
+df = generate_from_dbt_manifest("target/manifest.json", model_name="customers", rows=1000)
+```
+
+Reads common dbt `manifest.json` model nodes under `nodes`.
+
+### `load_data_dictionary(...)` and `generate_from_data_dictionary(...)`
+
+```python
+from great_generator import generate_from_data_dictionary, load_data_dictionary
+
+schema = load_data_dictionary("data_dictionary.csv")
+df = generate_from_data_dictionary("data_dictionary.csv", rows=1000)
+```
+
+Supports CSV, YAML, and JSON data dictionaries with practical fields such as `column_name`, `data_type`, `nullable`, `allowed_values`, `min`, `max`, `unique`, `primary_key`, `foreign_key`, and `pii_class` metadata.
+
 ## `parse_ddl(...)`
 
 Parses one or more SQL `CREATE TABLE` statements into a canonical `ContractSchema`. This is the contract-first entry point when your source of truth is database, warehouse, lakehouse, Spark, or Databricks DDL.

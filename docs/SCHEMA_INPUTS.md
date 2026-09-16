@@ -1,28 +1,30 @@
 # Supported Schema Inputs
 
-`generate_from_schema` is the primary entry point when you already know the structure of the data you need.
+`generate_from_schema` is the primary entry point when you already know the structure of the data you need. Great Generator also includes optional loaders that normalize common schema-documentation formats into the same generation path.
+
+All schema inputs are normalized into the existing generation engine. No second generation engine is introduced for JSON Schema, dbt metadata, or data dictionaries.
 
 ## Current support matrix
 
-| Input | Status | Notes |
-|---|---|---|
-| Plain Python mapping | Supported | Values are data types, for example `{"age": "int"}` |
-| Pandas dtype mapping | Supported | `df.dtypes.to_dict()` can be passed directly |
-| Pandas DataFrame | Supported | Empty and populated frames can provide column names and dtypes |
-| Compact DDL | Supported | Column list such as `"id int, name string"` for fast one-table generation |
-| Spark `struct<...>` text | Supported | Parsed as compact DDL |
-| PySpark `StructType` | Supported | Common scalar fields are preserved; requires an active or explicit SparkSession for Spark output |
-| PySpark DataFrame | Supported | Schema and SparkSession are inferred from the input |
-| `TableSchema` | Supported | Native typed schema object |
-| `DomainSchema` | Supported | Returns a dictionary of generated tables |
-| Rich inline metadata mapping | Partially supported | Put metadata in `custom_rules` today; inline field objects are planned |
-| Full SQL `CREATE TABLE` | Supported | Use `parse_ddl(...)` for the documented ANSI, Spark, and Databricks subset |
-| JSON Schema | Planned | JSON recipe files are a separate feature |
-| YAML schema profile | Planned | Simple YAML dataset recipes are supported, not YAML schema inputs |
-| Column-name list | Planned | Types are currently required |
-| SQLAlchemy model | Planned | ORM inspection is not implemented |
-| Pydantic model | Planned | Model inspection is not implemented |
-| Dataclass | Planned | Dataclass field inspection is not implemented |
+| Input type | Supported | Function | Notes |
+|---|---:|---|---|
+| Python dict | Yes | `generate_from_schema` | Existing `{column: dtype}` mappings |
+| Compact DDL string | Yes | `generate_from_schema` | Existing one-table column strings such as `"id int, name string"` |
+| Full SQL `CREATE TABLE` DDL | Yes | `parse_ddl`, `generate_from_schema` | Documented ANSI/Spark/Databricks subset |
+| Pandas DataFrame | Yes | `generate_from_schema` | Empty or populated DataFrame schemas |
+| Pandas dtype mapping | Yes | `generate_from_schema` | `df.dtypes.to_dict()` |
+| PySpark `StructType` | Yes | `generate_from_schema` | Requires PySpark only when Spark objects are used |
+| PySpark DataFrame | Yes | `generate_from_schema` | SparkSession is inferred when available |
+| JSON Schema | Yes | `generate_from_json_schema` | Practical v1 subset: object/properties/scalars/enums/ranges/formats |
+| dbt `schema.yml` | Yes | `generate_from_dbt_schema` | Optional YAML support through `great-generator[dbt]` |
+| dbt `manifest.json` | Yes | `generate_from_dbt_manifest` | Common dbt manifest model nodes |
+| Data dictionary CSV/YAML/JSON | Yes | `load_data_dictionary`, `generate_from_data_dictionary` | Enterprise schema documentation files |
+| `TableSchema` | Yes | `generate_from_schema` | Native typed schema object |
+| `DomainSchema` | Yes | `generate_from_schema` | Returns a dictionary of generated tables |
+| Pydantic model | Planned | TBD | Roadmap |
+| SQLAlchemy model | Planned | TBD | Roadmap |
+| OpenAPI schema | Planned | TBD | Roadmap |
+| Dataclass | Planned | TBD | Roadmap |
 
 ## Plain mapping
 
@@ -50,7 +52,7 @@ from great_generator import generate_from_schema
 
 empty = pd.DataFrame(
     {
-        "customer_id": pd.Series(dtype="string"),
+        "customer_id": pd.Series(dtype="int64"),
         "customer_name": pd.Series(dtype="string"),
         "age": pd.Series(dtype="int64"),
         "balance": pd.Series(dtype="float64"),
@@ -95,25 +97,66 @@ contract = parse_ddl(
 df = generate_from_schema(contract, rows=1000)
 ```
 
-For multiple tables, `parse_ddl` returns a `ContractSchema` containing each table keyed by its qualified name. Simple single-column relationships can generate through the existing relational path. Composite and cyclic relationships are parsed as metadata today, with full advanced relational generation planned separately.
+For multiple tables, `parse_ddl` returns a `ContractSchema` containing each table keyed by its qualified name.
+
+## JSON Schema
 
 ```python
-contract = parse_ddl(
-    """
-    CREATE TABLE customers (customer_id BIGINT PRIMARY KEY, customer_name STRING);
-    CREATE TABLE orders (
-      order_id BIGINT PRIMARY KEY,
-      customer_id BIGINT NOT NULL,
-      amount DECIMAL(12, 2),
-      FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
-    )
-    """
-)
+from great_generator import generate_from_json_schema
 
-data = generate_from_schema(contract, rows={"customers": 1000, "orders": 5000})
+json_schema = {
+    "type": "object",
+    "required": ["customer_id", "email"],
+    "properties": {
+        "customer_id": {"type": "integer"},
+        "email": {"type": "string", "format": "email"},
+        "signup_date": {"type": "string", "format": "date"},
+        "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE", "PENDING"]},
+        "balance": {"type": "number", "minimum": 0, "maximum": 10000},
+    },
+}
+
+df = generate_from_json_schema(json_schema, rows=1000)
 ```
 
-`strict=True` fails on unsupported contract-affecting syntax. `strict=False` can return warnings only when keys, relationships, nullability, and type conversion are still safe.
+See [JSON Schema ingestion](JSON_SCHEMA.md) for the supported v1 subset and limitations.
+
+## dbt metadata
+
+```python
+from great_generator import generate_from_dbt_schema, generate_from_dbt_manifest
+
+df = generate_from_dbt_schema(
+    "models/schema.yml",
+    model_name="customers",
+    rows=1000,
+)
+
+from_manifest = generate_from_dbt_manifest(
+    "target/manifest.json",
+    model_name="customers",
+    rows=1000,
+)
+```
+
+Install YAML support when loading dbt `schema.yml` files:
+
+```bash
+pip install "great-generator[dbt]"
+```
+
+See [dbt integration](DBT_INTEGRATION.md).
+
+## Data dictionaries
+
+```python
+from great_generator import generate_from_data_dictionary, load_data_dictionary
+
+schema = load_data_dictionary("data_dictionary.csv")
+df = generate_from_data_dictionary("data_dictionary.csv", rows=1000)
+```
+
+Supported file types are CSV, YAML, and JSON. See [data dictionary ingestion](DATA_DICTIONARY.md).
 
 ## PySpark StructType
 
@@ -139,7 +182,7 @@ If the runtime cannot discover an active session, pass `spark=spark`. Single-tab
 
 ## Business rules
 
-Inline metadata values are not yet schema inputs. Use a simple schema plus `custom_rules`:
+Use a simple schema plus `custom_rules`:
 
 ```python
 rules = {
@@ -153,12 +196,12 @@ rules = {
 df = generate_from_schema(schema, rows=1000, custom_rules=rules)
 ```
 
-Supported rules are `type`, `min`, `max`, `values`, `weighted_values`, `prefix`, `pattern`, `start`, `end`, `null_rate`, and the validation expectation `unique`.
+Supported rules include `type`, `min`, `max`, `values`, `weighted_values`, `prefix`, `pattern`, `start`, `end`, `null_rate`, and the validation expectation `unique`.
 
 ## Output behavior
 
-- Mapping, compact DDL, one-table SQL DDL contracts, Pandas, and `TableSchema` inputs return a Pandas DataFrame by default.
-- Spark context or `engine="spark"` returns a Spark DataFrame.
+- Mapping, compact DDL, one-table SQL DDL contracts, JSON Schema, dbt, data dictionary, Pandas, and `TableSchema` inputs return a Pandas DataFrame by default.
+- Spark context or `engine="spark"` returns a Spark DataFrame where that input path supports Spark output.
 - A PySpark DataFrame carries its own schema and Spark session.
 - `DomainSchema` and multi-table `ContractSchema` inputs return a dictionary of table-name to DataFrame.
 

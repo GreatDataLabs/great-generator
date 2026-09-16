@@ -6,6 +6,57 @@ It is useful when you need safe, non-production data for SQL logic tests, ETL va
 
 All query-aware options are optional. Existing generation behavior is unchanged unless you provide `required_values`, `partition_by`, `target_selectivity`, `ensure_join_coverage`, or `query_profile`.
 
+## End-to-end single-table example
+
+```python
+from great_generator import generate_from_schema, validate_query_coverage
+
+schema = """
+member_id string,
+business_date date,
+region string,
+product_type string,
+member_status string,
+interaction_count int,
+balance double
+"""
+
+required_values = {
+    "region": ["SOUTH"],
+    "product_type": ["CHECKING", "SAVINGS"],
+    "member_status": ["ACTIVE"],
+}
+
+partition_by = {
+    "column": "business_date",
+    "values": ["2026-01-01", "2026-01-02", "2026-01-03"],
+    "distribution": "balanced",
+}
+
+df = generate_from_schema(
+    schema=schema,
+    rows=100000,
+    required_values=required_values,
+    partition_by=partition_by,
+)
+
+report = validate_query_coverage(
+    data=df,
+    required_values=required_values,
+    partition_by=partition_by,
+)
+```
+
+Coverage reports include:
+
+- `required_values_status`
+- `partition_coverage_status`
+- `partition_counts`
+- `selectivity_actuals`
+- `selectivity_targets`
+- `join_coverage_status`
+- `warnings`
+
 ## What query-aware generation does
 
 Query-aware generation can:

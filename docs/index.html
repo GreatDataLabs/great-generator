@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Great Generator | Schema-first synthetic data for data engineering and AI-ready testing</title>
-  <meta name="description" content="Great Generator creates synthetic non-production datasets from schemas, SQL DDL, relationships, and generation plans for QA, ETL testing, Spark, lakehouse demos, CDC, anomalies, and deterministic advisor-reviewed generation." />
-  <meta name="keywords" content="synthetic data, schema generation, SQL DDL, pandas, pyspark, spark, databricks, delta lake, CDC, anomaly injection, data quality, lakehouse, query-aware generation, MCP server, test data" />
+  <meta name="description" content="Great Generator creates synthetic non-production datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for QA, ETL testing, Spark, lakehouse demos, CDC, anomalies, and deterministic advisor-reviewed generation." />
+  <meta name="keywords" content="synthetic data, schema generation, JSON Schema, dbt, data dictionary, SQL DDL, pandas, pyspark, spark, databricks, delta lake, CDC, anomaly injection, data quality, lakehouse, query-aware generation, MCP server, test data" />
   <meta property="og:title" content="Great Generator | Schema-first synthetic data generator" />
-  <meta property="og:description" content="Generate synthetic datasets from schemas, SQL DDL, relationships, and generation plans for data engineering, QA, Spark, lakehouse, CDC, anomalies, and AI-ready testing." />
+  <meta property="og:description" content="Generate synthetic datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for data engineering, QA, Spark, lakehouse, CDC, anomalies, and AI-ready testing." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ravikiranpagidi.github.io/great-generator/" />
   <meta property="og:site_name" content="Great Generator" />
@@ -17,7 +17,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Great Generator | Schema-first synthetic data generator" />
   <meta name="twitter:image" content="https://ravikiranpagidi.github.io/great-generator/assets/og.png" />
-  <meta name="twitter:description" content="Create synthetic test datasets from schemas, SQL DDL, relationships, and generation plans for data engineering, Spark, lakehouse, and AI-ready workflows." />
+  <meta name="twitter:description" content="Create synthetic test datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for data engineering, Spark, lakehouse, and AI-ready workflows." />
   <link rel="canonical" href="https://ravikiranpagidi.github.io/great-generator/" />
   <link rel="stylesheet" href="assets/site.css?v=20260822-seo" />
   <script type="application/ld+json">
@@ -46,7 +46,7 @@
         "name": "Great Generator",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "OS Independent",
-        "description": "Python package for synthetic non-production datasets from schemas, SQL DDL, relationships, and generation plans.",
+        "description": "Python package for synthetic non-production datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans.",
         "downloadUrl": "https://pypi.org/project/great-generator/",
         "softwareVersion": "0.1.7",
         "author": {
@@ -87,8 +87,8 @@
     <section class="hero" id="top">
       <div class="hero-copy">
         <p class="eyebrow">Schema-first synthetic data for engineering teams</p>
-        <h1>Synthetic enterprise data from schemas, SQL DDL, and generation plans</h1>
-        <p class="lede">Great Generator helps data teams create realistic non-production datasets for development, QA, ETL testing, Spark pipelines, lakehouse demos, CDC, anomalies, relational models, and deterministic advisor-reviewed generation.</p>
+        <h1>Synthetic enterprise data from schemas, SQL DDL, dbt metadata, data dictionaries, and generation plans</h1>
+        <p class="lede">Great Generator helps data teams create realistic non-production datasets from schema contracts, JSON Schema, dbt metadata, data dictionaries, SQL DDL, Spark pipelines, lakehouse demos, CDC, anomalies, relational models, and deterministic advisor-reviewed generation.</p>
         <p class="safety-callout">Great Generator creates synthetic data. It does not anonymize, mask, de-identify, or transform production records.</p>
         <div class="hero-actions">
           <a class="button primary" href="getting-started/">Get started</a>
@@ -100,6 +100,9 @@
           <span>Schema-first</span>
           <span>Pandas and Spark</span>
           <span>SQL DDL</span>
+          <span>JSON Schema</span>
+          <span>dbt metadata</span>
+          <span>Data dictionaries</span>
           <span>CDC and anomalies</span>
           <span>Optional AI advisor</span>
           <span>Optional MCP server</span>
@@ -148,13 +151,15 @@ df = generate_from_schema(contract, rows=1000, seed=42)</code></pre>
     <section class="section" id="quickstart">
       <div class="section-heading">
         <p class="eyebrow">Install</p>
-        <h2>Simple install. Optional extras when you need Spark, Delta, advisors, or MCP.</h2>
+        <h2>Simple install. Optional extras when you need Spark, Delta, dbt/YAML ingestion, advisors, or MCP.</h2>
         <p>Install with a hyphen. Import with an underscore.</p>
       </div>
       <div class="install-grid">
         <pre><code>pip install great-generator
 pip install "great-generator[spark]"
 pip install "great-generator[delta]"
+pip install "great-generator[dbt]"
+pip install "great-generator[schema-ingest]"
 pip install "great-generator[ai]"
 pip install "great-generator[anthropic]"
 pip install "great-generator[ollama]"
@@ -171,7 +176,7 @@ df = generate_from_schema("id int, name string", rows=100)</code></pre>
       <div class="section-heading">
         <p class="eyebrow">What is new</p>
         <h2>The project has grown beyond simple schema samples.</h2>
-        <p>Recent work adds query-aware generation, SQL DDL contracts, advisor artifacts, optional MCP tools, and stronger launch documentation while keeping the base package lightweight.</p>
+        <p>Recent work adds JSON Schema ingestion, dbt metadata ingestion, data dictionary ingestion, query-aware generation, SQL DDL contracts, advisor artifacts, optional MCP tools, and stronger launch documentation while keeping the base package lightweight.</p>
       </div>
       <div class="card-grid five">
         <article>
@@ -188,6 +193,21 @@ df = generate_from_schema("id int, name string", rows=100)</code></pre>
           <span class="card-kicker">Contracts</span>
           <h3>SQL DDL ingestion</h3>
           <p>Parse the documented ANSI, Spark, and Databricks `CREATE TABLE` subset into canonical contracts with stable fingerprints and parser diagnostics.</p>
+        </article>
+        <article>
+          <span class="card-kicker">Contracts</span>
+          <h3>JSON Schema ingestion</h3>
+          <p>Generate synthetic DataFrames from API-style JSON Schema contracts using the documented v1 object/property subset.</p>
+        </article>
+        <article>
+          <span class="card-kicker">Analytics</span>
+          <h3>dbt metadata ingestion</h3>
+          <p>Create synthetic model data from common dbt `schema.yml` and `manifest.json` metadata for analytics engineering tests.</p>
+        </article>
+        <article>
+          <span class="card-kicker">Enterprise</span>
+          <h3>Data dictionaries</h3>
+          <p>Load CSV, YAML, or JSON data dictionaries and generate test data from enterprise schema documentation.</p>
         </article>
         <article>
           <span class="card-kicker">Planning</span>
@@ -281,6 +301,7 @@ df = generate_from_schema(
       <div class="feature-grid">
         <article><h3>Schema-first generation</h3><p>Generate synthetic DataFrames from mappings, DDL strings, DataFrames, Spark schemas, `TableSchema`, and domain schemas.</p></article>
         <article><h3>SQL DDL parsing</h3><p>Use `parse_ddl(...)` for documented SQL `CREATE TABLE` contracts with stable fingerprints.</p></article>
+        <article><h3>JSON Schema, dbt, and dictionaries</h3><p>Generate from API contracts, analytics metadata, and enterprise schema documentation.</p></article>
         <article><h3>Semantic field detection</h3><p>Recognize names, IDs, contacts, dates, amounts, statuses, quantities, and lifecycle fields from column names.</p></article>
         <article><h3>Query-aware generation</h3><p>Include required filter values, partition dates, selectivity targets, and join paths when your tests need them.</p></article>
         <article><h3>Relational generation</h3><p>Create parent-child tables with primary keys, foreign keys, and valid references by default.</p></article>
@@ -306,6 +327,9 @@ df = generate_from_schema(
       </div>
       <div class="link-panel">
         <a href="schema-generation/">Generate data from schema</a>
+        <a href="json-schema/">Generate from JSON Schema</a>
+        <a href="dbt-integration/">Generate from dbt metadata</a>
+        <a href="data-dictionary/">Generate from data dictionaries</a>
         <a href="sql-ddl/">Generate from SQL DDL contracts</a>
         <a href="relational-generation/">Create relational test data</a>
         <a href="spark-delta/">Use Spark and Delta workflows</a>
@@ -346,8 +370,10 @@ df = generate_from_schema(
             <tr><td>PySpark DataFrame</td><td>Empty or populated Spark DataFrame</td><td>Use an existing Spark schema</td><td><strong>Supported</strong></td></tr>
             <tr><td>`TableSchema`</td><td>`TableSchema(name="customers", ...)`</td><td>Library-native schema metadata</td><td><strong>Supported</strong></td></tr>
             <tr><td>`DomainSchema`</td><td>Multi-table schema metadata</td><td>Relational and domain-shaped datasets</td><td><strong>Supported</strong></td></tr>
-            <tr><td>JSON Schema</td><td>`schema.json`</td><td>Application contracts</td><td><strong>Planned</strong></td></tr>
-            <tr><td>YAML schema profile</td><td>`schema.yml`</td><td>Reusable schema configs</td><td><strong>Planned</strong></td></tr>
+            <tr><td>JSON Schema</td><td>`schema.json`</td><td>Application contracts</td><td><strong>Supported</strong></td></tr>
+            <tr><td>dbt schema.yml</td><td>`models/schema.yml`</td><td>Analytics engineering contracts</td><td><strong>Supported</strong></td></tr>
+            <tr><td>dbt manifest.json</td><td>`target/manifest.json`</td><td>Compiled dbt metadata</td><td><strong>Supported</strong></td></tr>
+            <tr><td>Data dictionary</td><td>`data_dictionary.csv`</td><td>Enterprise schema docs</td><td><strong>Supported</strong></td></tr>
             <tr><td>Pydantic model</td><td>`BaseModel`</td><td>API model contracts</td><td><strong>Planned</strong></td></tr>
             <tr><td>Dataclass</td><td>`@dataclass`</td><td>Python application models</td><td><strong>Planned</strong></td></tr>
           </tbody>
@@ -493,6 +519,9 @@ great-generator-mcp</code></pre>
         <a href="getting-started/"><strong>Quickstart</strong><span>Install, import, generate, inspect, and export.</span></a>
         <a href="installation/"><strong>Installation</strong><span>Core package, Spark, Delta, advisor, and MCP extras.</span></a>
         <a href="schema-generation/"><strong>Schema Inputs</strong><span>Current support matrix, examples, and limitations.</span></a>
+        <a href="json-schema/"><strong>JSON Schema</strong><span>Generate from API-style JSON Schema contracts.</span></a>
+        <a href="dbt-integration/"><strong>dbt Integration</strong><span>Generate from dbt schema.yml and manifest.json metadata.</span></a>
+        <a href="data-dictionary/"><strong>Data Dictionary</strong><span>Generate from CSV, YAML, or JSON schema documentation.</span></a>
         <a href="sql-ddl/"><strong>SQL DDL</strong><span>Canonical contracts, parser diagnostics, and DDL examples.</span></a>
         <a href="mcp-server/"><strong>MCP Server</strong><span>Optional local MCP tools, client configs, safety limits, outputs, and manifests.</span></a>
         <a href="query-aware-generation/"><strong>Query-Aware Generation</strong><span>Required values, partitions, selectivity, join coverage, and coverage reports.</span></a>
@@ -520,7 +549,7 @@ great-generator-mcp</code></pre>
         <table>
           <thead><tr><th>Version</th><th>Focus</th><th>Highlights</th></tr></thead>
           <tbody>
-            <tr><td>Unreleased</td><td>Optional MCP server</td><td>`great-generator[mcp]`, `great-generator-mcp`, local-file tools, path safety, row limits, overwrite protection, manifests, examples, and tests.</td></tr>
+            <tr><td>Unreleased</td><td>Schema ingestion and optional MCP server</td><td>JSON Schema, dbt metadata, CSV/YAML/JSON data dictionaries, query-aware examples, `great-generator[mcp]`, local-file tools, path safety, row limits, manifests, examples, and tests.</td></tr>
             <tr><td>0.1.7</td><td>SQL DDL ingestion and query-aware generation</td><td>`parse_ddl(...)`, canonical contracts, parser diagnostics, documented ANSI/Spark/Databricks subset, required values, partitions, selectivity, and join coverage.</td></tr>
             <tr><td>0.1.6</td><td>AI advisor planning layer</td><td>Advisors, `GenerationPlan`, `ColumnTags`, cached advisor calls, manifest metadata, and `plan=` support.</td></tr>
             <tr><td>0.1.5</td><td>Schema-first docs and Spark writes</td><td>Schema input matrix, Databricks examples, Snowflake writes, Azure SQL writes, and documentation site updates.</td></tr>
@@ -538,8 +567,7 @@ great-generator-mcp</code></pre>
       </div>
       <div class="roadmap-list">
         <span>Infer query profiles from SQL text</span>
-        <span>JSON Schema support</span>
-        <span>YAML schema profiles</span>
+        <span>OpenAPI and Avro schema inputs</span>
         <span>Pydantic and dataclass schema adapters</span>
         <span>Spark-native query-aware generation</span>
         <span>More Spark and lakehouse examples</span>

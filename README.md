@@ -84,7 +84,7 @@ The same semantic layer recognizes IDs, email addresses, phone numbers, addresse
 ## What You Can Do
 
 - generate a realistic DataFrame from a schema
-- use plain Python mappings, Pandas schemas, compact DDL, or PySpark schemas
+- use plain Python mappings, Pandas schemas, compact DDL, SQL DDL, JSON Schema, dbt metadata, data dictionaries, or PySpark schemas
 - apply per-column ranges, categories, prefixes, patterns, weights, date windows, and null rates
 - inspect the semantic generation plan before generating data
 - validate generated values and cross-field consistency
@@ -117,7 +117,7 @@ Online and offline advisors are separate from generation. Anthropic and Ollama a
 
 | Version | Release focus | What changed |
 |---|---|---|
-| Unreleased | Optional MCP server and website search discovery | Added optional `great-generator[mcp]` support, a `great-generator-mcp` entry point, local-file MCP tools, safety controls, docs, examples, tests, GitHub Pages sitemap, robots.txt, SEO metadata, and sitemap maintenance docs. |
+| Unreleased | Schema ingestion, optional MCP server, and website search discovery | Added JSON Schema ingestion, dbt `schema.yml` and `manifest.json` ingestion, CSV/YAML/JSON data dictionary ingestion, schema input docs, query-aware coverage examples, optional `great-generator[mcp]` support, local-file MCP tools, safety controls, tests, sitemap, robots.txt, SEO metadata, and sitemap maintenance docs. |
 | 0.1.7 | SQL DDL contracts and query-aware generation | Added canonical contracts, `parse_ddl(...)`, optional query-aware required values, partitioning, selectivity, relational join coverage, a runnable retail star-schema example, generation manifest guidance, determinism docs, benchmark methodology, and citation metadata. |
 | 0.1.6 | AI advisor planning layer | Added optional design-time advisors for schema understanding, column tagging, and realism review. Added editable `GenerationPlan` and `ColumnTags` JSON artifacts, cached Anthropic and Ollama advisor calls, offline NoOp defaults, manifest metadata, and deterministic `plan=` support in `generate_from_schema`. |
 | 0.1.5 | Schema-first docs and Spark database writes | Repositioned schema generation as the primary workflow. Added a schema input support matrix, Databricks and PySpark examples for Snowflake and Azure SQL, and documentation site updates. |
@@ -130,6 +130,9 @@ Online and offline advisors are separate from generation. Anthropic and Ollama a
 ## Useful Guides
 
 - [Schema inputs](docs/SCHEMA_INPUTS.md)
+- [JSON Schema ingestion](docs/JSON_SCHEMA.md)
+- [dbt integration](docs/DBT_INTEGRATION.md)
+- [Data dictionary ingestion](docs/DATA_DICTIONARY.md)
 - [SQL contracts and DDL](docs/CONTRACTS_AND_DDL.md)
 - [Query-aware generation](docs/QUERY_AWARE_GENERATION.md)
 - [Determinism and reproducibility](docs/DETERMINISM.md)
@@ -168,6 +171,13 @@ Optional advisor dependencies:
 pip install "great-generator[ai]"
 pip install "great-generator[anthropic]"
 pip install "great-generator[ollama]"
+```
+
+Optional schema-ingestion dependencies for dbt `schema.yml` and YAML data dictionaries:
+
+```bash
+pip install "great-generator[dbt]"
+pip install "great-generator[schema-ingest]"
 ```
 
 Optional MCP dependency:
@@ -260,6 +270,77 @@ CUST000002   Liam Patel     42   liam.patel@example.com        Seattle    Washin
 ```
 
 Exact values vary. Pass an optional `seed` only when your test or experiment needs repeatable output.
+
+## Schema input options
+
+Great Generator can generate synthetic data from several schema sources, including Python mappings, compact DDL strings, SQL `CREATE TABLE` DDL, Pandas schemas, PySpark schemas, JSON Schema, dbt metadata, and data dictionaries.
+
+See [`docs/SCHEMA_INPUTS.md`](docs/SCHEMA_INPUTS.md) for the supported input matrix.
+
+### JSON Schema
+
+```python
+from great_generator import generate_from_json_schema
+
+json_schema = {
+    "type": "object",
+    "properties": {
+        "customer_id": {"type": "integer"},
+        "email": {"type": "string", "format": "email"},
+        "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE", "PENDING"]},
+    },
+}
+
+df = generate_from_json_schema(json_schema, rows=1000)
+```
+
+### dbt schema.yml or manifest.json
+
+```python
+from great_generator import generate_from_dbt_schema, generate_from_dbt_manifest
+
+df = generate_from_dbt_schema("models/schema.yml", model_name="customers", rows=1000)
+
+from_manifest = generate_from_dbt_manifest(
+    "target/manifest.json",
+    model_name="customers",
+    rows=1000,
+)
+```
+
+### Data dictionary CSV/YAML/JSON
+
+```python
+from great_generator import generate_from_data_dictionary, load_data_dictionary
+
+schema = load_data_dictionary("data_dictionary.csv")
+df = generate_from_data_dictionary("data_dictionary.csv", rows=1000)
+```
+
+```mermaid
+flowchart LR
+    A[Schema Sources] --> B[Schema Normalization]
+    A1[Python dict] --> A
+    A2[SQL DDL] --> A
+    A3[JSON Schema] --> A
+    A4[dbt schema.yml] --> A
+    A5[dbt manifest.json] --> A
+    A6[Data dictionary] --> A
+
+    B --> C[Generation Contract]
+    C --> D[Existing Generation Engine]
+    D --> E[Synthetic Data]
+
+    F[Optional Query-Aware Inputs] --> D
+    F1[required_values] --> F
+    F2[partition_by] --> F
+    F3[target_selectivity] --> F
+
+    E --> G[Validation and Coverage Reports]
+    E --> H[Exports]
+```
+
+All schema inputs are normalized into the existing generation path. No second generation engine is introduced.
 
 ## Next: Generate Related Tables from Your Schemas
 
@@ -361,14 +442,17 @@ The table below reflects the current implementation, not the long-term roadmap.
 | PySpark DataFrame | empty or existing Spark DataFrame | Infer schema and Spark session | **Supported** |
 | `TableSchema` | library schema object | Typed library extensions | **Supported** |
 | `DomainSchema` | library domain metadata | Multi-table schema generation | **Supported** |
-| JSON Schema | `{"type": "object", "properties": ...}` | APIs and data contracts | **Planned** |
-| YAML schema profile | `customer_schema.yml` | Reusable schema configurations | **Planned** |
+| JSON Schema | `{"type": "object", "properties": ...}` | APIs and data contracts | **Supported** through `generate_from_json_schema` for the documented v1 subset |
+| dbt `schema.yml` | `models/schema.yml` | Analytics engineering and dbt contracts | **Supported** through `generate_from_dbt_schema` |
+| dbt `manifest.json` | `target/manifest.json` | Compiled dbt project metadata | **Supported** through `generate_from_dbt_manifest` |
+| Data dictionary CSV/YAML/JSON | `data_dictionary.csv` | Enterprise schema documentation | **Supported** through `generate_from_data_dictionary` |
+| YAML dataset recipe | `recipe.yml` | Reusable generation jobs | **Supported** through `generate_from_recipe` |
 | Column-name list | `["name", "age", "email"]` | Very fast prototypes | **Planned** |
 | SQLAlchemy model | ORM class | Backend and database teams | **Planned** |
 | Pydantic model | `BaseModel` class | API contract workflows | **Planned** |
 | Dataclass | typed Python dataclass | Typed Python workflows | **Planned** |
 
-JSON, TOML, and simple YAML are currently supported for **dataset recipes** through `generate_from_recipe`, not as schema inputs to `generate_from_schema`.
+JSON, YAML, and TOML dataset recipes are separate from schema-source ingestion. Use `generate_from_recipe` for complete generation jobs and the schema-source functions when you want to generate from a schema contract.
 
 ## Supported Schema Examples
 
@@ -953,6 +1037,10 @@ generate_from_schema(
     realistic=None,
     validate=False,
     return_report=False,
+    required_values=None,
+    partition_by=None,
+    target_selectivity=None,
+    query_profile=None,
 )
 ```
 
@@ -971,6 +1059,10 @@ generate_from_schema(
 | `realistic` | Backward-compatible boolean override; prefer `realism` in new code |
 | `validate` | Run post-generation validation where supported |
 | `return_report` | Return `(data, report)` instead of only data |
+| `required_values` | Optional query-aware values that must appear in generated columns |
+| `partition_by` | Optional query-aware partition values or counts for a column |
+| `target_selectivity` | Optional approximate filter ratios for generated values |
+| `query_profile` | Optional reusable mapping containing query-aware options |
 
 Return behavior:
 
@@ -1007,6 +1099,10 @@ Domain packs include relationships and domain behaviors. They are useful for dem
 | I need lower-environment test data | `generate_from_schema` | Aligns generated fields to the expected contract |
 | I need data for ETL or QA testing | `generate_from_schema` | Matches pipeline input columns and types |
 | I have several related custom tables | `generate_relational` | Adds primary-key and foreign-key relationships |
+| I have JSON Schema contracts | `generate_from_json_schema` | Uses API-style schema metadata |
+| I have dbt model metadata | `generate_from_dbt_schema` or `generate_from_dbt_manifest` | Fits analytics engineering workflows |
+| I have a CSV/YAML/JSON data dictionary | `generate_from_data_dictionary` | Works with enterprise schema documentation |
+| I need query values and partitions present | `generate_from_schema` with query-aware options | Ensures SQL filters and partitions have coverage |
 | I need a quick enterprise demo dataset | `generate_domain` | Prebuilt related tables are immediately available |
 | I am learning SQL or data modeling | `generate_domain` | Domain packs provide understandable examples |
 | I need data for my project's schema | `generate_from_schema` | This is the primary industry workflow |
@@ -1029,17 +1125,15 @@ See the [documentation site](https://ravikiranpagidi.github.io/great-generator/)
 
 ## Planned Schema Input Types
 
-The following are roadmap items and are not accepted by `generate_from_schema` today:
+The following are roadmap items and are not accepted by the schema-source APIs today:
 
-- inline rich schema metadata
-- JSON Schema and JSON Schema files
-- YAML schema profiles
+- inline rich schema metadata directly inside plain Python mappings
 - column-name-only lists with type inference
 - SQLAlchemy models
 - Pydantic models
 - Python dataclasses
 - richer nested Spark and JSON structures
-- additional contract inputs such as JSON Schema, dbt schema files, Avro, OpenAPI, and catalog metadata
+- Avro, OpenAPI, and catalog metadata ingestion
 - Spark-native distributed generation for arbitrary schemas
 
 Tracking these as explicit roadmap items keeps the current API trustworthy while leaving a clear path for contributors.

@@ -27,6 +27,18 @@ from great_generator.query_aware.validation import (
     validate_query_coverage as _validate_query_coverage,
 )
 from great_generator.recipes import generate_from_recipe as _generate_from_recipe
+from great_generator.schema_inputs import (
+    NormalizedSchemaInput,
+    enforce_normalized_constraints,
+    merge_custom_rules,
+    normalize_data_dictionary,
+    normalize_dbt_manifest,
+    normalize_dbt_schema,
+    normalize_json_schema,
+)
+from great_generator.schema_inputs import (
+    load_data_dictionary as _load_data_dictionary,
+)
 from great_generator.schemas.generation import (
     active_spark_session,
     generate_domain_schema_pandas,
@@ -743,6 +755,121 @@ def generate_from_schema(
         validate=validate,
         return_report=return_report,
     )
+
+
+def generate_from_json_schema(
+    schema: Mapping[str, Any] | str | Path,
+    rows: int = 100,
+    seed: int | None = None,
+    strict: bool = True,
+    table_name: str = "sample",
+    **kwargs: Any,
+) -> pd.DataFrame | Any | tuple[Any, dict[str, Any]]:
+    """Generate synthetic data from a practical subset of JSON Schema.
+
+    JSON Schema inputs are normalized into the existing ``generate_from_schema``
+    path. Unsupported JSON Schema keywords raise a clear error by default.
+    """
+
+    normalized = normalize_json_schema(schema, strict=strict, table_name=table_name)
+    return _generate_from_normalized_schema_input(
+        normalized,
+        rows=rows,
+        seed=seed,
+        table_name=table_name,
+        **kwargs,
+    )
+
+
+def generate_from_dbt_schema(
+    path: str | Path,
+    model_name: str,
+    rows: int = 100,
+    seed: int | None = None,
+    strict: bool = True,
+    **kwargs: Any,
+) -> pd.DataFrame | Any | tuple[Any, dict[str, Any]]:
+    """Generate synthetic data from a dbt ``schema.yml`` model definition."""
+
+    normalized = normalize_dbt_schema(path, model_name=model_name, strict=strict)
+    table_name = str(kwargs.pop("table_name", model_name))
+    return _generate_from_normalized_schema_input(
+        normalized,
+        rows=rows,
+        seed=seed,
+        table_name=table_name,
+        **kwargs,
+    )
+
+
+def generate_from_dbt_manifest(
+    path: str | Path,
+    model_name: str,
+    rows: int = 100,
+    seed: int | None = None,
+    strict: bool = True,
+    **kwargs: Any,
+) -> pd.DataFrame | Any | tuple[Any, dict[str, Any]]:
+    """Generate synthetic data from a dbt ``target/manifest.json`` model node."""
+
+    normalized = normalize_dbt_manifest(path, model_name=model_name, strict=strict)
+    table_name = str(kwargs.pop("table_name", model_name))
+    return _generate_from_normalized_schema_input(
+        normalized,
+        rows=rows,
+        seed=seed,
+        table_name=table_name,
+        **kwargs,
+    )
+
+
+def load_data_dictionary(path: str | Path) -> dict[str, str]:
+    """Load a CSV, YAML, or JSON data dictionary as a simple schema mapping."""
+
+    return _load_data_dictionary(path)
+
+
+def generate_from_data_dictionary(
+    path: str | Path,
+    rows: int = 100,
+    seed: int | None = None,
+    **kwargs: Any,
+) -> pd.DataFrame | Any | tuple[Any, dict[str, Any]]:
+    """Generate synthetic data from a CSV, YAML, or JSON data dictionary."""
+
+    normalized = normalize_data_dictionary(path)
+    table_name = str(kwargs.pop("table_name", "sample"))
+    return _generate_from_normalized_schema_input(
+        normalized,
+        rows=rows,
+        seed=seed,
+        table_name=table_name,
+        **kwargs,
+    )
+
+
+def _generate_from_normalized_schema_input(
+    normalized: NormalizedSchemaInput,
+    *,
+    rows: int,
+    seed: int | None,
+    table_name: str,
+    **kwargs: Any,
+) -> pd.DataFrame | Any | tuple[Any, dict[str, Any]]:
+    custom_rules = kwargs.pop("custom_rules", None)
+    merged_rules = merge_custom_rules(normalized, custom_rules)
+    result = generate_from_schema(
+        normalized.schema,
+        rows=rows,
+        seed=seed,
+        table_name=table_name,
+        custom_rules=merged_rules,
+        **kwargs,
+    )
+    if isinstance(result, tuple) and len(result) == 2:
+        data, report = result
+        return enforce_normalized_constraints(data, normalized, seed=seed), report
+    return enforce_normalized_constraints(result, normalized, seed=seed)
 
 
 def validate_generated_data(

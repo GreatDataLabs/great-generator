@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Installation | Great Generator</title>
-  <meta name="description" content="Install Great Generator for core Pandas workflows, Spark, Delta Lake, optional AI advisors, or the optional local MCP server." />
+  <meta name="description" content="Install Great Generator for core Pandas workflows, Spark, Delta Lake, dbt/YAML schema ingestion, optional AI advisors, or the optional local MCP server." />
   <link rel="canonical" href="https://ravikiranpagidi.github.io/great-generator/installation/" />
   <meta property="og:title" content="Installation | Great Generator" />
-  <meta property="og:description" content="Install Great Generator for core Pandas workflows, Spark, Delta Lake, optional AI advisors, or the optional local MCP server." />
+  <meta property="og:description" content="Install Great Generator for core Pandas workflows, Spark, Delta Lake, dbt/YAML schema ingestion, optional AI advisors, or the optional local MCP server." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://ravikiranpagidi.github.io/great-generator/installation/" />
   <meta property="og:site_name" content="Great Generator" />
@@ -17,7 +17,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Installation | Great Generator" />
   <meta name="twitter:image" content="https://ravikiranpagidi.github.io/great-generator/assets/og.png" />
-  <meta name="twitter:description" content="Install Great Generator for core Pandas workflows, Spark, Delta Lake, optional AI advisors, or the optional local MCP server." />
+  <meta name="twitter:description" content="Install Great Generator for core Pandas workflows, Spark, Delta Lake, dbt/YAML schema ingestion, optional AI advisors, or the optional local MCP server." />
   <link rel="stylesheet" href="../assets/site.css?v=20260822-seo" />
 </head>
 <body>
@@ -43,7 +43,7 @@
     <section class="section doc-hero">
       <p class="eyebrow">Install</p>
       <h1>Installation options</h1>
-      <p class="lede">The base package keeps the default install simple. Extras add Spark, Delta, advisor, or MCP dependencies only when needed.</p>
+      <p class="lede">The base package keeps the default install simple. Extras add Spark, Delta, dbt/YAML ingestion, advisor, or MCP dependencies only when needed.</p>
       <p class="safety-callout">Great Generator creates synthetic data. It does not anonymize, mask, de-identify, or transform production records.</p>
       <div class="hero-actions">
         <a class="button primary" href="../getting-started/">Getting started</a>
@@ -69,7 +69,9 @@ pip install &quot;great-generator[delta]&quot;</code></pre>
         <article class="doc-card">
           <h2>Optional advisor and MCP extras</h2>
           <p>Install advisor extras only when you want model-assisted planning. Install MCP only when an MCP-compatible assistant should call Great Generator tools locally.</p>
-          <pre><code>pip install &quot;great-generator[ai]&quot;
+          <pre><code>pip install &quot;great-generator[dbt]&quot;
+pip install &quot;great-generator[schema-ingest]&quot;
+pip install &quot;great-generator[ai]&quot;
 pip install &quot;great-generator[mcp]&quot;</code></pre>
         </article>
     </section>

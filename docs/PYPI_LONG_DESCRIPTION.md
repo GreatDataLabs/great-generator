@@ -114,10 +114,14 @@ import great_generator
 - Pandas dtype mappings and DataFrames
 - compact DDL strings such as `"id int, name string"`
 - documented SQL `CREATE TABLE` DDL through `parse_ddl(...)`
+- JSON Schema through `generate_from_json_schema(...)`
+- dbt `schema.yml` through `generate_from_dbt_schema(...)`
+- dbt `manifest.json` through `generate_from_dbt_manifest(...)`
+- CSV, YAML, and JSON data dictionaries through `generate_from_data_dictionary(...)`
 - PySpark `StructType` and DataFrames
 - Great Generator `TableSchema` and `DomainSchema` objects
 
-JSON Schema, YAML schema profiles, SQLAlchemy, Pydantic, dataclass, and column-list inputs are planned rather than currently supported as direct schema inputs.
+SQLAlchemy, Pydantic, dataclass, OpenAPI, Avro, and column-list inputs remain roadmap items.
 
 ## Write Output Anywhere Your DataFrame Supports
 

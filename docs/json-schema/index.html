@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JSON Schema | Generate synthetic data from API schemas</title>
+  <meta name="description" content="Generate synthetic test data from practical JSON Schema object contracts using Great Generator." />
+  <link rel="canonical" href="https://ravikiranpagidi.github.io/great-generator/json-schema/" />
+  <meta property="og:title" content="JSON Schema | Generate synthetic data from API schemas" />
+  <meta property="og:description" content="Generate synthetic test data from practical JSON Schema object contracts using Great Generator." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ravikiranpagidi.github.io/great-generator/json-schema/" />
+  <meta property="og:site_name" content="Great Generator" />
+  <meta property="og:image" content="https://ravikiranpagidi.github.io/great-generator/assets/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="JSON Schema | Generate synthetic data from API schemas" />
+  <meta name="twitter:description" content="Generate synthetic test data from practical JSON Schema object contracts using Great Generator." />
+  <meta name="twitter:image" content="https://ravikiranpagidi.github.io/great-generator/assets/og.png" />
+  <link rel="stylesheet" href="../assets/site.css?v=20260822-seo" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="../" aria-label="Great Generator home"><span class="brand-mark">GG</span><span>Great Generator</span></a>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="../getting-started/">Getting Started</a>
+        <a href="../schema-generation/">Schema</a>
+        <a href="../sql-ddl/">SQL DDL</a>
+        <a href="../query-aware-generation/">Query-aware</a>
+        <a href="../api-reference/">API</a>
+        <a class="nav-pill" href="https://github.com/ravikiranpagidi/great-generator">GitHub</a>
+        <a class="nav-pill primary" href="https://pypi.org/project/great-generator/">PyPI</a>
+      </div>
+    </nav>
+  </header>
+  <main id="main" class="doc-main">
+    <section class="section doc-hero">
+      <p class="eyebrow">JSON Schema</p>
+      <h1>Generate synthetic data from JSON Schema</h1>
+      <p class="lede">Normalize API-style JSON Schema contracts into Great Generator's existing schema-first engine.</p>
+      <p class="safety-callout">Great Generator creates synthetic data. It does not anonymize, mask, de-identify, or transform production records.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="../getting-started/">Getting started</a>
+        <a class="button secondary" href="../schema-generation/">Schema inputs</a>
+        <a class="button secondary" href="../api-reference/">API reference</a>
+      </div>
+    </section>
+    <section class="section doc-content-grid">
+        <article class="doc-card"><h2>Quickstart</h2><pre><code>from great_generator import generate_from_json_schema
+
+json_schema = {
+    "type": "object",
+    "properties": {
+        "customer_id": {"type": "integer"},
+        "email": {"type": "string", "format": "email"},
+        "status": {"type": "string", "enum": ["ACTIVE", "INACTIVE"]}
+    }
+}
+
+df = generate_from_json_schema(json_schema, rows=1000)</code></pre></article>
+        <article class="doc-card"><h2>Supported subset</h2><p>Top-level object schemas, properties, required fields, scalar types, basic arrays, email/date/date-time formats, enums, and numeric minimum/maximum bounds.</p></article>
+        <article class="doc-card"><h2>Limitations</h2><p>Complex composition keywords, external references, recursive schemas, and deep nested object graphs are intentionally not fully supported in this release.</p></article>
+    </section>
+    <section class="section">
+      <div class="section-heading">
+        <p class="eyebrow">Related documentation</p>
+        <h2>Keep exploring</h2>
+      </div>
+      <div class="doc-grid">
+        <a href="../schema-generation/"><strong>Schema generation</strong><span>Mappings, DDL strings, DataFrames, Spark schemas, and schema-source inputs.</span></a>
+        <a href="../sql-ddl/"><strong>SQL DDL</strong><span>Canonical contracts and documented CREATE TABLE parsing.</span></a>
+        <a href="../query-aware-generation/"><strong>Query-aware generation</strong><span>Required values, partitions, selectivity, joins, and coverage reports.</span></a>
+        <a href="../api-reference/"><strong>API reference</strong><span>Main public APIs and usage patterns.</span></a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../">Home</a>
+      <a href="../getting-started/">Getting Started</a>
+      <a href="../api-reference/">API Reference</a>
+      <a href="https://github.com/ravikiranpagidi/great-generator">GitHub</a>
+      <a href="https://pypi.org/project/great-generator/">PyPI</a>
+    </div>
+    <p>Great Generator is MIT licensed and maintained by Ravi Kiran Pagidi.</p>
+  </footer>
+</body>
+</html>

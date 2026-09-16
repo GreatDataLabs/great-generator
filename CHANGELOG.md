@@ -8,7 +8,7 @@ This project follows semantic versioning once public releases begin.
 
 | Version | Date | Release focus | Main changes |
 |---|---:|---|---|
-| Unreleased | TBD | Optional MCP server and website search discovery | Optional `great-generator[mcp]` extra, stdio MCP server, local-file tools, safety controls, docs, examples, tests, sitemap, robots.txt, SEO metadata, and sitemap maintenance docs |
+| Unreleased | TBD | Schema ingestion, optional MCP server, and website search discovery | JSON Schema ingestion, dbt metadata ingestion, CSV/YAML/JSON data dictionary ingestion, schema input docs, query-aware examples, optional `great-generator[mcp]` extra, local-file tools, safety controls, tests, sitemap, robots.txt, SEO metadata, and sitemap maintenance docs |
 | 0.1.7 | 2026-08-15 | SQL DDL contracts and query-aware generation | Canonical contracts, `parse_ddl(...)`, stable contract hashing, structured parser diagnostics, documented ANSI/Spark/Databricks `CREATE TABLE` subset, optional query-aware generation, a runnable retail star-schema example, generation manifests, determinism docs, benchmark methodology, and citation metadata |
 | 0.1.6 | 2026-07-11 | AI advisor planning layer | Optional design-time advisors, editable plans and tags, advisor cache, manifest metadata, and deterministic `plan=` support for schema generation |
 | 0.1.5 | 2026-06-28 | Schema-first docs and Spark database writes | Schema-first README, support matrix, Databricks and PySpark examples for Snowflake and Azure SQL, and documentation site updates |
@@ -22,6 +22,11 @@ This project follows semantic versioning once public releases begin.
 
 ### Added
 
+- Added JSON Schema ingestion for schema-first synthetic data generation.
+- Added dbt `schema.yml` and `manifest.json` ingestion for analytics engineering workflows.
+- Added data dictionary ingestion from CSV, YAML, and JSON schema documentation.
+- Added documentation for schema input options and query-aware generation examples.
+- Added release consistency tests for package version and changelog coverage.
 - Added an optional MCP server under the existing `great-generator[mcp]` extra.
 - Added CLI entry point: `great-generator-mcp`.
 - Added MCP tools for `generate_from_schema`, `parse_ddl`, `generate_relational`, `validate_query_coverage`, and `export_dataset`.
@@ -30,6 +35,10 @@ This project follows semantic versioning once public releases begin.
 - Added search discovery files for the GitHub Pages site, including `sitemap.xml` and `robots.txt`.
 - Added SEO metadata, canonical URLs, Open Graph metadata, Twitter/X card metadata, and structured data for the project website.
 - Added SEO maintenance documentation and a sitemap regeneration script.
+
+### Changed
+
+- Aligned README, package version, and changelog release information around the current `0.1.7` package version while keeping new work under `Unreleased`.
 
 ## 0.1.7 - 2026-08-15
 

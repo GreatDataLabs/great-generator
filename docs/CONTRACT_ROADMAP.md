@@ -4,13 +4,13 @@ This backlog records future milestones without adding premature public APIs or p
 
 ## M1B: Additional contract inputs
 
-- JSON Schema
-- dbt `schema.yml`
 - rich inline schema metadata
 - Avro
 - Pydantic
 - OpenAPI
 - Unity Catalog metadata
+
+Implemented before this roadmap milestone: JSON Schema, dbt `schema.yml`, dbt `manifest.json`, and CSV/YAML/JSON data dictionary ingestion for the documented v1 subsets.
 
 ## M1C: Semantic and deterministic-generation foundation
 
