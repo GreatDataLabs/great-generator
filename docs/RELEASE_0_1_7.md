@@ -52,6 +52,6 @@ import great_generator
 ## Links
 
 - PyPI: https://pypi.org/project/great-generator/
-- Documentation: https://ravikiranpagidi.github.io/great-generator/
-- GitHub: https://github.com/ravikiranpagidi/great-generator
-- Changelog: https://github.com/ravikiranpagidi/great-generator/blob/main/CHANGELOG.md
+- Documentation: https://greatdatalabs.github.io/great-generator/
+- GitHub: https://github.com/GreatDataLabs/great-generator
+- Changelog: https://github.com/GreatDataLabs/great-generator/blob/main/CHANGELOG.md

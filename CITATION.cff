@@ -6,9 +6,9 @@ authors:
   - family-names: "Pagidi"
     given-names: "Ravi Kiran"
     email: "ravikiran.pagidi@gmail.com"
-repository-code: "https://github.com/ravikiranpagidi/great-generator"
-url: "https://ravikiranpagidi.github.io/great-generator/"
-abstract: "Developer-first synthetic data generation for schema-driven, relational, domain, Pandas, and Spark workflows."
+repository-code: "https://github.com/GreatDataLabs/great-generator"
+url: "https://greatdatalabs.github.io/great-generator/"
+abstract: "Schema-first synthetic data generation for SQL contracts, JSON Schema, dbt metadata, data dictionaries, relational data, Pandas, and Spark workflows."
 keywords:
   - synthetic-data
   - data-engineering
@@ -18,5 +18,5 @@ keywords:
   - test-data
   - relational-data
 license: MIT
-version: "0.1.6"
-date-released: "2026-07-11"
+version: "0.1.8"
+date-released: "2026-09-16"

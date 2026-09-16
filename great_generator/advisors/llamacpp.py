@@ -13,17 +13,17 @@ class LlamaCppAdvisor:
     def propose_plan(self, *args: object, **kwargs: object) -> object:
         raise NotImplementedError(
             "llama.cpp advisor support is planned. Track progress at "
-            "https://github.com/ravikiranpagidi/great-generator/issues."
+            "https://github.com/GreatDataLabs/great-generator/issues."
         )
 
     def tag_columns(self, *args: object, **kwargs: object) -> object:
         raise NotImplementedError(
             "llama.cpp advisor support is planned. Track progress at "
-            "https://github.com/ravikiranpagidi/great-generator/issues."
+            "https://github.com/GreatDataLabs/great-generator/issues."
         )
 
     def review_sample(self, *args: object, **kwargs: object) -> object:
         raise NotImplementedError(
             "llama.cpp advisor support is planned. Track progress at "
-            "https://github.com/ravikiranpagidi/great-generator/issues."
+            "https://github.com/GreatDataLabs/great-generator/issues."
         )

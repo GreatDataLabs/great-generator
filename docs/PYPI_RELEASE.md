@@ -6,18 +6,18 @@ Great Generator publishes to PyPI through GitHub Actions and PyPI Trusted Publis
 
 - PyPI project/package name: `great-generator`
 - Python import name: `great_generator`
-- GitHub repository: `ravikiranpagidi/great-generator`
-- Current release version: `0.1.7`
+- GitHub repository: `GreatDataLabs/great-generator`
+- Current release version: `0.1.8`
 
 ## One-time PyPI Trusted Publisher setup
 
-The PyPI account must have a pending publisher for this project before the first release can publish.
+The PyPI project must have a Trusted Publisher entry that matches the current GitHub owner/repository. After moving the repository into the GreatDataLabs organization, verify or recreate the publisher with the values below before publishing from the org repo.
 
 On PyPI, go to **Publishing** / **Trusted Publishers** and add a pending publisher with these exact values:
 
 ```text
 Project name: great-generator
-Owner: ravikiranpagidi
+Owner: GreatDataLabs
 Repository name: great-generator
 Workflow name: release-pypi.yml
 Environment name: pypi
@@ -27,7 +27,7 @@ For TestPyPI, add a pending publisher with:
 
 ```text
 Project name: great-generator
-Owner: ravikiranpagidi
+Owner: GreatDataLabs
 Repository name: great-generator
 Workflow name: release-testpypi.yml
 Environment name: testpypi
@@ -36,7 +36,7 @@ Environment name: testpypi
 Notes:
 
 - `Owner` must be the GitHub owner/login, not the display name.
-- Use `ravikiranpagidi`, not `Ravi Kiran Pagidi`.
+- Use `GreatDataLabs`, not `Ravi Kiran Pagidi`, because Trusted Publishing expects the GitHub owner/login.
 - The screenshot showing GitHub under PyPI account associations is helpful, but it is not the same thing as a pending Trusted Publisher entry.
 - The GitHub workflow uses `environment: pypi`, which is required for the OIDC identity PyPI checks.
 
@@ -106,9 +106,9 @@ Recommended path:
 
 1. Push all release-ready changes to `main`.
 2. Confirm the version has not already been published on PyPI.
-3. Create and push a version tag, for example `v0.1.7`.
+3. Create and push a version tag, for example `v0.1.8`.
 4. GitHub Actions runs `.github/workflows/release-pypi.yml` and publishes to PyPI through Trusted Publishing.
-5. Optionally create a GitHub release from the same tag using the matching release-notes document, such as `docs/RELEASE_0_1_7.md`.
+5. Optionally create a GitHub release from the same tag using the matching release-notes document, such as `docs/RELEASE_0_1_8.md`.
 
 Alternative path:
 

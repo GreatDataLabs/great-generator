@@ -37,10 +37,10 @@ import enterprise_synth
 
 - Package name: `great-generator`
 - Import name: `great_generator`
-- Current package version in `pyproject.toml`: `0.1.6`
+- Current package version in `pyproject.toml`: `0.1.8`
 - Python support: `>=3.9`
 - Required runtime dependencies: Pandas, NumPy, PyArrow, Faker, and SQLGlot.
-- Spark, Delta, advisor, and development dependencies are optional extras.
+- Spark, Delta, advisor, dbt/schema-ingestion, MCP, and development dependencies are optional extras.
 - `great_generator` and `enterprise_synth` are both included in the built wheel.
 
 ## Baseline validation results

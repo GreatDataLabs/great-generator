@@ -8,7 +8,8 @@ This project follows semantic versioning once public releases begin.
 
 | Version | Date | Release focus | Main changes |
 |---|---:|---|---|
-| Unreleased | TBD | Schema ingestion, optional MCP server, and website search discovery | JSON Schema ingestion, dbt metadata ingestion, CSV/YAML/JSON data dictionary ingestion, schema input docs, query-aware examples, optional `great-generator[mcp]` extra, local-file tools, safety controls, tests, sitemap, robots.txt, SEO metadata, and sitemap maintenance docs |
+| Unreleased | TBD | Next improvements | No unreleased changes yet |
+| 0.1.8 | 2026-09-16 | Schema ingestion, optional MCP server, org documentation, and architecture | JSON Schema ingestion, dbt metadata ingestion, CSV/YAML/JSON data dictionary ingestion, query-aware examples, optional `great-generator[mcp]` extra, local-file MCP tools, safety controls, tests, sitemap, robots.txt, SEO metadata, GreatDataLabs documentation links, and architecture diagram |
 | 0.1.7 | 2026-08-15 | SQL DDL contracts and query-aware generation | Canonical contracts, `parse_ddl(...)`, stable contract hashing, structured parser diagnostics, documented ANSI/Spark/Databricks `CREATE TABLE` subset, optional query-aware generation, a runnable retail star-schema example, generation manifests, determinism docs, benchmark methodology, and citation metadata |
 | 0.1.6 | 2026-07-11 | AI advisor planning layer | Optional design-time advisors, editable plans and tags, advisor cache, manifest metadata, and deterministic `plan=` support for schema generation |
 | 0.1.5 | 2026-06-28 | Schema-first docs and Spark database writes | Schema-first README, support matrix, Databricks and PySpark examples for Snowflake and Azure SQL, and documentation site updates |
@@ -19,6 +20,12 @@ This project follows semantic versioning once public releases begin.
 | 0.1.0 | 2026-06-19 | Initial public release | Package identity, domain packs, Pandas and Spark engines, exports, CDC, anomalies, schema generation, and relational generation |
 
 ## Unreleased
+
+No unreleased changes yet.
+
+## 0.1.8 - 2026-09-16
+
+Schema-source ingestion, optional MCP tooling, website search discovery, organization-link migration, and architecture documentation release.
 
 ### Added
 
@@ -35,10 +42,12 @@ This project follows semantic versioning once public releases begin.
 - Added search discovery files for the GitHub Pages site, including `sitemap.xml` and `robots.txt`.
 - Added SEO metadata, canonical URLs, Open Graph metadata, Twitter/X card metadata, and structured data for the project website.
 - Added SEO maintenance documentation and a sitemap regeneration script.
+- Added the enterprise platform architecture diagram to the README and GitHub Pages documentation site.
 
 ### Changed
 
-- Aligned README, package version, and changelog release information around the current `0.1.7` package version while keeping new work under `Unreleased`.
+- Aligned README, package version, changelog, citation metadata, and PyPI release documentation around the `0.1.8` package version.
+- Updated repository, documentation, sitemap, robots, canonical, Open Graph, and project metadata links to the GreatDataLabs GitHub organization and GitHub Pages site.
 
 ## 0.1.7 - 2026-08-15
 

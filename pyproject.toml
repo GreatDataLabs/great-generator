@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "great-generator"
-version = "0.1.7"
-description = "Generate realistic synthetic data from schemas, SQL DDL, relationships, and generation plans for Pandas and Spark."
+version = "0.1.8"
+description = "Generate realistic synthetic data from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for Pandas and Spark."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
@@ -117,13 +117,13 @@ great-generator = "great_generator.cli:main"
 great-generator-mcp = "great_generator.mcp.server:main"
 
 [project.urls]
-Homepage = "https://github.com/ravikiranpagidi/great-generator"
-Repository = "https://github.com/ravikiranpagidi/great-generator"
-Issues = "https://github.com/ravikiranpagidi/great-generator/issues"
-Changelog = "https://github.com/ravikiranpagidi/great-generator/blob/main/CHANGELOG.md"
-Documentation = "https://ravikiranpagidi.github.io/great-generator/"
-Wiki = "https://github.com/ravikiranpagidi/great-generator/wiki"
-Security = "https://github.com/ravikiranpagidi/great-generator/security/policy"
+Homepage = "https://github.com/GreatDataLabs/great-generator"
+Repository = "https://github.com/GreatDataLabs/great-generator"
+Issues = "https://github.com/GreatDataLabs/great-generator/issues"
+Changelog = "https://github.com/GreatDataLabs/great-generator/blob/main/CHANGELOG.md"
+Documentation = "https://greatdatalabs.github.io/great-generator/"
+Wiki = "https://github.com/GreatDataLabs/great-generator/wiki"
+Security = "https://github.com/GreatDataLabs/great-generator/security/policy"
 
 [tool.hatch.build.targets.wheel]
 packages = ["great_generator", "enterprise_synth"]

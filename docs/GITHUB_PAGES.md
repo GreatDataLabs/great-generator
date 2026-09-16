@@ -4,7 +4,7 @@ Great Generator includes a static documentation landing page at `docs/index.html
 
 Recommended public URL:
 
-https://ravikiranpagidi.github.io/great-generator/
+https://greatdatalabs.github.io/great-generator/
 
 ## Enable the site
 

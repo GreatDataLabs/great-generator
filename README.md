@@ -1,12 +1,12 @@
 # Great Generator
 
-[![Tests](https://github.com/ravikiranpagidi/great-generator/actions/workflows/tests.yml/badge.svg)](https://github.com/ravikiranpagidi/great-generator/actions/workflows/tests.yml)
+[![Tests](https://github.com/GreatDataLabs/great-generator/actions/workflows/tests.yml/badge.svg)](https://github.com/GreatDataLabs/great-generator/actions/workflows/tests.yml)
 [![PyPI version](https://img.shields.io/pypi/v/great-generator.svg)](https://pypi.org/project/great-generator/)
 [![Python versions](https://img.shields.io/pypi/pyversions/great-generator.svg)](https://pypi.org/project/great-generator/)
 [![PyPI downloads](https://img.shields.io/pypi/dm/great-generator.svg)](https://pypi.org/project/great-generator/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/ravikiranpagidi/great-generator?style=flat)](https://github.com/ravikiranpagidi/great-generator/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/ravikiranpagidi/great-generator)](https://github.com/ravikiranpagidi/great-generator/issues)
+[![GitHub stars](https://img.shields.io/github/stars/GreatDataLabs/great-generator?style=flat)](https://github.com/GreatDataLabs/great-generator/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/GreatDataLabs/great-generator)](https://github.com/GreatDataLabs/great-generator/issues)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ## Generate Realistic Synthetic Data from Your Schema
@@ -41,7 +41,7 @@ Great Generator is built for teams that already know their schema but cannot use
 
 ## Architecture at a Glance
 
-![Great Generator enterprise architecture](docs/assets/great-generator-enterprise-architecture.jpg)
+![Great Generator enterprise architecture](https://greatdatalabs.github.io/great-generator/assets/great-generator-enterprise-architecture.jpg)
 
 Great Generator is designed as a schema-first synthetic data platform: ingest schemas and metadata, understand fields and relationships, generate deterministic synthetic data, validate quality, and deliver DataFrames or files into the tools your team already uses.
 
@@ -123,7 +123,7 @@ Online and offline advisors are separate from generation. Anthropic and Ollama a
 
 | Version | Release focus | What changed |
 |---|---|---|
-| Unreleased | Schema ingestion, optional MCP server, and website search discovery | Added JSON Schema ingestion, dbt `schema.yml` and `manifest.json` ingestion, CSV/YAML/JSON data dictionary ingestion, schema input docs, query-aware coverage examples, optional `great-generator[mcp]` support, local-file MCP tools, safety controls, tests, sitemap, robots.txt, SEO metadata, and sitemap maintenance docs. |
+| 0.1.8 | Schema ingestion, optional MCP, SEO, org links, and architecture | Added JSON Schema ingestion, dbt `schema.yml` and `manifest.json` ingestion, CSV/YAML/JSON data dictionary ingestion, schema input docs, query-aware coverage examples, optional `great-generator[mcp]` support, local-file MCP tools, safety controls, tests, sitemap, robots.txt, SEO metadata, GreatDataLabs documentation links, and the architecture diagram. |
 | 0.1.7 | SQL DDL contracts and query-aware generation | Added canonical contracts, `parse_ddl(...)`, optional query-aware required values, partitioning, selectivity, relational join coverage, a runnable retail star-schema example, generation manifest guidance, determinism docs, benchmark methodology, and citation metadata. |
 | 0.1.6 | AI advisor planning layer | Added optional design-time advisors for schema understanding, column tagging, and realism review. Added editable `GenerationPlan` and `ColumnTags` JSON artifacts, cached Anthropic and Ollama advisor calls, offline NoOp defaults, manifest metadata, and deterministic `plan=` support in `generate_from_schema`. |
 | 0.1.5 | Schema-first docs and Spark database writes | Repositioned schema generation as the primary workflow. Added a schema input support matrix, Databricks and PySpark examples for Snowflake and Azure SQL, and documentation site updates. |
@@ -153,8 +153,8 @@ Online and offline advisors are separate from generation. Anthropic and Ollama a
 
 The GitHub Pages site includes a sitemap and robots.txt for search discovery.
 
-- Sitemap: `https://ravikiranpagidi.github.io/great-generator/sitemap.xml`
-- Robots: `https://ravikiranpagidi.github.io/great-generator/robots.txt`
+- Sitemap: `https://greatdatalabs.github.io/great-generator/sitemap.xml`
+- Robots: `https://greatdatalabs.github.io/great-generator/robots.txt`
 
 See [`docs/SEO.md`](docs/SEO.md) for the release checklist and sitemap maintenance steps.
 
@@ -1127,7 +1127,7 @@ For industry projects, start with `generate_from_schema`. For ready-made learnin
 | JSON, TOML, and simple YAML recipes | `generate_from_recipe` |
 | CSV, JSON, Parquet, Delta convenience exports | `export_data` or `generate_domain(..., output_format=...)` |
 
-See the [documentation site](https://ravikiranpagidi.github.io/great-generator/), [Wiki](https://github.com/ravikiranpagidi/great-generator/wiki), and [`docs/`](docs/) for focused guides.
+See the [documentation site](https://greatdatalabs.github.io/great-generator/), [Wiki](https://github.com/GreatDataLabs/great-generator/wiki), and [`docs/`](docs/) for focused guides.
 
 ## Planned Schema Input Types
 
@@ -1158,7 +1158,7 @@ Tracking these as explicit roadmap items keeps the current API trustworthy while
 
 ## Roadmap
 
-Priorities include richer schema ingestion, nested contracts, native distributed schema generation, stronger generation manifests and quality reports, additional domain packs, streaming output, and expanded lifecycle behavior. See [`docs/OPEN_SOURCE_STRATEGY.md`](docs/OPEN_SOURCE_STRATEGY.md) and the [Wiki roadmap](https://github.com/ravikiranpagidi/great-generator/wiki/Roadmap).
+Priorities include richer schema ingestion, nested contracts, native distributed schema generation, stronger generation manifests and quality reports, additional domain packs, streaming output, and expanded lifecycle behavior. See [`docs/OPEN_SOURCE_STRATEGY.md`](docs/OPEN_SOURCE_STRATEGY.md) and the [Wiki roadmap](https://github.com/GreatDataLabs/great-generator/wiki/Roadmap).
 
 ## Contributing
 
@@ -1176,9 +1176,9 @@ black --check .
 Created and maintained by Ravi Kiran Pagidi.
 
 - [PyPI](https://pypi.org/project/great-generator/)
-- [GitHub](https://github.com/ravikiranpagidi/great-generator)
-- [Documentation](https://ravikiranpagidi.github.io/great-generator/)
-- [Wiki](https://github.com/ravikiranpagidi/great-generator/wiki)
+- [GitHub](https://github.com/GreatDataLabs/great-generator)
+- [Documentation](https://greatdatalabs.github.io/great-generator/)
+- [Wiki](https://github.com/GreatDataLabs/great-generator/wiki)
 - [Contact](mailto:ravikiran.pagidi@gmail.com)
 
 ## Disclaimer

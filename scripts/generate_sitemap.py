@@ -4,7 +4,7 @@ import html
 from datetime import date
 from pathlib import Path
 
-BASE_URL = "https://ravikiranpagidi.github.io/great-generator/"
+BASE_URL = "https://greatdatalabs.github.io/great-generator/"
 DOCS_DIR = Path(__file__).resolve().parents[1] / "docs"
 SITEMAP_PATH = DOCS_DIR / "sitemap.xml"
 

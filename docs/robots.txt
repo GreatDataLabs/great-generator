@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ravikiranpagidi.github.io/great-generator/sitemap.xml
+Sitemap: https://greatdatalabs.github.io/great-generator/sitemap.xml

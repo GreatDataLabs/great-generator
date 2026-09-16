@@ -2,7 +2,7 @@
 
 Great Generator publishes a static GitHub Pages site at:
 
-https://ravikiranpagidi.github.io/great-generator/
+https://greatdatalabs.github.io/great-generator/
 
 This page explains how search discovery files are maintained for the project website.
 
@@ -40,7 +40,7 @@ docs/sitemap.xml
 User-agent: *
 Allow: /
 
-Sitemap: https://ravikiranpagidi.github.io/great-generator/sitemap.xml
+Sitemap: https://greatdatalabs.github.io/great-generator/sitemap.xml
 ```
 
 Do not block important documentation pages unless there is a clear reason.
@@ -48,12 +48,12 @@ Do not block important documentation pages unless there is a clear reason.
 ## Submit the sitemap to Google Search Console
 
 1. Open Google Search Console.
-2. Add or select the property for `https://ravikiranpagidi.github.io/` or the URL-prefix property for `https://ravikiranpagidi.github.io/great-generator/`.
+2. Add or select the property for `https://greatdatalabs.github.io/` or the URL-prefix property for `https://greatdatalabs.github.io/great-generator/`.
 3. Open **Sitemaps**.
 4. Submit:
 
 ```text
-https://ravikiranpagidi.github.io/great-generator/sitemap.xml
+https://greatdatalabs.github.io/great-generator/sitemap.xml
 ```
 
 5. Re-submit or refresh after major documentation changes.
@@ -66,7 +66,7 @@ https://ravikiranpagidi.github.io/great-generator/sitemap.xml
 4. Submit:
 
 ```text
-https://ravikiranpagidi.github.io/great-generator/sitemap.xml
+https://greatdatalabs.github.io/great-generator/sitemap.xml
 ```
 
 5. Use Bing's URL inspection tools for important new pages when needed.
@@ -85,14 +85,14 @@ Example:
 
 ```bash
 set INDEXNOW_KEY=your-indexnow-key
-python scripts/submit_indexnow.py https://ravikiranpagidi.github.io/great-generator/schema-generation/
+python scripts/submit_indexnow.py https://greatdatalabs.github.io/great-generator/schema-generation/
 ```
 
 PowerShell example:
 
 ```powershell
 $env:INDEXNOW_KEY = "your-indexnow-key"
-python scripts/submit_indexnow.py "https://ravikiranpagidi.github.io/great-generator/schema-generation/"
+python scripts/submit_indexnow.py "https://greatdatalabs.github.io/great-generator/schema-generation/"
 ```
 
 Only submit changed public URLs. Do not hardcode secrets.
@@ -106,7 +106,7 @@ Each major HTML page should have:
 - Canonical URL matching the published page URL.
 - Open Graph title, description, type, URL, and site name.
 - Twitter/X card title and description.
-- Social preview image metadata using `https://ravikiranpagidi.github.io/great-generator/assets/og.png`.
+- Social preview image metadata using `https://greatdatalabs.github.io/great-generator/assets/og.png`.
 - Internal links back to home, getting started, API reference, GitHub, and PyPI.
 
 The homepage also includes JSON-LD structured data for `SoftwareSourceCode` and `SoftwareApplication`.

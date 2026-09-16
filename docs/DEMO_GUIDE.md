@@ -865,6 +865,6 @@ That is the difference:
 ## 30. Useful links
 
 - PyPI: https://pypi.org/project/great-generator/
-- GitHub: https://github.com/ravikiranpagidi/great-generator
-- Wiki: https://github.com/ravikiranpagidi/great-generator/wiki
-- Release notes: https://github.com/ravikiranpagidi/great-generator/releases
+- GitHub: https://github.com/GreatDataLabs/great-generator
+- Wiki: https://github.com/GreatDataLabs/great-generator/wiki
+- Release notes: https://github.com/GreatDataLabs/great-generator/releases

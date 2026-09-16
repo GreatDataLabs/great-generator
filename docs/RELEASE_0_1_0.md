@@ -52,6 +52,6 @@ Great Generator creates synthetic data from templates. It does not anonymize, de
 
 ## Documentation
 
-- README: https://github.com/ravikiranpagidi/great-generator#readme
-- Wiki: https://github.com/ravikiranpagidi/great-generator/wiki
+- README: https://github.com/GreatDataLabs/great-generator#readme
+- Wiki: https://github.com/GreatDataLabs/great-generator/wiki
 - PyPI release checklist: docs/PYPI_RELEASE.md

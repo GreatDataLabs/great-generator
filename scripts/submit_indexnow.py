@@ -8,7 +8,7 @@ import urllib.error
 import urllib.request
 from collections.abc import Sequence
 
-HOST = "ravikiranpagidi.github.io"
+HOST = "greatdatalabs.github.io"
 ENDPOINT = "https://api.indexnow.org/indexnow"
 
 

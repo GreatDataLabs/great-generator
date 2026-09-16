@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: Ask a question or get help
-    url: https://github.com/ravikiranpagidi/great-generator/discussions/categories/q-a
+    url: https://github.com/GreatDataLabs/great-generator/discussions/categories/q-a
     about: Use Discussions for usage questions, notebook help, Spark setup, and modeling guidance.
   - name: Share a demo or success story
-    url: https://github.com/ravikiranpagidi/great-generator/discussions/categories/show-and-tell
+    url: https://github.com/GreatDataLabs/great-generator/discussions/categories/show-and-tell
     about: Share notebooks, talks, examples, demos, or datasets built with Great Generator.
   - name: Security policy
-    url: https://github.com/ravikiranpagidi/great-generator/security/policy
+    url: https://github.com/GreatDataLabs/great-generator/security/policy
     about: Please do not report security issues in public issues.

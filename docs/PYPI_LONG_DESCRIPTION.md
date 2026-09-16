@@ -2,6 +2,13 @@
 
 Generate realistic synthetic data from schemas, SQL DDL, relationships, and generation plans for data engineering, testing, analytics, Spark, and lower environments.
 
+
+## Architecture at a Glance
+
+![Great Generator enterprise architecture](https://greatdatalabs.github.io/great-generator/assets/great-generator-enterprise-architecture.jpg)
+
+Great Generator is designed as a schema-first synthetic data platform: ingest schemas and metadata, understand fields and relationships, generate deterministic synthetic data, validate quality, and deliver DataFrames or files into the tools your team already uses.
+
 ## Why great-generator?
 
 Data teams often know their schema but cannot copy production records into development, QA, SIT, UAT, sandbox, demo, or performance environments. Great Generator creates fake, non-production data from table-like schemas so teams can test pipelines, applications, dashboards, and data models without depending on production extracts.
@@ -156,7 +163,7 @@ Great Generator creates synthetic data. It does not anonymize or transform produ
 
 ## Links
 
-- [Documentation](https://ravikiranpagidi.github.io/great-generator/)
-- [GitHub](https://github.com/ravikiranpagidi/great-generator)
-- [Wiki](https://github.com/ravikiranpagidi/great-generator/wiki)
-- [Issues](https://github.com/ravikiranpagidi/great-generator/issues)
+- [Documentation](https://greatdatalabs.github.io/great-generator/)
+- [GitHub](https://github.com/GreatDataLabs/great-generator)
+- [Wiki](https://github.com/GreatDataLabs/great-generator/wiki)
+- [Issues](https://github.com/GreatDataLabs/great-generator/issues)
