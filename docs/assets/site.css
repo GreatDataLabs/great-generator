@@ -575,6 +575,31 @@ tr:last-child td {
   font-size: 0.92rem;
 }
 
+
+.architecture-figure {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(220, 229, 242, 0.95);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin: 0;
+  overflow: hidden;
+  padding: 0.85rem;
+}
+
+.architecture-figure img {
+  border: 1px solid rgba(220, 229, 242, 0.95);
+  border-radius: calc(var(--radius) - 10px);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.architecture-figure figcaption {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0.85rem 0.35rem 0.15rem;
+}
+
 @media (max-width: 1120px) {
   .card-grid.five,
   .doc-grid {

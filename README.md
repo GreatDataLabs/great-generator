@@ -39,6 +39,12 @@ Great Generator is built for teams that already know their schema but cannot use
 
 > Great Generator creates synthetic data. It does not anonymize, mask, de-identify, or transform production records. Always follow your organization's privacy, security, governance, and compliance policies.
 
+## Architecture at a Glance
+
+![Great Generator enterprise architecture](docs/assets/great-generator-enterprise-architecture.jpg)
+
+Great Generator is designed as a schema-first synthetic data platform: ingest schemas and metadata, understand fields and relationships, generate deterministic synthetic data, validate quality, and deliver DataFrames or files into the tools your team already uses.
+
 ## Problem Statement
 
 Real projects need production-like data outside production. Copying production records into development, QA, SIT, UAT, sandbox, demo, or performance-testing environments is often restricted because of privacy, security, PII, PHI, PCI, internal policy, or data governance concerns.

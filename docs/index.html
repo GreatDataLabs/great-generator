@@ -94,6 +94,7 @@
           <a class="button primary" href="getting-started/">Get started</a>
           <a class="button secondary" href="https://github.com/ravikiranpagidi/great-generator">View GitHub</a>
           <a class="button secondary" href="#docs">Read docs</a>
+          <a class="button secondary" href="#architecture">Architecture</a>
           <a class="button secondary" href="https://pypi.org/project/great-generator/">Install from PyPI</a>
         </div>
         <div class="badges" aria-label="Supported capabilities">
@@ -146,6 +147,18 @@ contract = parse_ddl(ddl, dialect="databricks")
 df = generate_from_schema(contract, rows=1000, seed=42)</code></pre>
         </div>
       </div>
+    </section>
+
+    <section class="section" id="architecture">
+      <div class="section-heading">
+        <p class="eyebrow">Architecture</p>
+        <h2>One view of the Great Generator platform shape.</h2>
+        <p>This diagram shows how schema ingestion, model understanding, generation, validation, metadata, and delivery fit together for data engineering, QA, analytics, Spark, and lakehouse workflows.</p>
+      </div>
+      <figure class="architecture-figure">
+        <img src="assets/great-generator-enterprise-architecture.jpg" alt="Great Generator enterprise architecture diagram showing users, interfaces, schema ingestion, data generation, validation, observability, output connectors, export formats, and ecosystem integrations." loading="lazy" />
+        <figcaption>Great Generator creates synthetic data from schemas and generation specifications, then returns DataFrames or files that teams can validate, observe, and deliver through their own runtime and storage connectors.</figcaption>
+      </figure>
     </section>
 
     <section class="section" id="quickstart">
