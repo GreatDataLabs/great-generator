@@ -1,5 +1,7 @@
 # great-generator
 
+![Great Generator logo](https://greatdatalabs.github.io/great-generator/assets/great-generator-logo.png)
+
 Generate realistic synthetic data from schemas, SQL DDL, relationships, and generation plans for data engineering, testing, analytics, Spark, and lower environments.
 
 

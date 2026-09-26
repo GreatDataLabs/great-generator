@@ -1,5 +1,10 @@
 # Great Generator
 
+<p align="center">
+  <img src="https://greatdatalabs.github.io/great-generator/assets/great-generator-logo.png" alt="Great Generator logo" width="560" />
+</p>
+
+
 [![Tests](https://github.com/GreatDataLabs/great-generator/actions/workflows/tests.yml/badge.svg)](https://github.com/GreatDataLabs/great-generator/actions/workflows/tests.yml)
 [![PyPI version](https://img.shields.io/pypi/v/great-generator.svg)](https://pypi.org/project/great-generator/)
 [![Python versions](https://img.shields.io/pypi/pyversions/great-generator.svg)](https://pypi.org/project/great-generator/)

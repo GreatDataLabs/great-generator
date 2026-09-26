@@ -91,15 +91,14 @@ a {
   white-space: nowrap;
 }
 
-.brand-mark {
-  align-items: center;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+.brand-logo {
+  background: #fff;
+  border: 1px solid var(--line);
   border-radius: 14px;
-  color: #fff;
-  display: inline-flex;
-  font-size: 0.82rem;
+  box-shadow: 0 8px 24px rgba(36, 73, 216, 0.14);
   height: 38px;
-  justify-content: center;
+  object-fit: contain;
+  padding: 3px;
   width: 38px;
 }
 
@@ -276,6 +275,31 @@ h3 {
 .hero-card {
   box-shadow: var(--shadow);
   padding: 1rem;
+}
+
+.logo-panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  padding: 1rem;
+  text-align: center;
+}
+
+.logo-panel img {
+  display: block;
+  margin: 0 auto;
+  max-height: 285px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.logo-panel p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 760;
+  margin: 0.55rem 0 0;
 }
 
 .code-tabs {
