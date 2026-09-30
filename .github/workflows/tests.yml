@@ -26,6 +26,7 @@ jobs:
         run: |
           ruff check .
           black --check .
+          python scripts/validate_examples.py
       - name: Test
         run: pytest
 

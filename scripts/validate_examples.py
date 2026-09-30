@@ -105,7 +105,46 @@ def validate_notebooks() -> list[str]:
         text = read_text(path)
         if "great_generator" not in text and "great-generator" not in text:
             errors.append(f"Notebook should reference Great Generator: {path.relative_to(ROOT)}")
+        errors.extend(validate_notebook_code_syntax(path, payload))
     return errors
+
+
+def validate_notebook_code_syntax(path: Path, payload: dict) -> list[str]:
+    errors: list[str] = []
+    for index, cell in enumerate(payload.get("cells", []), start=1):
+        if cell.get("cell_type") != "code":
+            continue
+        source = "".join(cell.get("source", []))
+        python_source = strip_ipython_magic(source)
+        if not python_source.strip():
+            continue
+        try:
+            compile(python_source, f"{path.relative_to(ROOT)}:cell-{index}", "exec")
+        except SyntaxError as exc:
+            errors.append(
+                f"Notebook Python syntax error in {path.relative_to(ROOT)} cell {index}: "
+                f"{exc.msg} on line {exc.lineno}"
+            )
+    return errors
+
+
+def strip_ipython_magic(source: str) -> str:
+    stripped_lines = []
+    in_cell_magic = False
+    for line in source.splitlines():
+        stripped = line.lstrip()
+        if stripped.startswith("%%"):
+            in_cell_magic = True
+            stripped_lines.append("# " + line)
+            continue
+        if in_cell_magic:
+            stripped_lines.append("# " + line)
+            continue
+        if stripped.startswith("%") or stripped.startswith("!"):
+            stripped_lines.append("# " + line)
+        else:
+            stripped_lines.append(line)
+    return "\n".join(stripped_lines) + "\n"
 
 
 def validate_content_hygiene() -> list[str]:
