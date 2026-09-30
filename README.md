@@ -195,6 +195,7 @@ Optional MCP dependency:
 
 ```bash
 pip install "great-generator[mcp]"
+pip install "great-generator[cloud]"
 ```
 
 Install with a hyphen and import with an underscore:
@@ -213,6 +214,7 @@ MCP support is optional. The core package does not require MCP dependencies.
 
 ```bash
 pip install "great-generator[mcp]"
+pip install "great-generator[cloud]"
 ```
 
 Start the server:
@@ -415,6 +417,64 @@ df = generate_from_schema(
 For relational datasets, use table-qualified columns and `ensure_join_coverage=True` when fact rows must join to required dimension values.
 
 See [Query-Aware Generation](docs/QUERY_AWARE_GENERATION.md).
+
+
+## Platform examples
+
+Great Generator includes examples for common data engineering environments:
+
+- Pandas and local development
+- Databricks and Delta Lake
+- Microsoft Fabric Lakehouse
+- Snowflake stage/COPY workflows
+- Cloud storage paths such as S3, ADLS Gen2, and GCS
+
+These examples show how to generate synthetic data from schemas, JSON Schema, dbt metadata, data dictionaries, relationships, CDC patterns, anomalies, and query-aware profiles, then write the generated DataFrames using the user's own runtime and storage configuration.
+
+Start here:
+
+| Platform | Folder |
+|---|---|
+| Pandas/local notebooks | [`examples/pandas`](examples/pandas/README.md) |
+| Databricks notebooks | [`examples/databricks`](examples/databricks/README.md) |
+| Microsoft Fabric notebooks | [`examples/fabric`](examples/fabric/README.md) |
+| Snowflake examples | [`examples/snowflake`](examples/snowflake/README.md) |
+| Cloud storage examples | [`examples/cloud_storage`](examples/cloud_storage/README.md) |
+
+See [Platform Examples](docs/PLATFORM_EXAMPLES.md).
+
+## Optional cloud export helpers
+
+Great Generator can write generated datasets to local files and, with optional cloud dependencies, to S3, ADLS Gen2, and Google Cloud Storage paths.
+
+```bash
+pip install "great-generator[cloud]"
+```
+
+```python
+from great_generator import export_dataset, generate_from_schema
+
+df = generate_from_schema("customer_id int, email string", rows=1000)
+export_dataset(df, "output/customers", format="parquet")
+```
+
+`export_dataset` rejects existing outputs by default. Pass `overwrite=True` or `mode="overwrite"` only when replacing files is intentional. Great Generator does not configure credentials or manage cloud permissions. Configure credentials using your platform's standard method.
+
+See [Cloud Exports](docs/CLOUD_EXPORTS.md).
+
+## Synthetic benchmark harness
+
+Great Generator includes benchmark examples that generate repeatable synthetic datasets and SQL query templates for Databricks, Microsoft Fabric, Snowflake, and Spark-style environments.
+
+These examples are not universal performance claims. Results depend on warehouse size, cluster configuration, storage layout, file format, statistics, clustering, caching, concurrency, and query engine settings.
+
+The first implemented harness dataset is a retail star schema:
+
+```bash
+python benchmarks/datasets/retail_star_schema/generate_dataset.py --output output/retail_star_schema --format parquet --overwrite
+```
+
+See [Benchmark Harness](docs/BENCHMARK_HARNESS.md) and [`benchmarks/`](benchmarks/README.md).
 
 ## Flagship Example: Retail Star Schema from SQL DDL
 
@@ -1130,7 +1190,8 @@ For industry projects, start with `generate_from_schema`. For ready-made learnin
 | Dimensional facts and dimensions | `generate_dimensional_model` |
 | Data Vault hubs, links, and satellites | `generate_data_vault_model` |
 | JSON, TOML, and simple YAML recipes | `generate_from_recipe` |
-| CSV, JSON, Parquet, Delta convenience exports | `export_data` or `generate_domain(..., output_format=...)` |
+| CSV, JSON, Parquet, Delta table-per-folder exports | `export_data` or `generate_domain(..., output_format=...)` |
+| DataFrame-first local/cloud helper exports | `export_dataset` |
 
 See the [documentation site](https://greatdatalabs.github.io/great-generator/), [Wiki](https://github.com/GreatDataLabs/great-generator/wiki), and [`docs/`](docs/) for focused guides.
 

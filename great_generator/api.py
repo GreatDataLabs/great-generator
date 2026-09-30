@@ -13,6 +13,7 @@ from great_generator.config import resolve_row_counts
 from great_generator.core.realism import normalize_realism_mode, validate_realism
 from great_generator.domains import DOMAIN_MODULES
 from great_generator.exporters.csv_exporter import export_csv
+from great_generator.exporters.dataset_exporter import export_dataset as _export_dataset
 from great_generator.exporters.delta_exporter import export_delta
 from great_generator.exporters.json_exporter import export_json
 from great_generator.exporters.parquet_exporter import export_parquet
@@ -403,6 +404,41 @@ def export_data(
         )
     else:  # pragma: no cover - safeguarded by validate_output_format
         raise ValueError(f"Unsupported output format '{output_format}'.")
+
+
+def export_dataset(
+    data: Any,
+    path: str | Path,
+    *,
+    format: str = "parquet",
+    mode: str = "error",
+    overwrite: bool = False,
+    engine: str = "auto",
+    partition_by: list[str] | None = None,
+    writer_options: Mapping[str, str] | None = None,
+    num_partitions: int | None = None,
+    partition_strategy: str = "repartition",
+) -> list[str]:
+    """Export one generated DataFrame or a mapping of generated tables.
+
+    Unlike ``export_data(...)``, this helper is DataFrame-first and rejects existing
+    outputs by default. Pass ``overwrite=True`` or ``mode="overwrite"`` when replacing
+    files is intentional. Cloud URLs such as ``s3://``, ``abfss://``, and ``gs://``
+    require optional cloud dependencies and user-managed credentials.
+    """
+
+    return _export_dataset(
+        data=data,
+        path=path,
+        format=format,
+        mode=mode,
+        overwrite=overwrite,
+        engine=engine,
+        partition_by=partition_by,
+        writer_options=writer_options,
+        num_partitions=num_partitions,
+        partition_strategy=partition_strategy,
+    )
 
 
 def generate_cdc(

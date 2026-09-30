@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="Create synthetic test datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for data engineering, Spark, lakehouse, and AI-ready workflows." />
   <link rel="canonical" href="https://greatdatalabs.github.io/great-generator/" />
   <link rel="icon" href="assets/great-generator-mark.png" type="image/png" />
-  <link rel="stylesheet" href="assets/site.css?v=20260925-logo" />
+  <link rel="stylesheet" href="assets/site.css?v=20260929-platform" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -77,6 +77,7 @@
         <a href="relational-generation/">Relational</a>
         <a href="spark-delta/">Spark &amp; Delta</a>
         <a href="query-aware-generation/">Query-aware</a>
+        <a href="#platforms">Platforms</a>
         <a href="ai-advisor/">AI Advisor</a>
         <a href="mcp-server/">MCP</a>
         <a href="#docs">Docs</a>
@@ -183,7 +184,8 @@ pip install "great-generator[schema-ingest]"
 pip install "great-generator[ai]"
 pip install "great-generator[anthropic]"
 pip install "great-generator[ollama]"
-pip install "great-generator[mcp]"</code></pre>
+pip install "great-generator[mcp]"
+pip install "great-generator[cloud]"</code></pre>
         <pre><code>import great_generator
 
 from great_generator import generate_from_schema
@@ -494,6 +496,65 @@ spark_df.write.format("delta").mode("overwrite").save("dbfs:/tmp/demo_delta")</c
       </div>
     </section>
 
+
+    <section class="section" id="platforms">
+      <div class="section-heading">
+        <p class="eyebrow">Platform examples</p>
+        <h2>Notebook-ready examples for local, lakehouse, warehouse, and cloud storage workflows.</h2>
+        <p>Great Generator stays DataFrame-first: generate synthetic data, keep the DataFrame, and write it with your runtime's native APIs or the optional helper when it fits.</p>
+      </div>
+      <div class="card-grid five">
+        <article>
+          <span class="card-kicker">Local</span>
+          <h3>Pandas and Jupyter</h3>
+          <p>Run schema, JSON Schema, dbt, data dictionary, relational, query-aware, CDC, and anomaly notebooks locally.</p>
+          <a href="https://github.com/GreatDataLabs/great-generator/tree/main/examples/pandas">Open examples</a>
+        </article>
+        <article>
+          <span class="card-kicker">Lakehouse</span>
+          <h3>Databricks and Delta</h3>
+          <p>Generate data in notebooks, convert to Spark DataFrames, write Delta tables, and use Unity Catalog volume paths.</p>
+          <a href="https://github.com/GreatDataLabs/great-generator/tree/main/examples/databricks">Open examples</a>
+        </article>
+        <article>
+          <span class="card-kicker">Lakehouse</span>
+          <h3>Microsoft Fabric</h3>
+          <p>Create synthetic data in Fabric Spark notebooks and write Lakehouse tables or OneLake Files outputs.</p>
+          <a href="https://github.com/GreatDataLabs/great-generator/tree/main/examples/fabric">Open examples</a>
+        </article>
+        <article>
+          <span class="card-kicker">Warehouse</span>
+          <h3>Snowflake</h3>
+          <p>Generate Parquet files and load with user-managed stage and COPY INTO SQL templates.</p>
+          <a href="https://github.com/GreatDataLabs/great-generator/tree/main/examples/snowflake">Open examples</a>
+        </article>
+        <article>
+          <span class="card-kicker">Storage</span>
+          <h3>S3, ADLS, and GCS</h3>
+          <p>Use native Pandas/Spark writers or optional cloud helper paths with credentials managed by your environment.</p>
+          <a href="https://github.com/GreatDataLabs/great-generator/tree/main/examples/cloud_storage">Open examples</a>
+        </article>
+      </div>
+      <p class="note">Great Generator does not create cloud resources, configure IAM, manage secrets, or claim universal benchmark performance.</p>
+    </section>
+
+    <section class="section split" id="benchmark-harness">
+      <div>
+        <p class="eyebrow">Synthetic benchmark harness</p>
+        <h2>Generate repeatable datasets and SQL templates for your own environment.</h2>
+        <p>The benchmark harness starts with an implemented retail star schema and query templates for partition filters, joins, selectivity filters, rollups, and large group-by behavior.</p>
+        <p>These examples are not universal performance claims. Results depend on warehouse size, cluster configuration, storage layout, file format, statistics, clustering, caching, concurrency, and query engine settings.</p>
+      </div>
+      <div class="code-stack">
+        <pre><code>python benchmarks/datasets/retail_star_schema/generate_dataset.py \
+  --output output/retail_star_schema \
+  --format parquet \
+  --overwrite</code></pre>
+        <pre><code>benchmarks/queries/retail_star_schema/q01_partition_filter.sql
+benchmarks/results_template/benchmark_results_template.csv</code></pre>
+      </div>
+    </section>
+
     <section class="section split" id="mcp">
       <div>
         <p class="eyebrow">Optional MCP server</p>
@@ -551,6 +612,9 @@ great-generator-mcp</code></pre>
         <a href="cdc/"><strong>CDC</strong><span>Change data capture style event records.</span></a>
         <a href="anomalies/"><strong>Anomalies</strong><span>Opt-in data problems for quality testing.</span></a>
         <a href="spark-delta/"><strong>Spark and Delta</strong><span>Cluster usage and lakehouse outputs.</span></a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/PLATFORM_EXAMPLES.md"><strong>Platform Examples</strong><span>Pandas, Databricks, Fabric, Snowflake, and cloud storage workflows.</span></a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/CLOUD_EXPORTS.md"><strong>Cloud Exports</strong><span>Local, S3, ADLS Gen2, GCS, optional helper, and credential guidance.</span></a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/BENCHMARK_HARNESS.md"><strong>Benchmark Harness</strong><span>Repeatable retail star-schema data, SQL query templates, and result templates.</span></a>
         <a href="examples/"><strong>Examples</strong><span>Notebook, Spark, assistant, and demo workflow starters.</span></a>
         <a href="roadmap/"><strong>Roadmap</strong><span>Planned schema adapters, Spark-native work, and contribution areas.</span></a>
         <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/CLOUD_DEPLOYMENT.md"><strong>Cloud Deployment</strong><span>AWS, Azure, GCP, Databricks, and storage guidance.</span></a>

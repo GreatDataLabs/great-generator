@@ -1,0 +1,14 @@
+required_values:
+  fact_sales.region: [SOUTH]
+  fact_sales.product_category: [ELECTRONICS, GROCERY]
+  fact_sales.sales_channel: [ONLINE, STORE]
+partition_by:
+  table: fact_sales
+  column: business_date
+  values: ['2026-01-01', '2026-01-02', '2026-01-03', '2026-01-04', '2026-01-05', '2026-01-06', '2026-01-07']
+  distribution: balanced
+target_selectivity:
+  fact_sales.region:
+    SOUTH: 0.25
+  fact_sales.sales_channel:
+    ONLINE: 0.35

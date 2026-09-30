@@ -18,13 +18,13 @@
   <meta name="twitter:title" content="Examples | Great Generator synthetic data workflows" />
   <meta name="twitter:image" content="https://greatdatalabs.github.io/great-generator/assets/og.png" />
   <meta name="twitter:description" content="Explore Great Generator examples for schema-based data, SQL DDL, relational tables, Spark and Delta writes, CDC, anomalies, advisors, and MCP usage." />
-  <link rel="stylesheet" href="../assets/site.css?v=20260822-seo" />
+  <link rel="stylesheet" href="../assets/site.css?v=20260929-platform" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <nav class="nav" aria-label="Main navigation">
-      <a class="brand" href="../" aria-label="Great Generator home"><span class="brand-mark">GG</span><span>Great Generator</span></a>
+      <a class="brand" href="../" aria-label="Great Generator home"><img class="brand-logo" src="../assets/great-generator-mark.png" alt="" width="38" height="38" /><span>Great Generator</span></a>
       <div class="nav-links">
         <a href="../">Home</a>
         <a href="../getting-started/">Getting Started</a>
@@ -69,6 +69,22 @@
           <h2>Assistant-friendly</h2>
           <p>The optional MCP server lets compatible assistants call selected local tools and return file paths plus previews.</p>
           
+        </article>
+
+        <article class="doc-card">
+          <h2>Platform notebooks</h2>
+          <p>Use repo notebooks for Pandas, Databricks, Microsoft Fabric, Snowflake, and cloud storage workflows.</p>
+          <pre><code>examples/pandas/
+examples/databricks/
+examples/fabric/
+examples/snowflake/
+examples/cloud_storage/</code></pre>
+        </article>
+
+        <article class="doc-card">
+          <h2>Benchmark harness</h2>
+          <p>Generate repeatable retail star-schema data and run SQL templates in your own environment.</p>
+          <pre><code>python benchmarks/datasets/retail_star_schema/generate_dataset.py --overwrite</code></pre>
         </article>
     </section>
     <section class="section">

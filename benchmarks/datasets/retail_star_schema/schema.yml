@@ -1,0 +1,44 @@
+dataset: retail_star_schema
+status: implemented
+description: Repeatable retail star schema for synthetic benchmark examples.
+partition_column: business_date
+tables:
+  dim_customer:
+    rows_base: 10000
+    columns:
+      - customer_id integer primary key
+      - region string
+      - customer_segment string
+      - signup_date date
+  dim_product:
+    rows_base: 1000
+    columns:
+      - product_id integer primary key
+      - product_category string
+      - brand string
+  dim_store:
+    rows_base: 250
+    columns:
+      - store_id integer primary key
+      - region string
+      - store_type string
+  dim_date:
+    rows_base: 366
+    columns:
+      - date_id integer primary key
+      - business_date date
+      - month_id string
+  fact_sales:
+    rows_base: 100000
+    columns:
+      - sales_id integer primary key
+      - customer_id integer references dim_customer.customer_id
+      - product_id integer references dim_product.product_id
+      - store_id integer references dim_store.store_id
+      - date_id integer references dim_date.date_id
+      - business_date date
+      - region string
+      - product_category string
+      - sales_channel string
+      - quantity integer
+      - sales_amount double

@@ -207,3 +207,103 @@ No. It reads dbt metadata files such as `schema.yml` and `target/manifest.json`.
 ## Can I write the output anywhere?
 
 The APIs return DataFrames. You can write them using native Pandas or Spark writers to CSV, JSON, Parquet, Delta, cloud storage, or databases according to your own runtime, connectors, permissions, and credentials.
+
+---
+
+# Platform adoption update
+
+Copy-paste-ready wiki updates for platform examples, cloud exports, and the synthetic benchmark harness.
+
+## Home.md additions
+
+Add these feature bullets:
+
+- **Platform examples**: Ready-to-run examples for Pandas, Databricks, Microsoft Fabric, Snowflake, and cloud storage.
+- **Cloud export examples**: Write generated synthetic data to local files, S3, ADLS Gen2, and Google Cloud Storage using user-managed credentials.
+- **Synthetic benchmark harness**: Generate repeatable synthetic datasets and SQL query templates for platform testing in your own environment.
+
+Add this safety note:
+
+> Great Generator creates synthetic non-production data. It does not anonymize, mask, de-identify, or transform production records.
+
+## Getting-Started.md additions
+
+```python
+from great_generator import generate_from_schema, export_dataset
+
+df = generate_from_schema("customer_id int, email string", rows=1000)
+export_dataset(df, "output/customers", format="parquet")
+```
+
+Existing outputs are rejected by default. Use `overwrite=True` only when replacement is intentional.
+
+## Platform-Examples.md
+
+Great Generator includes platform examples for:
+
+- Pandas/local notebooks: `examples/pandas/`
+- Databricks and Delta Lake: `examples/databricks/`
+- Microsoft Fabric Lakehouse: `examples/fabric/`
+- Snowflake stage/COPY workflows: `examples/snowflake/`
+- Cloud storage paths: `examples/cloud_storage/`
+
+The examples show DataFrame-first workflows. Users generate synthetic data, receive Pandas or Spark DataFrames, and then write those DataFrames using their runtime's native APIs.
+
+## Cloud-Exports.md
+
+Great Generator supports native DataFrame writes and an optional helper:
+
+```bash
+pip install "great-generator[cloud]"
+```
+
+```python
+from great_generator import export_dataset
+
+export_dataset(df, "s3://your-bucket/great-generator/customers", format="parquet", overwrite=True)
+```
+
+Great Generator does not create cloud resources, configure IAM, create service principals, manage secrets, or grant storage permissions.
+
+## Benchmark-Harness.md
+
+The benchmark harness is under `benchmarks/`.
+
+Implemented dataset:
+
+- `retail_star_schema`
+- Tables: `dim_customer`, `dim_product`, `dim_store`, `dim_date`, `fact_sales`
+- Query templates: partition filter, join aggregation, selectivity filter, monthly rollup, large group-by
+
+Required limitation wording:
+
+> These benchmark examples are designed to help users generate repeatable synthetic datasets and query templates for their own environments. They are not universal performance claims. Results depend on warehouse size, cluster configuration, storage layout, file format, statistics, clustering, caching, concurrency, and query engine settings.
+
+## Databricks-Examples.md
+
+Use `examples/databricks/` for Delta, partitioned writes, and Unity Catalog Volume path examples. Replace placeholders with your workspace's governed catalog, schema, volume, table, and path names.
+
+## Fabric-Examples.md
+
+Use `examples/fabric/` for Fabric Spark notebooks, Lakehouse table writes, OneLake Files writes, and query-aware test data.
+
+## Snowflake-Examples.md
+
+Use `examples/snowflake/` for a file-based load flow:
+
+1. Generate synthetic Parquet.
+2. Stage files through user-managed cloud storage or an internal Snowflake stage.
+3. Run `COPY INTO` using the provided SQL templates.
+
+No credentials are included in the examples.
+
+## FAQ.md additions
+
+### Does Great Generator configure cloud credentials?
+
+No. Great Generator does not manage secrets, IAM, service principals, Unity Catalog grants, Snowflake storage integrations, or cloud permissions.
+
+### Are benchmark examples platform rankings?
+
+No. They are repeatable synthetic workloads users can run in their own environments. Results depend on configuration, file layout, runtime settings, statistics, cache state, concurrency, and compute size.
+

@@ -292,6 +292,19 @@ Writes a dictionary of tables to CSV, JSON, Parquet, or Delta.
 Returned DataFrames are always preserved, so users can also write with native pandas or Spark APIs.
 
 
+## `export_dataset(...)`
+
+Exports one generated DataFrame or a mapping of table-name DataFrames to local files or optional fsspec-backed cloud paths.
+
+```python
+from great_generator import export_dataset, generate_from_schema
+
+df = generate_from_schema("customer_id int, email string", rows=1000)
+written = export_dataset(df, "output/customers", format="parquet")
+```
+
+Supported convenience formats are `csv`, `jsonl`, and `parquet`. Existing outputs are rejected by default; pass `overwrite=True` or `mode="overwrite"` only when replacement is intentional. Cloud URLs such as `s3://`, `abfss://`, and `gs://` require `pip install "great-generator[cloud]"` and user-managed credentials.
+
 ## `generate_from_recipe(...)`
 
 Generates a domain or relational dataset from a declarative JSON, TOML, or simple YAML recipe.

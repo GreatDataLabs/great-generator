@@ -18,13 +18,13 @@
   <meta name="twitter:title" content="API Reference | Great Generator public APIs" />
   <meta name="twitter:image" content="https://greatdatalabs.github.io/great-generator/assets/og.png" />
   <meta name="twitter:description" content="Review the main Great Generator public APIs for schema generation, SQL DDL parsing, relational generation, CDC, anomalies, advisors, and exports." />
-  <link rel="stylesheet" href="../assets/site.css?v=20260822-seo" />
+  <link rel="stylesheet" href="../assets/site.css?v=20260929-platform" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <nav class="nav" aria-label="Main navigation">
-      <a class="brand" href="../" aria-label="Great Generator home"><span class="brand-mark">GG</span><span>Great Generator</span></a>
+      <a class="brand" href="../" aria-label="Great Generator home"><img class="brand-logo" src="../assets/great-generator-mark.png" alt="" width="38" height="38" /><span>Great Generator</span></a>
       <div class="nav-links">
         <a href="../">Home</a>
         <a href="../getting-started/">Getting Started</a>
@@ -57,13 +57,19 @@
           <h2>Common imports</h2>
           <p>Most users start with schema generation, DDL parsing, relational generation, or domain generation.</p>
           <pre><code>from great_generator import generate_from_schema, parse_ddl, generate_relational
-from great_generator import generate_domain, generate_cdc</code></pre>
+from great_generator import generate_domain, generate_cdc, export_dataset</code></pre>
         </article>
 
         <article class="doc-card">
           <h2>Full reference</h2>
           <p>The detailed API reference lives in the repository documentation and should be updated when public APIs change.</p>
-          
+          <p><a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/API_REFERENCE.md">Open detailed API reference</a></p>
+        </article>
+
+        <article class="doc-card">
+          <h2>Export helpers</h2>
+          <p>Use native DataFrame writes, `export_data(...)` for table-per-folder outputs, or `export_dataset(...)` for DataFrame-first local/cloud convenience exports with overwrite protection.</p>
+          <pre><code>export_dataset(df, "output/customers", format="parquet")</code></pre>
         </article>
     </section>
     <section class="section">

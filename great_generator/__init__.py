@@ -3,6 +3,7 @@
 from .api import (
     explain_generation_plan,
     export_data,
+    export_dataset,
     generate_cdc,
     generate_data_vault_model,
     generate_dimensional_model,
@@ -28,6 +29,7 @@ from .api import (
 
 __all__ = [
     "export_data",
+    "export_dataset",
     "explain_generation_plan",
     "generate_cdc",
     "generate_domain",

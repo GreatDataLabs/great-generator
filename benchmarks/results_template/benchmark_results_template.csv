@@ -1,0 +1,1 @@
+platform,engine_version,warehouse_or_cluster_size,dataset_name,scale_factor,file_format,partitioning,query_name,run_number,cold_or_warm,elapsed_seconds,rows_returned,bytes_scanned,notes
