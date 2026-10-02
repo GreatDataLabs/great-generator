@@ -307,3 +307,112 @@ No. Great Generator does not manage secrets, IAM, service principals, Unity Cata
 
 No. They are repeatable synthetic workloads users can run in their own environments. Results depend on configuration, file layout, runtime settings, statistics, cache state, concurrency, and compute size.
 
+
+---
+
+## Hugging Face Integration wiki updates
+
+Copy these sections into the GitHub Wiki when publishing the next documentation refresh.
+
+### Home.md additions
+
+Add this feature bullet:
+
+- **Hugging Face integration**: Convert generated data to Hugging Face Datasets, generate dataset cards, and optionally use local Transformers models for advisor planning.
+
+### Hugging-Face-Integration.md
+
+# Hugging Face Integration
+
+Great Generator can optionally integrate with the Hugging Face ecosystem. The base package does not require Hugging Face dependencies.
+
+Install:
+
+```bash
+pip install "great-generator[hf]"
+```
+
+Convert generated pandas data to a Hugging Face Dataset:
+
+```python
+from great_generator import generate_from_schema, to_hf_dataset
+
+df = generate_from_schema("customer_id int, email string", rows=1000, seed=42)
+dataset = to_hf_dataset(df)
+```
+
+Convert related generated tables to a DatasetDict:
+
+```python
+from great_generator import generate_relational, to_hf_dataset_dict
+
+data = generate_relational(
+    tables={
+        "customers": "customer_id int, email string",
+        "orders": "order_id int, customer_id int, order_total double",
+    },
+    relationships=["customers.customer_id -> orders.customer_id"],
+    rows={"customers": 100, "orders": 500},
+    seed=42,
+)
+
+dataset_dict = to_hf_dataset_dict(data)
+```
+
+Generate a dataset card:
+
+```python
+from great_generator import generate_hf_dataset_card
+
+card = generate_hf_dataset_card(
+    dataset_name="synthetic-retail-star-schema",
+    row_counts={"dim_customer": 10000, "fact_sales": 1000000},
+    seed=42,
+)
+```
+
+Great Generator does not upload to the Hugging Face Hub automatically. Review generated data and dataset cards before publishing anything manually.
+
+### Transformers-Advisor.md
+
+# Transformers Advisor
+
+The optional Transformers advisor can use a local or cached Hugging Face Transformers model for design-time planning.
+
+Install:
+
+```bash
+pip install "great-generator[transformers]"
+```
+
+Example:
+
+```python
+from great_generator import generate_from_schema, infer_generation_plan
+
+schema = "customer_id int, email string"
+plan = infer_generation_plan(schema, advisor="transformers:google/flan-t5-small")
+df = generate_from_schema(schema, rows=1000, plan=plan, seed=42)
+```
+
+TransformersAdvisor helps at design time. It does not generate row data. Generation remains deterministic from the saved plan and seed.
+
+By default, the advisor loads local files only. Use a local model path or pre-download/cache the model before running it.
+
+### FAQ.md additions
+
+#### Does Great Generator require Hugging Face?
+
+No. Hugging Face integrations are optional.
+
+#### Does Transformers generate the synthetic rows?
+
+No. TransformersAdvisor can help create plans, tags, or reports, but row generation remains deterministic inside Great Generator.
+
+#### Can I publish generated datasets to Hugging Face Hub?
+
+Yes, but v1 generates local dataset/card artifacts and leaves publishing to the user through Hugging Face's standard tools. Great Generator does not upload automatically.
+
+#### Is Great Generator part of Hugging Face Transformers?
+
+No. It is an independent open-source project with optional Hugging Face ecosystem integrations.

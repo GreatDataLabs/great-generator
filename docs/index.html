@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Great Generator | Schema-first synthetic data for data engineering and AI-ready testing</title>
   <meta name="description" content="Great Generator creates synthetic non-production datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for QA, ETL testing, Spark, lakehouse demos, CDC, anomalies, and deterministic advisor-reviewed generation." />
-  <meta name="keywords" content="synthetic data, schema generation, JSON Schema, dbt, data dictionary, SQL DDL, pandas, pyspark, spark, databricks, delta lake, CDC, anomaly injection, data quality, lakehouse, query-aware generation, MCP server, test data" />
+  <meta name="keywords" content="synthetic data, schema generation, JSON Schema, dbt, data dictionary, SQL DDL, pandas, pyspark, spark, databricks, delta lake, CDC, anomaly injection, data quality, lakehouse, query-aware generation, MCP server, Hugging Face Datasets, Transformers advisor, test data" />
   <meta property="og:title" content="Great Generator | Schema-first synthetic data generator" />
   <meta property="og:description" content="Generate synthetic datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for data engineering, QA, Spark, lakehouse, CDC, anomalies, and AI-ready testing." />
   <meta property="og:type" content="website" />
@@ -185,7 +185,9 @@ pip install "great-generator[ai]"
 pip install "great-generator[anthropic]"
 pip install "great-generator[ollama]"
 pip install "great-generator[mcp]"
-pip install "great-generator[cloud]"</code></pre>
+pip install "great-generator[cloud]"
+pip install "great-generator[hf]"
+pip install "great-generator[transformers]"</code></pre>
         <pre><code>import great_generator
 
 from great_generator import generate_from_schema
@@ -198,7 +200,7 @@ df = generate_from_schema("id int, name string", rows=100)</code></pre>
       <div class="section-heading">
         <p class="eyebrow">What is new</p>
         <h2>The project has grown beyond simple schema samples.</h2>
-        <p>Recent work adds JSON Schema ingestion, dbt metadata ingestion, data dictionary ingestion, query-aware generation, SQL DDL contracts, advisor artifacts, optional MCP tools, and stronger launch documentation while keeping the base package lightweight.</p>
+        <p>Recent work adds JSON Schema ingestion, dbt metadata ingestion, data dictionary ingestion, query-aware generation, SQL DDL contracts, advisor artifacts, optional MCP tools, Hugging Face Dataset conversion, dataset cards, and stronger launch documentation while keeping the base package lightweight.</p>
       </div>
       <div class="card-grid five">
         <article>
@@ -235,6 +237,11 @@ df = generate_from_schema("id int, name string", rows=100)</code></pre>
           <span class="card-kicker">Planning</span>
           <h3>AI advisor layer</h3>
           <p>Use optional design-time advisors for schema understanding, column tagging, and realism review. Advisors produce JSON artifacts; they do not generate row data.</p>
+        </article>
+        <article>
+          <span class="card-kicker">Optional</span>
+          <h3>Hugging Face integration</h3>
+          <p>Convert generated pandas outputs to Hugging Face Datasets, package related tables as DatasetDict objects, and generate synthetic dataset cards.</p>
         </article>
         <article>
           <span class="card-kicker">Repeatability</span>
@@ -608,6 +615,8 @@ great-generator-mcp</code></pre>
         <a href="query-aware-generation/"><strong>Query-Aware Generation</strong><span>Required values, partitions, selectivity, join coverage, and coverage reports.</span></a>
         <a href="api-reference/"><strong>API Reference</strong><span>Main public APIs and usage patterns.</span></a>
         <a href="ai-advisor/"><strong>AI Advisors</strong><span>Optional schema planning, column tagging, caching, and offline Ollama usage.</span></a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/HUGGINGFACE_INTEGRATION.md"><strong>Hugging Face Integration</strong><span>Dataset conversion, DatasetDict helpers, dataset cards, and responsible publishing guidance.</span></a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/TRANSFORMERS_ADVISOR.md"><strong>Transformers Advisor</strong><span>Optional local Transformers model planning with deterministic row generation boundaries.</span></a>
         <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/plans.md"><strong>Generation Plans</strong><span>`GenerationPlan`, `ColumnTags`, and realism report artifacts.</span></a>
         <a href="cdc/"><strong>CDC</strong><span>Change data capture style event records.</span></a>
         <a href="anomalies/"><strong>Anomalies</strong><span>Opt-in data problems for quality testing.</span></a>

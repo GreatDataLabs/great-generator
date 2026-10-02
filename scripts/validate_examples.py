@@ -42,6 +42,11 @@ EXPECTED_FILES = [
     "examples/cloud_storage/02_write_to_adls.ipynb",
     "examples/cloud_storage/03_write_to_gcs.ipynb",
     "examples/cloud_storage/README.md",
+    "examples/huggingface/01_pandas_to_hf_dataset.ipynb",
+    "examples/huggingface/02_relational_to_hf_dataset_dict.ipynb",
+    "examples/huggingface/03_generate_dataset_card.py",
+    "examples/huggingface/04_transformers_advisor_schema_plan.ipynb",
+    "examples/huggingface/README.md",
     "benchmarks/README.md",
     "benchmarks/datasets/retail_star_schema/schema.yml",
     "benchmarks/datasets/retail_star_schema/query_profile.yml",
@@ -56,6 +61,8 @@ EXPECTED_FILES = [
     "docs/PLATFORM_EXAMPLES.md",
     "docs/CLOUD_EXPORTS.md",
     "docs/BENCHMARK_HARNESS.md",
+    "docs/HUGGINGFACE_INTEGRATION.md",
+    "docs/TRANSFORMERS_ADVISOR.md",
 ]
 
 SECRET_PATTERNS = [

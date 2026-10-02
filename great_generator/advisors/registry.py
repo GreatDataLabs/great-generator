@@ -25,7 +25,7 @@ def get_advisor(
     if not separator:
         raise ValueError(
             "Advisor spec must be one of none, anthropic:<model>, openai:<model>, "
-            "ollama:<model>, or llamacpp:<path>."
+            "ollama:<model>, transformers:<model-or-path>, or llamacpp:<path>."
         )
     if provider == "anthropic":
         from great_generator.advisors.anthropic import AnthropicAdvisor
@@ -53,7 +53,15 @@ def get_advisor(
         return LlamaCppAdvisor(
             model_id=model_id, cache_path=cache_path, refresh_cache=refresh_cache
         )
+    if provider == "transformers":
+        from great_generator.advisors.transformers import TransformersAdvisor
+
+        return TransformersAdvisor(
+            model_id=model_id,
+            cache_path=cache_path,
+            refresh_cache=refresh_cache,
+        )
     raise ValueError(
         "Unknown advisor provider "
-        f"'{provider}'. Expected none, anthropic, openai, ollama, or llamacpp."
+        f"'{provider}'. Expected none, anthropic, openai, ollama, transformers, or llamacpp."
     )

@@ -93,6 +93,9 @@ mcp = ["mcp>=1.0.0"]
 dbt = ["pyyaml>=6.0"]
 schema-ingest = ["pyyaml>=6.0"]
 cloud = ["fsspec>=2024.0.0", "s3fs>=2024.0.0", "gcsfs>=2024.0.0", "adlfs>=2024.0.0"]
+hf = ["datasets>=2.0.0", "huggingface_hub>=0.20.0"]
+transformers = ["transformers>=4.0.0", "torch>=2.0.0"]
+hf-full = ["datasets>=2.0.0", "huggingface_hub>=0.20.0", "transformers>=4.0.0", "torch>=2.0.0"]
 ingest = ["pyyaml>=6.0"]
 streaming = []
 quality = []
@@ -100,7 +103,7 @@ vectors = []
 llm = []
 fit = []
 dp = []
-all = ["pyspark>=3.4", "delta-spark>=3.0", "pyyaml>=6.0", "fsspec>=2024.0.0", "s3fs>=2024.0.0", "gcsfs>=2024.0.0", "adlfs>=2024.0.0"]
+all = ["pyspark>=3.4", "delta-spark>=3.0", "pyyaml>=6.0", "fsspec>=2024.0.0", "s3fs>=2024.0.0", "gcsfs>=2024.0.0", "adlfs>=2024.0.0", "datasets>=2.0.0", "huggingface_hub>=0.20.0", "transformers>=4.0.0", "torch>=2.0.0"]
 dev = [
   "black>=24.0",
   "build>=1.2",

@@ -8,7 +8,7 @@ This project follows semantic versioning once public releases begin.
 
 | Version | Date | Release focus | Main changes |
 |---|---:|---|---|
-| Unreleased | TBD | Platform examples, cloud export helper, and benchmark harness | Platform notebooks, optional `export_dataset(...)`, cloud export docs, synthetic benchmark harness, example validation script |
+| Unreleased | TBD | Platform examples, Hugging Face integration, cloud export helper, and benchmark harness | Platform notebooks, optional `export_dataset(...)`, optional Hugging Face Datasets helpers, optional Transformers advisor, dataset card generator, cloud export docs, synthetic benchmark harness, example validation script |
 | 0.1.8 | 2026-09-16 | Schema ingestion, optional MCP server, org documentation, and architecture | JSON Schema ingestion, dbt metadata ingestion, CSV/YAML/JSON data dictionary ingestion, query-aware examples, optional `great-generator[mcp]` extra, local-file MCP tools, safety controls, tests, sitemap, robots.txt, SEO metadata, GreatDataLabs documentation links, and architecture diagram |
 | 0.1.7 | 2026-08-15 | SQL DDL contracts and query-aware generation | Canonical contracts, `parse_ddl(...)`, stable contract hashing, structured parser diagnostics, documented ANSI/Spark/Databricks `CREATE TABLE` subset, optional query-aware generation, a runnable retail star-schema example, generation manifests, determinism docs, benchmark methodology, and citation metadata |
 | 0.1.6 | 2026-07-11 | AI advisor planning layer | Optional design-time advisors, editable plans and tags, advisor cache, manifest metadata, and deterministic `plan=` support for schema generation |
@@ -29,6 +29,10 @@ This project follows semantic versioning once public releases begin.
 - Added a synthetic benchmark harness with repeatable retail star-schema dataset generation, SQL query templates, and result templates.
 - Added documentation for platform examples, cloud exports, and benchmark usage.
 - Added example validation script to check expected example files, notebook imports, credential hygiene, and benchmark-claim wording.
+- Added optional Hugging Face Datasets interoperability helpers.
+- Added optional Transformers-backed advisor for design-time planning.
+- Added synthetic dataset card generator for Hugging Face Hub-style documentation.
+- Added Hugging Face integration examples and documentation.
 
 
 ## 0.1.8 - 2026-09-16

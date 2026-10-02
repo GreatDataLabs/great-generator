@@ -305,6 +305,62 @@ written = export_dataset(df, "output/customers", format="parquet")
 
 Supported convenience formats are `csv`, `jsonl`, and `parquet`. Existing outputs are rejected by default; pass `overwrite=True` or `mode="overwrite"` only when replacement is intentional. Cloud URLs such as `s3://`, `abfss://`, and `gs://` require `pip install "great-generator[cloud]"` and user-managed credentials.
 
+## Hugging Face helpers
+
+### `to_hf_dataset(...)`
+
+Converts a pandas DataFrame into a Hugging Face `Dataset`.
+
+```python
+from great_generator import generate_from_schema, to_hf_dataset
+
+df = generate_from_schema("customer_id int, email string", rows=1000, seed=42)
+dataset = to_hf_dataset(df)
+```
+
+Install optional dependencies with:
+
+```bash
+pip install "great-generator[hf]"
+```
+
+### `to_hf_dataset_dict(...)`
+
+Converts a mapping of table names to pandas DataFrames into a Hugging Face `DatasetDict`.
+
+```python
+from great_generator import generate_relational, to_hf_dataset_dict
+
+data = generate_relational(
+    tables={
+        "customers": "customer_id int, email string",
+        "orders": "order_id int, customer_id int, order_total double",
+    },
+    relationships=["customers.customer_id -> orders.customer_id"],
+    rows={"customers": 100, "orders": 500},
+    seed=42,
+)
+
+dataset_dict = to_hf_dataset_dict(data)
+```
+
+### `generate_hf_dataset_card(...)`
+
+Generates Markdown suitable for a Hugging Face dataset README/card.
+
+```python
+from great_generator import generate_hf_dataset_card
+
+card = generate_hf_dataset_card(
+    dataset_name="synthetic-retail-star-schema",
+    domain="retail",
+    row_counts={"dim_customer": 10000, "fact_sales": 1000000},
+    seed=42,
+)
+```
+
+The generated card includes a synthetic data notice and does not claim that generated data is anonymized production data.
+
 ## `generate_from_recipe(...)`
 
 Generates a domain or relational dataset from a declarative JSON, TOML, or simple YAML recipe.

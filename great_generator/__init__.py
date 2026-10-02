@@ -14,6 +14,7 @@ from .api import (
     generate_from_json_schema,
     generate_from_recipe,
     generate_from_schema,
+    generate_hf_dataset_card,
     generate_history,
     generate_relational,
     get_domain_schema,
@@ -23,6 +24,8 @@ from .api import (
     parse_ddl,
     review_realism,
     tag_schema,
+    to_hf_dataset,
+    to_hf_dataset_dict,
     validate_generated_data,
     validate_query_coverage,
 )
@@ -39,6 +42,7 @@ __all__ = [
     "generate_from_json_schema",
     "generate_from_recipe",
     "generate_from_schema",
+    "generate_hf_dataset_card",
     "generate_dimensional_model",
     "generate_data_vault_model",
     "generate_history",
@@ -50,6 +54,8 @@ __all__ = [
     "parse_ddl",
     "review_realism",
     "tag_schema",
+    "to_hf_dataset",
+    "to_hf_dataset_dict",
     "validate_generated_data",
     "validate_query_coverage",
 ]

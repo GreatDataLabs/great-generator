@@ -17,6 +17,13 @@ from great_generator.exporters.dataset_exporter import export_dataset as _export
 from great_generator.exporters.delta_exporter import export_delta
 from great_generator.exporters.json_exporter import export_json
 from great_generator.exporters.parquet_exporter import export_parquet
+from great_generator.integrations.huggingface import (
+    generate_hf_dataset_card as _generate_hf_dataset_card,
+)
+from great_generator.integrations.huggingface import to_hf_dataset as _to_hf_dataset
+from great_generator.integrations.huggingface import (
+    to_hf_dataset_dict as _to_hf_dataset_dict,
+)
 from great_generator.planning import ColumnTags, GenerationPlan, RealismReport
 from great_generator.query_aware import (
     apply_query_aware_pandas,
@@ -439,6 +446,38 @@ def export_dataset(
         num_partitions=num_partitions,
         partition_strategy=partition_strategy,
     )
+
+
+def to_hf_dataset(
+    data: pd.DataFrame,
+    *,
+    preserve_index: bool = False,
+    metadata: Mapping[str, Any] | None = None,
+) -> Any:
+    """Convert a pandas DataFrame to a Hugging Face Dataset.
+
+    Hugging Face dependencies are optional. Install them with
+    ``pip install "great-generator[hf]"``.
+    """
+
+    return _to_hf_dataset(data, preserve_index=preserve_index, metadata=metadata)
+
+
+def to_hf_dataset_dict(
+    data: Mapping[str, pd.DataFrame],
+    *,
+    preserve_index: bool = False,
+    metadata: Mapping[str, Any] | None = None,
+) -> Any:
+    """Convert a mapping of pandas DataFrames to a Hugging Face DatasetDict."""
+
+    return _to_hf_dataset_dict(data, preserve_index=preserve_index, metadata=metadata)
+
+
+def generate_hf_dataset_card(**kwargs: Any) -> str:
+    """Generate Markdown for a Hugging Face dataset card/README."""
+
+    return _generate_hf_dataset_card(**kwargs)
 
 
 def generate_cdc(

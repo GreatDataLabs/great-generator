@@ -105,6 +105,7 @@ The same semantic layer recognizes IDs, email addresses, phone numbers, addresse
 - generate dimensional/star-schema examples from SQL DDL contracts
 - save generation manifests for reproducibility and provenance
 - run an optional MCP server for assistant-driven local generation workflows
+- convert generated data to Hugging Face Datasets and generate dataset cards
 - use prebuilt enterprise domain packs
 - simulate CDC records, anomalies, SCD2 history, dimensional models, and Data Vault models
 - export domain datasets to CSV, JSON, Parquet, and Delta
@@ -122,7 +123,7 @@ plan = infer_generation_plan("customer_id int, customer_name string", advisor="n
 df = generate_from_schema("customer_id int, customer_name string", rows=100, plan=plan)
 ```
 
-Online and offline advisors are separate from generation. Anthropic and Ollama are supported in this layer, while OpenAI and llama.cpp are reserved as clear stubs for later implementation. See [docs/advisors.md](docs/advisors.md) for offline Ollama usage, caching, prompt safety, and plan review. Advisor contribution can also be recorded in manifest metadata for auditability.
+Online and offline advisors are separate from generation. Anthropic, Ollama, and optional local Transformers models are supported in this layer, while OpenAI and llama.cpp are reserved as clear stubs for later implementation. See [docs/advisors.md](docs/advisors.md) and [Transformers Advisor](docs/TRANSFORMERS_ADVISOR.md) for usage, caching, prompt safety, and plan review. Advisor contribution can also be recorded in manifest metadata for auditability.
 
 ## Release Highlights
 
@@ -149,6 +150,8 @@ Online and offline advisors are separate from generation. Anthropic and Ollama a
 - [Determinism and reproducibility](docs/DETERMINISM.md)
 - [Generation manifest](docs/GENERATION_MANIFEST.md)
 - [Optional MCP server](docs/MCP_SERVER.md)
+- [Hugging Face integration](docs/HUGGINGFACE_INTEGRATION.md)
+- [Transformers advisor](docs/TRANSFORMERS_ADVISOR.md)
 - [Website search discovery and SEO maintenance](docs/SEO.md)
 - [Provenance and safety notes](docs/PROVENANCE.md)
 - [Benchmark methodology](docs/BENCHMARKS.md)
@@ -182,6 +185,14 @@ Optional advisor dependencies:
 pip install "great-generator[ai]"
 pip install "great-generator[anthropic]"
 pip install "great-generator[ollama]"
+pip install "great-generator[transformers]"
+```
+
+Optional Hugging Face ecosystem helpers:
+
+```bash
+pip install "great-generator[hf]"
+pip install "great-generator[hf-full]"
 ```
 
 Optional schema-ingestion dependencies for dbt `schema.yml` and YAML data dictionaries:
@@ -417,6 +428,43 @@ df = generate_from_schema(
 For relational datasets, use table-qualified columns and `ensure_join_coverage=True` when fact rows must join to required dimension values.
 
 See [Query-Aware Generation](docs/QUERY_AWARE_GENERATION.md).
+
+
+## Hugging Face integration
+
+Great Generator can optionally integrate with the Hugging Face ecosystem. You can convert generated Pandas outputs to Hugging Face Datasets, convert related tables into `DatasetDict` objects, generate dataset cards for synthetic datasets, and use a local Transformers model as a design-time advisor.
+
+```bash
+pip install "great-generator[hf]"
+pip install "great-generator[transformers]"
+```
+
+Convert generated data locally:
+
+```python
+from great_generator import generate_from_schema, to_hf_dataset
+
+df = generate_from_schema("customer_id int, email string", rows=1000, seed=42)
+dataset = to_hf_dataset(df)
+```
+
+Use a local or cached Transformers model as a planning advisor:
+
+```python
+from great_generator import generate_from_schema, infer_generation_plan
+
+schema = "customer_id int, email string"
+plan = infer_generation_plan(
+    schema,
+    advisor="transformers:google/flan-t5-small",
+)
+
+df = generate_from_schema(schema, rows=1000, plan=plan, seed=42)
+```
+
+The Transformers advisor runs at design time. It produces plans, tags, or reports. It does not generate row data. Hugging Face dependencies are optional, conversions are local, and Great Generator does not upload anything to the Hugging Face Hub automatically.
+
+See [Hugging Face Integration](docs/HUGGINGFACE_INTEGRATION.md), [Transformers Advisor](docs/TRANSFORMERS_ADVISOR.md), and [`examples/huggingface`](examples/huggingface/README.md).
 
 
 ## Platform examples

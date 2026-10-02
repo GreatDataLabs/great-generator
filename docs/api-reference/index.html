@@ -57,7 +57,8 @@
           <h2>Common imports</h2>
           <p>Most users start with schema generation, DDL parsing, relational generation, or domain generation.</p>
           <pre><code>from great_generator import generate_from_schema, parse_ddl, generate_relational
-from great_generator import generate_domain, generate_cdc, export_dataset</code></pre>
+from great_generator import generate_domain, generate_cdc, export_dataset
+from great_generator import to_hf_dataset, generate_hf_dataset_card</code></pre>
         </article>
 
         <article class="doc-card">
@@ -71,6 +72,13 @@ from great_generator import generate_domain, generate_cdc, export_dataset</code>
           <p>Use native DataFrame writes, `export_data(...)` for table-per-folder outputs, or `export_dataset(...)` for DataFrame-first local/cloud convenience exports with overwrite protection.</p>
           <pre><code>export_dataset(df, "output/customers", format="parquet")</code></pre>
         </article>
+
+        <article class="doc-card">
+          <h2>Hugging Face helpers</h2>
+          <p>Optional helpers convert generated pandas DataFrames to Hugging Face Datasets, convert related tables to DatasetDict objects, and generate synthetic dataset cards.</p>
+          <pre><code>dataset = to_hf_dataset(df)
+card = generate_hf_dataset_card(dataset_name="synthetic-demo")</code></pre>
+        </article>
     </section>
     <section class="section">
       <div class="section-heading">
@@ -82,6 +90,8 @@ from great_generator import generate_domain, generate_cdc, export_dataset</code>
           <a href="../schema-generation/"><strong>Generate synthetic data from schemas</strong><span>Create synthetic test data from schema strings, dictionaries, Pandas DataFrames, and Spark schemas using semantic field detection.</span></a>
           <a href="../sql-ddl/"><strong>SQL DDL synthetic data workflows</strong><span>Parse SQL CREATE TABLE statements into schema contracts and generate synthetic data for ANSI, Spark, and Databricks-style table definitions.</span></a>
           <a href="../relational-generation/"><strong>Relational synthetic data</strong><span>Generate related synthetic tables with primary-key and foreign-key behavior for joins, warehouse models, tests, demos, and analytics examples.</span></a>
+          <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/HUGGINGFACE_INTEGRATION.md"><strong>Hugging Face integration</strong><span>Convert generated data to Datasets and DatasetDict objects, and generate dataset cards.</span></a>
+          <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/TRANSFORMERS_ADVISOR.md"><strong>Transformers advisor</strong><span>Use local Transformers models for design-time planning while keeping row generation deterministic.</span></a>
           <a href="https://github.com/GreatDataLabs/great-generator"><strong>GitHub repository</strong><span>Source code, issues, releases, and project history.</span></a>
           <a href="https://pypi.org/project/great-generator/"><strong>PyPI package</strong><span>Install Great Generator from Python Package Index.</span></a>
       </div>

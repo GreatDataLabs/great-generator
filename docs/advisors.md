@@ -37,8 +37,30 @@ Given the same schema, plan, seed, and generation arguments, output should be th
 | `none` | Default | No | Base package | You want no model calls and dtype-based defaults |
 | `anthropic:claude-sonnet-4-6` | Supported | Yes | `great-generator[anthropic]`, `ANTHROPIC_API_KEY` | You want an online model to suggest plans and tags |
 | `ollama:llama3.1:8b` | Supported | Local only | Ollama running on the machine | You want offline or private local review |
+| `transformers:google/flan-t5-small` | Supported | No by default | `great-generator[transformers]`, local or cached model files | You want a local Hugging Face Transformers model for design-time planning |
 | `openai:gpt-4o-mini` | Stub | Not used | Not implemented in v1 | Planned path |
 | `llamacpp:/path/to/model.gguf` | Stub | Not used | Not implemented in v1 | Planned path |
+
+## Transformers usage
+
+Install the optional extra:
+
+```bash
+pip install "great-generator[transformers]"
+```
+
+Use a local or cached model:
+
+```python
+from great_generator import infer_generation_plan
+
+plan = infer_generation_plan(
+    "customer_id int, email string",
+    advisor="transformers:google/flan-t5-small",
+)
+```
+
+The Transformers advisor runs at design time only. It produces plans, tags, or reports. It does not generate row data. By default, it loads local files only so it does not implicitly download models. See [Transformers Advisor](TRANSFORMERS_ADVISOR.md).
 
 ## Offline usage with Ollama
 
