@@ -1,6 +1,6 @@
 ---
 name: databricks-test-data
-description: Generate and validate synthetic Spark fixtures for Databricks StructType, DDL, related tables, Delta test outputs, CDC MERGE and SCD2 scenarios. Use for Databricks test-data workflows, not production table mutation, automatic catalog crawling or unbounded driver-backed generation.
+description: Generate and validate synthetic Spark fixtures from Databricks StructType, DDL, or permitted Unity Catalog metadata, including related tables, Delta test outputs, CDC and SCD2 scenarios. Use for Databricks test-data workflows, not production table mutation, unbounded catalog crawling or unbounded driver-backed generation.
 compatibility: A Python-capable Databricks or configured PySpark session with great-generator; Delta operations need Delta support and authorized test destinations. No hosted credentials or workspace access are bundled.
 ---
 
@@ -25,15 +25,17 @@ another skill is a dependency. Do not redesign the user's medallion architecture
 1. Show the plan: input/API, local-backed versus distributed path, counts, seed,
    rule coverage, output frames and checks. Ask about ambiguous business rules or
    unknown destructive targets, not every harmless default.
-2. Use StructType, an empty DataFrame schema, compact DDL, or `parse_ddl(...,
-   dialect="databricks")`. Full DDL is parsed, not executed. Treat unsupported
-   constraints/qualified-name mappings explicitly. Pass FKs separately when using
-   TableSchema specs with `generate_relational`.
-3. **Review scale before generating.** Generic schema generation, arbitrary
-   contracts and dimensional/vault helpers build local Pandas data before Spark
-   conversion. Native relational/domain paths have different semantics; do not
-   substitute them invisibly. Query-aware options are Pandas-only. Stop before a
-   huge driver allocation; offer a bounded sample or reviewed distributed path.
+2. Use StructType, an empty DataFrame schema, compact DDL, `parse_ddl(...,
+   dialect="databricks")`, or the optional UC metadata APIs. Full DDL is parsed,
+   not executed. `inspect_unity_catalog_table` reads permitted metadata, not source
+   records. Use bounded related-table discovery and review declared, inferred or
+   explicit relationships.
+3. **Review scale before generating.** Generic single-table schema generation,
+   arbitrary contracts and dimensional/vault helpers can build local Pandas data
+   before Spark conversion. UC Spark generation uses the existing native relational
+   `spark.range` path; UC CDC and SCD2 remain locally backed. Query-aware options are
+   Pandas-only. Stop before a huge driver allocation; offer a bounded sample or a
+   reviewed distributed path.
 4. Generate frames without writing. [spark_fixtures.py](examples/spark_fixtures.py)
    covers StructType and parsed relational DDL with explicit session injection.
    Normally `engine="spark"` can use an active session; passing `spark` makes

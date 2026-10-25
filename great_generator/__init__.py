@@ -29,6 +29,17 @@ from .api import (
     validate_generated_data,
     validate_query_coverage,
 )
+from .integrations.databricks import (
+    StaticUnityCatalogClient,
+    UnityCatalogSnapshot,
+    UnityCatalogTableName,
+    compare_uc_schema_snapshots,
+    generate_from_unity_catalog,
+    generate_relational_from_unity_catalog,
+    generate_uc_cdc,
+    generate_uc_ingestion_code,
+    inspect_unity_catalog_table,
+)
 
 __all__ = [
     "export_data",
@@ -58,6 +69,15 @@ __all__ = [
     "to_hf_dataset_dict",
     "validate_generated_data",
     "validate_query_coverage",
+    "StaticUnityCatalogClient",
+    "UnityCatalogSnapshot",
+    "UnityCatalogTableName",
+    "compare_uc_schema_snapshots",
+    "generate_from_unity_catalog",
+    "generate_relational_from_unity_catalog",
+    "generate_uc_cdc",
+    "generate_uc_ingestion_code",
+    "inspect_unity_catalog_table",
 ]
 
 __version__ = "0.1.8"

@@ -100,6 +100,7 @@ The same semantic layer recognizes IDs, email addresses, phone numbers, addresse
 - inspect the semantic generation plan before generating data
 - validate generated values and cross-field consistency
 - generate query-aware data with required values, partition dates, selectivity, and join coverage
+- inspect permitted Databricks Unity Catalog metadata and generate single or related synthetic tables without reading source records
 - return Pandas or Spark DataFrames for downstream writes
 - generate custom relational parent-child tables with valid keys
 - generate dimensional/star-schema examples from SQL DDL contracts
@@ -179,6 +180,10 @@ Online and offline advisors are separate from generation. Anthropic, Ollama, and
 - [Optional MCP server](docs/MCP_SERVER.md)
 - [Hugging Face integration](docs/HUGGINGFACE_INTEGRATION.md)
 - [Transformers advisor](docs/TRANSFORMERS_ADVISOR.md)
+- [Databricks Unity Catalog integration](docs/DATABRICKS_UNITY_CATALOG.md)
+- [UC relational generation](docs/UC_RELATIONAL_GENERATION.md)
+- [UC ingestion notebook generation](docs/UC_INGESTION_CODE_GENERATION.md)
+- [UC schema snapshots and drift detection](docs/UC_SCHEMA_SNAPSHOTS.md)
 - [Website search discovery and SEO maintenance](docs/SEO.md)
 - [Provenance and safety notes](docs/PROVENANCE.md)
 - [Benchmark methodology](docs/BENCHMARKS.md)
@@ -204,6 +209,7 @@ Optional Spark and Delta dependencies:
 ```bash
 pip install "great-generator[spark]"
 pip install "great-generator[delta]"
+pip install "great-generator[databricks]"
 ```
 
 Optional advisor dependencies:
@@ -393,6 +399,41 @@ flowchart LR
 
 All schema inputs are normalized into the existing generation path. No second generation engine is introduced.
 
+## Databricks Unity Catalog metadata-driven generation
+
+If your schema and relationships already exist in Unity Catalog, Great Generator can inspect the metadata you are permitted to see and normalize it into the same generation contracts used elsewhere in the library. Metadata discovery does **not** read source table records.
+
+```python
+from great_generator import (
+    generate_relational_from_unity_catalog,
+    inspect_unity_catalog_table,
+)
+
+snapshot = inspect_unity_catalog_table(
+    "retail.sales.fact_orders",
+    include_related=True,
+    related_direction="parents",
+    spark=spark,
+)
+
+datasets, report = generate_relational_from_unity_catalog(
+    "retail.sales.fact_orders",
+    include_related=True,
+    rows={
+        "dim_customer": 10_000,
+        "dim_product": 1_000,
+        "fact_orders": 100_000,
+    },
+    output="spark",
+    spark=spark,
+    return_report=True,
+)
+```
+
+The integration supports bounded parent/child discovery, declared and explicit relationships, clearly labeled conservative inference, simple and composite key validation, Pandas or Spark output, metadata snapshots, schema drift reports, portable synthetic CDC events, and a review-first Databricks notebook builder. Generated notebooks keep writes disabled and never overwrite existing tables by default.
+
+Start with the [Unity Catalog guide](docs/DATABRICKS_UNITY_CATALOG.md) and the [offline-first notebook series](examples/databricks/unity_catalog/README.md). The Databricks SDK is optional; notebook users can pass the active `spark` session.
+
 ## Next: Generate Related Tables from Your Schemas
 
 Use `generate_relational` when your test environment needs several tables with valid primary-key and foreign-key relationships.
@@ -512,6 +553,7 @@ Start here:
 |---|---|
 | Pandas/local notebooks | [`examples/pandas`](examples/pandas/README.md) |
 | Databricks notebooks | [`examples/databricks`](examples/databricks/README.md) |
+| Unity Catalog metadata workflows | [`examples/databricks/unity_catalog`](examples/databricks/unity_catalog/README.md) |
 | Microsoft Fabric notebooks | [`examples/fabric`](examples/fabric/README.md) |
 | Snowflake examples | [`examples/snowflake`](examples/snowflake/README.md) |
 | Cloud storage examples | [`examples/cloud_storage`](examples/cloud_storage/README.md) |
@@ -1248,6 +1290,8 @@ Domain packs include relationships and domain behaviors. They are useful for dem
 | I have JSON Schema contracts | `generate_from_json_schema` | Uses API-style schema metadata |
 | I have dbt model metadata | `generate_from_dbt_schema` or `generate_from_dbt_manifest` | Fits analytics engineering workflows |
 | I have a CSV/YAML/JSON data dictionary | `generate_from_data_dictionary` | Works with enterprise schema documentation |
+| I have a Unity Catalog table | `generate_from_unity_catalog` | Uses permitted table metadata without reading source records |
+| I have related Unity Catalog tables | `generate_relational_from_unity_catalog` | Discovers declared keys and validates generated joins |
 | I need query values and partitions present | `generate_from_schema` with query-aware options | Ensures SQL filters and partitions have coverage |
 | I need a quick enterprise demo dataset | `generate_domain` | Prebuilt related tables are immediately available |
 | I am learning SQL or data modeling | `generate_domain` | Domain packs provide understandable examples |
@@ -1280,7 +1324,7 @@ The following are roadmap items and are not accepted by the schema-source APIs t
 - Pydantic models
 - Python dataclasses
 - richer nested Spark and JSON structures
-- Avro, OpenAPI, and catalog metadata ingestion
+- Avro and OpenAPI schema ingestion
 - Spark-native distributed generation for arbitrary schemas
 
 Tracking these as explicit roadmap items keeps the current API trustworthy while leaving a clear path for contributors.
@@ -1293,7 +1337,8 @@ Tracking these as explicit roadmap items keeps the current API trustworthy while
 - Single-table Spark schema generation currently creates values locally before creating a Spark DataFrame.
 - Nested complex Spark types have limited generation support.
 - Full SQL DDL ingestion supports the documented ANSI, Spark, and Databricks subset. It does not claim complete coverage for every database dialect.
-- Composite and cyclic relationship metadata is parsed from DDL, but complete relational generation for those advanced cases is planned for a later milestone.
+- Unity Catalog generation supports declared composite PK/FK tuples and validates tuple-level joins. Generic DDL-driven composite generation and cyclic/self-referencing graph generation remain limited; cycles fail clearly instead of producing invalid data.
+- Unity Catalog metadata is permission-filtered and constraints are informational. Missing metadata may mean not declared or not visible.
 - Cloud storage and database access require separate connectors, credentials, permissions, and runtime configuration.
 - Domain packs are engineered simulations, not statistical models fitted to source data.
 

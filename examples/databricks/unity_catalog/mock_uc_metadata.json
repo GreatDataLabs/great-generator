@@ -1,0 +1,288 @@
+{
+  "source_platform": "databricks_unity_catalog",
+  "metadata_only_source_read": true,
+  "root_table": "retail.sales.fact_orders",
+  "captured_at": "2026-10-25T00:00:00+00:00",
+  "warnings": [],
+  "relationships": [
+    {
+      "name": "fk_orders_customer",
+      "child_table": "retail.sales.fact_orders",
+      "child_columns": [
+        "customer_id"
+      ],
+      "parent_table": "retail.sales.dim_customer",
+      "parent_columns": [
+        "customer_id"
+      ],
+      "source": "declared",
+      "confidence": 1,
+      "evidence": [
+        "fixture declared FK"
+      ]
+    },
+    {
+      "name": "fk_orders_product_version",
+      "child_table": "retail.sales.fact_orders",
+      "child_columns": [
+        "product_id",
+        "product_version"
+      ],
+      "parent_table": "retail.sales.dim_product",
+      "parent_columns": [
+        "product_id",
+        "product_version"
+      ],
+      "source": "declared",
+      "confidence": 1,
+      "evidence": [
+        "fixture declared composite FK"
+      ]
+    }
+  ],
+  "tables": {
+    "retail.sales.dim_customer": {
+      "name": {
+        "catalog": "retail",
+        "schema": "sales",
+        "table": "dim_customer"
+      },
+      "table_type": "MANAGED",
+      "data_source_format": "DELTA",
+      "description": "Synthetic metadata fixture for customers.",
+      "tags": {
+        "domain": "retail"
+      },
+      "columns": [
+        {
+          "name": "customer_id",
+          "position": 1,
+          "data_type": "BIGINT",
+          "full_data_type": "BIGINT",
+          "nullable": false,
+          "description": "Customer identifier",
+          "tags": {
+            "semantic": "identifier"
+          }
+        },
+        {
+          "name": "customer_name",
+          "position": 2,
+          "data_type": "STRING",
+          "full_data_type": "STRING",
+          "nullable": false,
+          "description": "Customer display name"
+        },
+        {
+          "name": "email",
+          "position": 3,
+          "data_type": "STRING",
+          "full_data_type": "STRING",
+          "nullable": true,
+          "description": "Customer email"
+        },
+        {
+          "name": "region",
+          "position": 4,
+          "data_type": "STRING",
+          "full_data_type": "STRING",
+          "nullable": true,
+          "description": "Sales region"
+        }
+      ],
+      "constraints": [
+        {
+          "name": "pk_dim_customer",
+          "constraint_type": "PRIMARY KEY",
+          "columns": [
+            "customer_id"
+          ],
+          "enforced": false
+        }
+      ],
+      "relationships": [],
+      "warnings": [],
+      "unresolved_relationships": []
+    },
+    "retail.sales.dim_product": {
+      "name": {
+        "catalog": "retail",
+        "schema": "sales",
+        "table": "dim_product"
+      },
+      "table_type": "MANAGED",
+      "data_source_format": "DELTA",
+      "description": "Versioned product fixture.",
+      "columns": [
+        {
+          "name": "product_id",
+          "position": 1,
+          "data_type": "BIGINT",
+          "nullable": false
+        },
+        {
+          "name": "product_version",
+          "position": 2,
+          "data_type": "INT",
+          "nullable": false
+        },
+        {
+          "name": "product_name",
+          "position": 3,
+          "data_type": "STRING",
+          "nullable": false
+        },
+        {
+          "name": "price",
+          "position": 4,
+          "data_type": "DECIMAL",
+          "full_data_type": "DECIMAL(12,2)",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        {
+          "name": "pk_dim_product",
+          "constraint_type": "PRIMARY KEY",
+          "columns": [
+            "product_id",
+            "product_version"
+          ],
+          "enforced": false
+        }
+      ],
+      "relationships": [],
+      "warnings": [],
+      "unresolved_relationships": []
+    },
+    "retail.sales.fact_orders": {
+      "name": {
+        "catalog": "retail",
+        "schema": "sales",
+        "table": "fact_orders"
+      },
+      "table_type": "MANAGED",
+      "data_source_format": "DELTA",
+      "description": "Order fact fixture.",
+      "columns": [
+        {
+          "name": "order_id",
+          "position": 1,
+          "data_type": "BIGINT",
+          "nullable": false
+        },
+        {
+          "name": "customer_id",
+          "position": 2,
+          "data_type": "BIGINT",
+          "nullable": false
+        },
+        {
+          "name": "product_id",
+          "position": 3,
+          "data_type": "BIGINT",
+          "nullable": false
+        },
+        {
+          "name": "product_version",
+          "position": 4,
+          "data_type": "INT",
+          "nullable": false
+        },
+        {
+          "name": "order_date",
+          "position": 5,
+          "data_type": "DATE",
+          "nullable": false,
+          "partition_index": 0
+        },
+        {
+          "name": "order_status",
+          "position": 6,
+          "data_type": "STRING",
+          "nullable": false
+        },
+        {
+          "name": "amount",
+          "position": 7,
+          "data_type": "DOUBLE",
+          "nullable": false
+        }
+      ],
+      "constraints": [
+        {
+          "name": "pk_fact_orders",
+          "constraint_type": "PRIMARY KEY",
+          "columns": [
+            "order_id"
+          ],
+          "enforced": false
+        },
+        {
+          "name": "fk_orders_customer",
+          "constraint_type": "FOREIGN KEY",
+          "columns": [
+            "customer_id"
+          ],
+          "referenced_table": "retail.sales.dim_customer",
+          "referenced_columns": [
+            "customer_id"
+          ],
+          "enforced": false
+        },
+        {
+          "name": "fk_orders_product_version",
+          "constraint_type": "FOREIGN KEY",
+          "columns": [
+            "product_id",
+            "product_version"
+          ],
+          "referenced_table": "retail.sales.dim_product",
+          "referenced_columns": [
+            "product_id",
+            "product_version"
+          ],
+          "enforced": false
+        }
+      ],
+      "relationships": [
+        {
+          "name": "fk_orders_customer",
+          "child_table": "retail.sales.fact_orders",
+          "child_columns": [
+            "customer_id"
+          ],
+          "parent_table": "retail.sales.dim_customer",
+          "parent_columns": [
+            "customer_id"
+          ],
+          "source": "declared",
+          "confidence": 1,
+          "evidence": [
+            "fixture declared FK"
+          ]
+        },
+        {
+          "name": "fk_orders_product_version",
+          "child_table": "retail.sales.fact_orders",
+          "child_columns": [
+            "product_id",
+            "product_version"
+          ],
+          "parent_table": "retail.sales.dim_product",
+          "parent_columns": [
+            "product_id",
+            "product_version"
+          ],
+          "source": "declared",
+          "confidence": 1,
+          "evidence": [
+            "fixture declared composite FK"
+          ]
+        }
+      ],
+      "warnings": [],
+      "unresolved_relationships": []
+    }
+  }
+}

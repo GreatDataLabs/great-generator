@@ -10,6 +10,7 @@ Great Generator does not create platform resources, configure credentials, manag
 |---|---|---|---|
 | `examples/pandas/` | Local Python, Anaconda, Jupyter, VS Code | Pandas generation, JSON Schema, dbt metadata, data dictionaries, relational data, query-aware generation, CDC, anomalies | No |
 | `examples/databricks/` | Databricks, Spark, Delta Lake, Unity Catalog | Generate DataFrames, convert to Spark, write Delta tables and paths | User-managed |
+| `examples/databricks/unity_catalog/` | Unity Catalog metadata workflows | Inspect permitted metadata, generate single/related tables, validate keys, create snapshots and review-first notebooks | No for fixture; user-managed for live UC |
 | `examples/fabric/` | Microsoft Fabric Lakehouse | Generate data in Fabric Spark and write Lakehouse tables/files | User-managed |
 | `examples/snowflake/` | Snowflake | Generate Parquet files and load with stage/COPY templates | User-managed |
 | `examples/cloud_storage/` | S3, ADLS Gen2, GCS | Write synthetic data to cloud object storage with native writers or optional helper | User-managed |
@@ -38,6 +39,22 @@ sdf.write.format("delta").mode("overwrite").saveAsTable("default.synthetic_custo
 ```
 
 For Unity Catalog, replace table and volume placeholders with catalog, schema, table, and volume names configured by your workspace administrators.
+
+The Unity Catalog series also supports a metadata-first path:
+
+```python
+from great_generator import generate_relational_from_unity_catalog
+
+datasets, report = generate_relational_from_unity_catalog(
+    "retail.sales.fact_orders",
+    include_related=True,
+    output="spark",
+    spark=spark,
+    return_report=True,
+)
+```
+
+This path reads permitted catalog metadata, not source records. The included fictional fixture lets users run the same discovery and generation flow without Databricks credentials. See [DATABRICKS_UNITY_CATALOG.md](DATABRICKS_UNITY_CATALOG.md).
 
 ## Microsoft Fabric
 

@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Great Generator | Schema-first synthetic data for data engineering and AI-ready testing</title>
-  <meta name="description" content="Great Generator creates synthetic non-production datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for QA, ETL testing, Spark, lakehouse demos, CDC, anomalies, and deterministic advisor-reviewed generation." />
-  <meta name="keywords" content="synthetic data, schema generation, JSON Schema, dbt, data dictionary, SQL DDL, pandas, pyspark, spark, databricks, delta lake, CDC, anomaly injection, data quality, lakehouse, query-aware generation, MCP server, Hugging Face Datasets, Transformers advisor, test data" />
+  <meta name="description" content="Great Generator creates synthetic non-production datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, Unity Catalog metadata, relationships, and generation plans for QA, ETL testing, Spark, lakehouse demos, CDC, and anomalies." />
+  <meta name="keywords" content="synthetic data, schema generation, JSON Schema, dbt, data dictionary, SQL DDL, Unity Catalog synthetic data, pandas, pyspark, spark, databricks, delta lake, CDC, anomaly injection, data quality, lakehouse, query-aware generation, MCP server, Hugging Face Datasets, Transformers advisor, test data" />
   <meta property="og:title" content="Great Generator | Schema-first synthetic data generator" />
   <meta property="og:description" content="Generate synthetic datasets from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for data engineering, QA, Spark, lakehouse, CDC, anomalies, and AI-ready testing." />
   <meta property="og:type" content="website" />
@@ -179,6 +179,7 @@ df = generate_from_schema(contract, rows=1000, seed=42)</code></pre>
         <pre><code>pip install great-generator
 pip install "great-generator[spark]"
 pip install "great-generator[delta]"
+pip install "great-generator[databricks]"
 pip install "great-generator[dbt]"
 pip install "great-generator[schema-ingest]"
 pip install "great-generator[ai]"
@@ -200,9 +201,14 @@ df = generate_from_schema("id int, name string", rows=100)</code></pre>
       <div class="section-heading">
         <p class="eyebrow">What is new</p>
         <h2>The project has grown beyond simple schema samples.</h2>
-        <p>Recent work adds JSON Schema ingestion, dbt metadata ingestion, data dictionary ingestion, query-aware generation, SQL DDL contracts, advisor artifacts, optional MCP tools, Hugging Face Dataset conversion, dataset cards, and stronger launch documentation while keeping the base package lightweight.</p>
+        <p>Recent work adds optional Unity Catalog metadata-driven generation, JSON Schema ingestion, dbt metadata ingestion, data dictionary ingestion, query-aware generation, SQL DDL contracts, advisor artifacts, optional MCP tools, Hugging Face Dataset conversion, and stronger launch documentation while keeping the base package lightweight.</p>
       </div>
       <div class="card-grid five">
+        <article>
+          <span class="card-kicker">Databricks</span>
+          <h3>Unity Catalog metadata generation</h3>
+          <p>Inspect permitted table metadata, discover declared relationships, generate synthetic Pandas or Spark tables, validate joins, save snapshots, and build review-first notebooks without reading source records.</p>
+        </article>
         <article>
           <span class="card-kicker">Optional</span>
           <h3>MCP server</h3>
@@ -319,6 +325,22 @@ df = generate_from_schema(
           </ul>
           <p class="note compact">`advisor="none"` is the default and does not call a model.</p>
         </article>
+        <article>
+          <h3>5. Generate from Unity Catalog metadata</h3>
+          <pre><code>data, report = generate_relational_from_unity_catalog(
+    "retail.sales.fact_orders",
+    include_related=True,
+    output="spark",
+    spark=spark,
+    return_report=True,
+)</code></pre>
+          <ul>
+            <li>Metadata-only source inspection</li>
+            <li>Declared and explicit relationships</li>
+            <li>Composite key validation</li>
+            <li>Review-first notebook generation</li>
+          </ul>
+        </article>
       </div>
     </section>
 
@@ -334,6 +356,7 @@ df = generate_from_schema(
         <article><h3>Semantic field detection</h3><p>Recognize names, IDs, contacts, dates, amounts, statuses, quantities, and lifecycle fields from column names.</p></article>
         <article><h3>Query-aware generation</h3><p>Include required filter values, partition dates, selectivity targets, and join paths when your tests need them.</p></article>
         <article><h3>Relational generation</h3><p>Create parent-child tables with primary keys, foreign keys, and valid references by default.</p></article>
+        <article><h3>Unity Catalog metadata</h3><p>Normalize permitted UC schemas and declared relationships into existing contracts without reading source table records.</p></article>
         <article><h3>CDC simulation</h3><p>Generate insert, update, and delete style records with event timestamps and ingestion timestamps.</p></article>
         <article><h3>Anomaly injection</h3><p>Add opt-in nulls, duplicates, orphan keys, late records, outliers, invalid statuses, and negative amounts for data quality tests.</p></article>
         <article><h3>SCD2 history</h3><p>Create slowly changing dimension history tables for supported Pandas domain workflows.</p></article>
@@ -362,6 +385,7 @@ df = generate_from_schema(
         <a href="sql-ddl/">Generate from SQL DDL contracts</a>
         <a href="relational-generation/">Create relational test data</a>
         <a href="spark-delta/">Use Spark and Delta workflows</a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/DATABRICKS_UNITY_CATALOG.md">Generate from Unity Catalog metadata</a>
       </div>
     </section>
 
@@ -520,7 +544,7 @@ spark_df.write.format("delta").mode("overwrite").save("dbfs:/tmp/demo_delta")</c
         <article>
           <span class="card-kicker">Lakehouse</span>
           <h3>Databricks and Delta</h3>
-          <p>Generate data in notebooks, convert to Spark DataFrames, write Delta tables, and use Unity Catalog volume paths.</p>
+          <p>Generate Spark and Delta data, use Unity Catalog metadata as an optional schema source, validate related tables, and create review-first sandbox notebooks.</p>
           <a href="https://github.com/GreatDataLabs/great-generator/tree/main/examples/databricks">Open examples</a>
         </article>
         <article>
@@ -621,6 +645,7 @@ great-generator-mcp</code></pre>
         <a href="cdc/"><strong>CDC</strong><span>Change data capture style event records.</span></a>
         <a href="anomalies/"><strong>Anomalies</strong><span>Opt-in data problems for quality testing.</span></a>
         <a href="spark-delta/"><strong>Spark and Delta</strong><span>Cluster usage and lakehouse outputs.</span></a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/DATABRICKS_UNITY_CATALOG.md"><strong>Unity Catalog</strong><span>Metadata-only inspection, relational generation, snapshots, CDC, validation, and safe notebook generation.</span></a>
         <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/PLATFORM_EXAMPLES.md"><strong>Platform Examples</strong><span>Pandas, Databricks, Fabric, Snowflake, and cloud storage workflows.</span></a>
         <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/CLOUD_EXPORTS.md"><strong>Cloud Exports</strong><span>Local, S3, ADLS Gen2, GCS, optional helper, and credential guidance.</span></a>
         <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/BENCHMARK_HARNESS.md"><strong>Benchmark Harness</strong><span>Repeatable retail star-schema data, SQL query templates, and result templates.</span></a>

@@ -8,7 +8,7 @@ This project follows semantic versioning once public releases begin.
 
 | Version | Date | Release focus | Main changes |
 |---|---:|---|---|
-| Unreleased | TBD | Agent Skills, platform examples, Hugging Face integration, cloud export helper, and benchmark harness | Six workflow skills with examples, deterministic helpers, evaluations and Databricks guidance; platform notebooks, optional `export_dataset(...)`, optional Hugging Face Datasets helpers, optional Transformers advisor, dataset card generator, cloud export docs, synthetic benchmark harness, example validation script |
+| Unreleased | TBD | Unity Catalog generation, Agent Skills, platform examples, Hugging Face integration, cloud export helper, and benchmark harness | Optional Unity Catalog metadata ingestion and relational generation; six workflow skills; platform notebooks; optional `export_dataset(...)`; optional Hugging Face helpers and Transformers advisor; cloud export docs; synthetic benchmark harness |
 | 0.1.8 | 2026-09-16 | Schema ingestion, optional MCP server, org documentation, and architecture | JSON Schema ingestion, dbt metadata ingestion, CSV/YAML/JSON data dictionary ingestion, query-aware examples, optional `great-generator[mcp]` extra, local-file MCP tools, safety controls, tests, sitemap, robots.txt, SEO metadata, GreatDataLabs documentation links, and architecture diagram |
 | 0.1.7 | 2026-08-15 | SQL DDL contracts and query-aware generation | Canonical contracts, `parse_ddl(...)`, stable contract hashing, structured parser diagnostics, documented ANSI/Spark/Databricks `CREATE TABLE` subset, optional query-aware generation, a runnable retail star-schema example, generation manifests, determinism docs, benchmark methodology, and citation metadata |
 | 0.1.6 | 2026-07-11 | AI advisor planning layer | Optional design-time advisors, editable plans and tags, advisor cache, manifest metadata, and deterministic `plan=` support for schema generation |
@@ -23,6 +23,14 @@ This project follows semantic versioning once public releases begin.
 
 ### Added
 
+- Added optional Databricks Unity Catalog metadata inspection through notebook Spark or Databricks SDK unified authentication.
+- Added `generate_from_unity_catalog(...)` and `generate_relational_from_unity_catalog(...)` for metadata-derived Pandas and Spark datasets using the existing generation engines.
+- Added bounded declared relationship discovery, explicit relationship overrides, clearly labeled conservative relationship inference, composite PK/FK tuple repair, and relational validation reports.
+- Added reusable UC metadata snapshots, stable fingerprints, schema drift comparison, secret-free generation manifests, and a static metadata client for offline tests and examples.
+- Added deterministic portable UC-derived CDC events and explicit single-key SCD2 history reuse.
+- Added a review-first Databricks notebook builder whose write cell is disabled by default and uses `errorifexists` rather than overwrite.
+- Added eleven offline-first Unity Catalog notebooks, a fictional metadata fixture, focused documentation, README guidance, wiki copy, and website coverage.
+- Added the optional `great-generator[databricks]` extra; the base package still imports without the Databricks SDK.
 - Added six optional Agent Skills for schema fixtures, query testing, relational fixtures, pipeline test packs, schema-change regression and Databricks test data.
 - Added executable skill examples, explicit PK/FK and SCD2 checks, read-only contract comparison, opt-in Delta safety helpers, and skill validation/evaluation coverage.
 - Added skill installation, repository/MCP audit and Databricks workflow guides. Core generation behavior and MCP tools are unchanged; skills ship as source resources, not an automatic agent installation.

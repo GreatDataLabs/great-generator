@@ -84,9 +84,13 @@ DDL parsing does not execute CREATE TABLE, and not all parsed constraints are
 generated/enforced. Composite/cyclic keys need a separately reviewed strategy.
 Map qualified catalog names to simple fixture names explicitly when necessary.
 
-For an existing UC table, use user-supplied DDL, StructType or metadata; if allowed,
-inspect its schema in the active runtime without sampling rows. This is runtime
-access, not an automatic Great Generator catalog discovery feature.
+For an existing UC table, use `inspect_unity_catalog_table(...)`,
+`generate_from_unity_catalog(...)`, or
+`generate_relational_from_unity_catalog(...)`. These APIs inspect permitted
+information-schema metadata without sampling source rows, use bounded relationship
+discovery, and delegate generation to the existing engines. See
+[`DATABRICKS_UNITY_CATALOG.md`](DATABRICKS_UNITY_CATALOG.md). Catalog permissions,
+runtime connectivity, and metadata completeness remain the user's responsibility.
 
 ## Validation before delivery
 

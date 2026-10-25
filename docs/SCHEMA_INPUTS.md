@@ -2,7 +2,7 @@
 
 `generate_from_schema` is the primary entry point when you already know the structure of the data you need. Great Generator also includes optional loaders that normalize common schema-documentation formats into the same generation path.
 
-All schema inputs are normalized into the existing generation engine. No second generation engine is introduced for JSON Schema, dbt metadata, or data dictionaries.
+All schema inputs are normalized into the existing generation engine. No second generation engine is introduced for JSON Schema, dbt metadata, data dictionaries, or Unity Catalog metadata.
 
 ## Current support matrix
 
@@ -19,6 +19,7 @@ All schema inputs are normalized into the existing generation engine. No second 
 | dbt `schema.yml` | Yes | `generate_from_dbt_schema` | Optional YAML support through `great-generator[dbt]` |
 | dbt `manifest.json` | Yes | `generate_from_dbt_manifest` | Common dbt manifest model nodes |
 | Data dictionary CSV/YAML/JSON | Yes | `load_data_dictionary`, `generate_from_data_dictionary` | Enterprise schema documentation files |
+| Databricks Unity Catalog table | Yes | `inspect_unity_catalog_table`, `generate_from_unity_catalog` | Optional metadata-only adapter; notebook Spark or `great-generator[databricks]` SDK access |
 | `TableSchema` | Yes | `generate_from_schema` | Native typed schema object |
 | `DomainSchema` | Yes | `generate_from_schema` | Returns a dictionary of generated tables |
 | Pydantic model | Planned | TBD | Roadmap |

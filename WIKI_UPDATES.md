@@ -283,6 +283,59 @@ Required limitation wording:
 
 Use `examples/databricks/` for Delta, partitioned writes, and Unity Catalog Volume path examples. Replace placeholders with your workspace's governed catalog, schema, volume, table, and path names.
 
+## Unity-Catalog-Generation.md
+
+Great Generator can use a fully qualified Unity Catalog table as a metadata source. It reads only the schema, tags, and constraints the caller is permitted to see, converts them into existing Great Generator contracts, and generates synthetic Pandas or Spark DataFrames without reading source records.
+
+```python
+from great_generator import generate_relational_from_unity_catalog
+
+datasets, report = generate_relational_from_unity_catalog(
+    "retail.sales.fact_orders",
+    include_related=True,
+    related_direction="parents",
+    rows={
+        "dim_customer": 10_000,
+        "dim_product": 1_000,
+        "fact_orders": 100_000,
+    },
+    output="spark",
+    spark=spark,
+    return_report=True,
+)
+```
+
+Supported relationship modes:
+
+- `declared`: use accessible Unity Catalog PK/FK metadata;
+- `inferred`: add clearly labeled conservative suggestions with confidence and evidence;
+- `explicit`: use reviewed mappings when catalog constraints are absent.
+
+The adapter validates simple and composite key relationships. Cyclic and self-referencing graphs fail clearly because staged cycle resolution is not implemented yet.
+
+See `docs/DATABRICKS_UNITY_CATALOG.md`, `docs/UC_RELATIONAL_GENERATION.md`, and `examples/databricks/unity_catalog/`.
+
+## Unity-Catalog-Notebook-Builder.md
+
+`generate_uc_ingestion_code(...)` creates a reviewable Databricks notebook plus generation configuration, relationships, schema snapshot, validation placeholder, and generation manifest. Notebook creation never executes writes. The generated write cell defaults to `ENABLE_WRITES = False`, requires a separate synthetic target namespace, and uses `errorifexists`.
+
+## Unity-Catalog-Snapshots.md
+
+```python
+from great_generator import compare_uc_schema_snapshots, inspect_unity_catalog_table
+
+snapshot = inspect_unity_catalog_table("retail.sales.fact_orders", spark=spark)
+snapshot.save("fact_orders_schema.json")
+
+diff = compare_uc_schema_snapshots(
+    "fact_orders_schema.json",
+    "fact_orders_schema_latest.json",
+)
+print(diff.to_text())
+```
+
+Snapshots contain normalized metadata, not records or credentials. Comparison reports schema drift but never migrates source tables.
+
 ## Fabric-Examples.md
 
 Use `examples/fabric/` for Fabric Spark notebooks, Lakehouse table writes, OneLake Files writes, and query-aware test data.
@@ -302,6 +355,14 @@ No credentials are included in the examples.
 ### Does Great Generator configure cloud credentials?
 
 No. Great Generator does not manage secrets, IAM, service principals, Unity Catalog grants, Snowflake storage integrations, or cloud permissions.
+
+### Does Unity Catalog generation read production data?
+
+No. Normal discovery reads permitted metadata from Unity Catalog information-schema views. Great Generator generates new synthetic records through its existing engines.
+
+### Are Unity Catalog constraints always complete?
+
+No. Metadata is permission-filtered and constraints may not be declared. Use explicit relationships when needed, and review inferred suggestions before relying on them.
 
 ### Are benchmark examples platform rankings?
 

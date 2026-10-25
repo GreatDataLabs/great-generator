@@ -75,6 +75,69 @@ df = generate_from_data_dictionary("data_dictionary.csv", rows=1000)
 
 Supports CSV, YAML, and JSON data dictionaries with practical fields such as `column_name`, `data_type`, `nullable`, `allowed_values`, `min`, `max`, `unique`, `primary_key`, `foreign_key`, and `pii_class` metadata.
 
+## Unity Catalog metadata APIs
+
+These APIs use permitted Databricks Unity Catalog metadata as a schema source. They do not read source table records during normal discovery.
+
+### `inspect_unity_catalog_table(...)`
+
+```python
+from great_generator import inspect_unity_catalog_table
+
+snapshot = inspect_unity_catalog_table(
+    "retail.sales.fact_orders",
+    include_related=True,
+    related_direction="parents",
+    spark=spark,
+)
+```
+
+Returns a serializable `UnityCatalogSnapshot` with normalized tables, columns, constraints, relationships, warnings, and a stable metadata fingerprint.
+
+### `generate_from_unity_catalog(...)`
+
+```python
+from great_generator import generate_from_unity_catalog
+
+df = generate_from_unity_catalog(
+    "retail.sales.dim_customer",
+    rows=10_000,
+    output="spark",
+    spark=spark,
+)
+```
+
+### `generate_relational_from_unity_catalog(...)`
+
+```python
+from great_generator import generate_relational_from_unity_catalog
+
+tables, report = generate_relational_from_unity_catalog(
+    "retail.sales.fact_orders",
+    include_related=True,
+    rows={"dim_customer": 1_000, "fact_orders": 20_000},
+    output="spark",
+    spark=spark,
+    return_report=True,
+)
+```
+
+Supports declared, conservative inferred, and explicit relationship strategies. The existing relational engine generates parents before children. The UC layer repairs composite FK tuples and validates PK/FK integrity.
+
+### `generate_uc_cdc(...)`
+
+Generates deterministic, portable insert/update/delete event rows over synthetic UC-derived state. These events are not represented as Delta Change Data Feed records.
+
+### `generate_uc_ingestion_code(...)`
+
+Creates a review-first Databricks notebook and companion artifacts. It rejects `execute=True`; generated writes are disabled and use `errorifexists`.
+
+### `compare_uc_schema_snapshots(...)`
+
+Compares saved or in-memory snapshots for table, column, type, nullability, PK, and relationship drift. It never migrates source schemas.
+
+See [DATABRICKS_UNITY_CATALOG.md](DATABRICKS_UNITY_CATALOG.md) for permissions, supported metadata, examples, and current limitations.
+
 ## `parse_ddl(...)`
 
 Parses one or more SQL `CREATE TABLE` statements into a canonical `ContractSchema`. This is the contract-first entry point when your source of truth is database, warehouse, lakehouse, Spark, or Databricks DDL.
