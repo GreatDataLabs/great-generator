@@ -48,20 +48,25 @@ Output can change when you change:
 - domain pack behavior
 - optional anomaly settings
 - engine-specific execution path
+- dependency/runtime versions, timezone and current date for semantic fields that use today's date
 
-For long-lived experiments, record these inputs in a manifest.
+For long-lived experiments, record these inputs in a manifest. Pin explicit date windows
+where supported and retain date context: a fixed seed alone does not freeze every
+time-derived semantic default across calendar dates.
 
 ## Spark note
 
 Spark DataFrames are distributed. Row content can be deterministic, but physical file layout, partition order, and row order after distributed operations may vary unless users explicitly sort or repartition.
 
-For deterministic Spark comparisons:
+For small, explicitly bounded Spark comparisons only:
 
 ```python
 actual = df.orderBy("id").toPandas()
 ```
 
-or compare by primary keys and columns instead of relying on physical file order.
+For larger datasets, compare by primary keys and columns using distributed joins or
+two-way `exceptAll` checks instead of collecting to the driver or relying on physical
+file order. Validation actions have compute cost even when no rows are collected.
 
 ## Recommended reproducibility checklist
 

@@ -8,7 +8,7 @@ This project follows semantic versioning once public releases begin.
 
 | Version | Date | Release focus | Main changes |
 |---|---:|---|---|
-| Unreleased | TBD | Platform examples, Hugging Face integration, cloud export helper, and benchmark harness | Platform notebooks, optional `export_dataset(...)`, optional Hugging Face Datasets helpers, optional Transformers advisor, dataset card generator, cloud export docs, synthetic benchmark harness, example validation script |
+| Unreleased | TBD | Agent Skills, platform examples, Hugging Face integration, cloud export helper, and benchmark harness | Six workflow skills with examples, deterministic helpers, evaluations and Databricks guidance; platform notebooks, optional `export_dataset(...)`, optional Hugging Face Datasets helpers, optional Transformers advisor, dataset card generator, cloud export docs, synthetic benchmark harness, example validation script |
 | 0.1.8 | 2026-09-16 | Schema ingestion, optional MCP server, org documentation, and architecture | JSON Schema ingestion, dbt metadata ingestion, CSV/YAML/JSON data dictionary ingestion, query-aware examples, optional `great-generator[mcp]` extra, local-file MCP tools, safety controls, tests, sitemap, robots.txt, SEO metadata, GreatDataLabs documentation links, and architecture diagram |
 | 0.1.7 | 2026-08-15 | SQL DDL contracts and query-aware generation | Canonical contracts, `parse_ddl(...)`, stable contract hashing, structured parser diagnostics, documented ANSI/Spark/Databricks `CREATE TABLE` subset, optional query-aware generation, a runnable retail star-schema example, generation manifests, determinism docs, benchmark methodology, and citation metadata |
 | 0.1.6 | 2026-07-11 | AI advisor planning layer | Optional design-time advisors, editable plans and tags, advisor cache, manifest metadata, and deterministic `plan=` support for schema generation |
@@ -23,6 +23,9 @@ This project follows semantic versioning once public releases begin.
 
 ### Added
 
+- Added six optional Agent Skills for schema fixtures, query testing, relational fixtures, pipeline test packs, schema-change regression and Databricks test data.
+- Added executable skill examples, explicit PK/FK and SCD2 checks, read-only contract comparison, opt-in Delta safety helpers, and skill validation/evaluation coverage.
+- Added skill installation, repository/MCP audit and Databricks workflow guides. Core generation behavior and MCP tools are unchanged; skills ship as source resources, not an automatic agent installation.
 - Added platform example notebooks for Pandas/local development, Databricks, Microsoft Fabric, Snowflake, and cloud storage workflows.
 - Added `export_dataset(...)` as an optional convenience helper for local and fsspec-backed cloud exports with overwrite protection.
 - Added the `great-generator[cloud]` optional extra for fsspec, S3, GCS, and ADLS Gen2 filesystem support.

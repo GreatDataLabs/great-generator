@@ -110,6 +110,33 @@ The same semantic layer recognizes IDs, email addresses, phone numbers, addresse
 - simulate CDC records, anomalies, SCD2 history, dimensional models, and Data Vault models
 - export domain datasets to CSV, JSON, Parquet, and Delta
 
+## Agent Skills
+
+Great Generator is a deterministic synthetic-data engine for engineering and testing
+workflows. Optional **Agent Skills** help AI coding agents select the right API,
+generate fixtures, validate results and return usable DataFrames and manifests.
+They do not replace `generate_from_schema` or use an LLM to generate rows.
+
+| Workflow skill | What you can ask |
+|---|---|
+| `schema-test-data` | Generate checked fixtures from a schema, DDL, JSON Schema, dbt model or data dictionary |
+| `query-test-data` | Create data that exercises SQL filters, dates, groups and joins, with coverage evidence |
+| `relational-test-fixtures` | Build related tables and explicitly verify PK/FK integrity |
+| `data-pipeline-test-pack` | Create happy, boundary, opt-in invalid, CDC and SCD2 comparison cases |
+| `schema-change-regression` | Compare contracts, identify affected fixtures and plan requested regeneration |
+| `databricks-test-data` | Create Spark fixtures and safely prepare Delta/Unity Catalog test outputs |
+
+For Databricks: "Generate 100K rows for this StructType," "Create CDC fixtures for
+my Delta MERGE," or "Create PK/FK-consistent Delta test tables." The skill first
+checks API support, driver versus distributed generation, validation and write
+safety; it does not assume a workspace or promise untested scale.
+
+Start with [installation and usage](docs/AGENT_SKILLS.md),
+[the six skills](skills/README.md), and [the Databricks guide](docs/DATABRICKS_AGENT_SKILL.md).
+The skills are optional repository/source-distribution resources, not automatically
+installed into an agent by pip. [Audit and limitations](docs/AGENT_SKILLS_AUDIT.md)
+distinguish implemented helpers, existing MCP tools and runtime-dependent checks.
+
 ## AI advisor layer
 
 Great Generator includes an optional advisor layer for design-time help with schema understanding, column tagging, and realism review. Advisors do not generate row data. They produce JSON artifacts, such as a `GenerationPlan` or `ColumnTags`, that you can inspect, edit, save, and review before generation.

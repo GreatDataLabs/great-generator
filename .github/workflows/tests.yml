@@ -27,6 +27,7 @@ jobs:
           ruff check .
           black --check .
           python scripts/validate_examples.py
+          python scripts/validate_skills.py
       - name: Test
         run: pytest
 
@@ -49,7 +50,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev,spark]"
       - name: Run Spark tests
-        run: pytest tests/test_spark_optional.py tests/test_spark_domains.py
+        run: pytest tests/test_spark_optional.py tests/test_spark_domains.py tests/test_agent_skills_spark.py
 
   package:
     runs-on: ubuntu-latest

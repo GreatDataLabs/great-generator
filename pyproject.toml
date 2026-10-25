@@ -147,6 +147,8 @@ include = [
   "/great_generator",
   "/examples",
   "/pyproject.toml",
+  "/skills",
+  "/scripts/validate_skills.py",
   "/tests",
 ]
 
