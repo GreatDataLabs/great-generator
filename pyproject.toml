@@ -109,7 +109,7 @@ fit = []
 dp = []
 all = ["pyspark>=3.4", "delta-spark>=3.0", "pyyaml>=6.0", "databricks-sdk>=0.38.0", "fsspec>=2024.0.0", "s3fs>=2024.0.0", "gcsfs>=2024.0.0", "adlfs>=2024.0.0", "datasets>=2.0.0", "huggingface_hub>=0.20.0", "transformers>=4.0.0", "torch>=2.0.0"]
 dev = [
-  "black>=24.0",
+  "black==25.11.0",
   "build>=1.2",
   "mypy>=1.8",
   "pandas-stubs>=2.0",

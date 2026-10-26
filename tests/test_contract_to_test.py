@@ -241,7 +241,8 @@ def test_export_writes_data_contract_reports_and_static_html(tmp_path):
 
 
 def test_compile_accepts_sql_ddl_contract():
-    contract = parse_ddl("""
+    contract = parse_ddl(
+        """
         CREATE TABLE customers (customer_id INTEGER PRIMARY KEY, region VARCHAR(20));
         CREATE TABLE orders (
             order_id INTEGER PRIMARY KEY,
@@ -250,7 +251,8 @@ def test_compile_accepts_sql_ddl_contract():
             CONSTRAINT fk_orders_customer FOREIGN KEY (customer_id)
               REFERENCES customers(customer_id)
         );
-        """)
+        """
+    )
     result = compile_test_dataset(
         contract,
         "SELECT * FROM orders o JOIN customers c ON o.customer_id = c.customer_id "
