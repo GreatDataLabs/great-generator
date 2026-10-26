@@ -77,6 +77,7 @@
         <a href="relational-generation/">Relational</a>
         <a href="spark-delta/">Spark &amp; Delta</a>
         <a href="query-aware-generation/">Query-aware</a>
+        <a href="contract-to-test/">Contract-to-Test</a>
         <a href="#platforms">Platforms</a>
         <a href="ai-advisor/">AI Advisor</a>
         <a href="mcp-server/">MCP</a>
@@ -201,7 +202,7 @@ df = generate_from_schema("id int, name string", rows=100)</code></pre>
       <div class="section-heading">
         <p class="eyebrow">What is new</p>
         <h2>The project has grown beyond simple schema samples.</h2>
-        <p>Recent work adds optional Unity Catalog metadata-driven generation, JSON Schema ingestion, dbt metadata ingestion, data dictionary ingestion, query-aware generation, SQL DDL contracts, advisor artifacts, optional MCP tools, Hugging Face Dataset conversion, and stronger launch documentation while keeping the base package lightweight.</p>
+        <p>Recent work adds optional Unity Catalog metadata-driven generation, Contract-to-Test SQL workload compilation, JSON Schema ingestion, dbt metadata ingestion, data dictionary ingestion, query-aware generation, SQL DDL contracts, advisor artifacts, optional MCP tools, Hugging Face Dataset conversion, and stronger launch documentation while keeping the base package lightweight.</p>
       </div>
       <div class="card-grid five">
         <article>
@@ -218,6 +219,11 @@ df = generate_from_schema("id int, name string", rows=100)</code></pre>
           <span class="card-kicker">Current</span>
           <h3>Query-aware generation</h3>
           <p>Generate synthetic data that contains required filter values, partition dates, selectivity targets, and relational join paths for SQL and pipeline tests.</p>
+        </article>
+        <article>
+          <span class="card-kicker">Testing</span>
+          <h3>Contract-to-Test compiler</h3>
+          <p>Compile a documented SQL subset into deterministic predicate, join, NULL, and boundary witnesses with explicit coverage denominators and bounded expected outcomes.</p>
         </article>
         <article>
           <span class="card-kicker">Contracts</span>
@@ -355,6 +361,7 @@ df = generate_from_schema(
         <article><h3>JSON Schema, dbt, and dictionaries</h3><p>Generate from API contracts, analytics metadata, and enterprise schema documentation.</p></article>
         <article><h3>Semantic field detection</h3><p>Recognize names, IDs, contacts, dates, amounts, statuses, quantities, and lifecycle fields from column names.</p></article>
         <article><h3>Query-aware generation</h3><p>Include required filter values, partition dates, selectivity targets, and join paths when your tests need them.</p></article>
+        <article><h3>Contract-to-Test generation</h3><p>Parse supported SQL workloads and materialize validated Pandas witness rows for predicates, joins, NULL states, and thresholds.</p></article>
         <article><h3>Relational generation</h3><p>Create parent-child tables with primary keys, foreign keys, and valid references by default.</p></article>
         <article><h3>Unity Catalog metadata</h3><p>Normalize permitted UC schemas and declared relationships into existing contracts without reading source table records.</p></article>
         <article><h3>CDC simulation</h3><p>Generate insert, update, and delete style records with event timestamps and ingestion timestamps.</p></article>
@@ -637,6 +644,7 @@ great-generator-mcp</code></pre>
         <a href="sql-ddl/"><strong>SQL DDL</strong><span>Canonical contracts, parser diagnostics, and DDL examples.</span></a>
         <a href="mcp-server/"><strong>MCP Server</strong><span>Optional local MCP tools, client configs, safety limits, outputs, and manifests.</span></a>
         <a href="query-aware-generation/"><strong>Query-Aware Generation</strong><span>Required values, partitions, selectivity, join coverage, and coverage reports.</span></a>
+        <a href="contract-to-test/"><strong>Contract-to-Test</strong><span>SQL workload parsing, deterministic coverage witnesses, validation, reports, and current limitations.</span></a>
         <a href="api-reference/"><strong>API Reference</strong><span>Main public APIs and usage patterns.</span></a>
         <a href="ai-advisor/"><strong>AI Advisors</strong><span>Optional schema planning, column tagging, caching, and offline Ollama usage.</span></a>
         <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/HUGGINGFACE_INTEGRATION.md"><strong>Hugging Face Integration</strong><span>Dataset conversion, DatasetDict helpers, dataset cards, and responsible publishing guidance.</span></a>

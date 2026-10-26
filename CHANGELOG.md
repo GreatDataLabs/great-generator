@@ -8,7 +8,7 @@ This project follows semantic versioning once public releases begin.
 
 | Version | Date | Release focus | Main changes |
 |---|---:|---|---|
-| Unreleased | TBD | Unity Catalog generation, Agent Skills, platform examples, Hugging Face integration, cloud export helper, and benchmark harness | Optional Unity Catalog metadata ingestion and relational generation; six workflow skills; platform notebooks; optional `export_dataset(...)`; optional Hugging Face helpers and Transformers advisor; cloud export docs; synthetic benchmark harness |
+| Unreleased | TBD | Contract-driven SQL test datasets, Unity Catalog generation, workflow skills, and ecosystem integrations | SQL workload contracts, deterministic predicate/join/boundary witnesses, explicit coverage reports, separate negative datasets, optional Unity Catalog metadata ingestion, workflow skills, platform notebooks, cloud exports, Hugging Face helpers, and benchmark harnesses |
 | 0.1.8 | 2026-09-16 | Schema ingestion, optional MCP server, org documentation, and architecture | JSON Schema ingestion, dbt metadata ingestion, CSV/YAML/JSON data dictionary ingestion, query-aware examples, optional `great-generator[mcp]` extra, local-file MCP tools, safety controls, tests, sitemap, robots.txt, SEO metadata, GreatDataLabs documentation links, and architecture diagram |
 | 0.1.7 | 2026-08-15 | SQL DDL contracts and query-aware generation | Canonical contracts, `parse_ddl(...)`, stable contract hashing, structured parser diagnostics, documented ANSI/Spark/Databricks `CREATE TABLE` subset, optional query-aware generation, a runnable retail star-schema example, generation manifests, determinism docs, benchmark methodology, and citation metadata |
 | 0.1.6 | 2026-07-11 | AI advisor planning layer | Optional design-time advisors, editable plans and tags, advisor cache, manifest metadata, and deterministic `plan=` support for schema generation |
@@ -23,6 +23,12 @@ This project follows semantic versioning once public releases begin.
 
 ### Added
 
+- Added an optional contract-to-test compiler that converts supported SQL `SELECT` workloads and normalized schema contracts into deterministic Pandas test datasets.
+- Added SQL AST workload contracts for aliases, qualified columns, inner and left equality joins, comparisons, `IN`, `NOT IN`, `BETWEEN`, NULL predicates, basic grouping, aggregates, and date literals, with structured diagnostics for unsupported constructs.
+- Added deterministic TRUE, FALSE, UNKNOWN, boundary, and join-success witness scenarios for the documented Phase 1 SQL subset.
+- Added clean-data validation, explicit coverage denominators, bounded expected-result assertions, static JSON/HTML reports, reproducibility manifests, and separately labeled negative datasets.
+- Added a runnable contract-to-test example, focused API documentation, research method notes, prior-art analysis, and one locally measured missing-filter evaluation fixture.
+- Added a research manuscript draft and neutral evidence templates for independent evaluations, integrations, publications, release provenance, and impact claims.
 - Added optional Databricks Unity Catalog metadata inspection through notebook Spark or Databricks SDK unified authentication.
 - Added `generate_from_unity_catalog(...)` and `generate_relational_from_unity_catalog(...)` for metadata-derived Pandas and Spark datasets using the existing generation engines.
 - Added bounded declared relationship discovery, explicit relationship overrides, clearly labeled conservative relationship inference, composite PK/FK tuple repair, and relational validation reports.
@@ -44,6 +50,14 @@ This project follows semantic versioning once public releases begin.
 - Added optional Transformers-backed advisor for design-time planning.
 - Added synthetic dataset card generator for Hugging Face Hub-style documentation.
 - Added Hugging Face integration examples and documentation.
+
+### Changed
+
+- Expanded the package description and documentation around optional contract-driven pipeline testing while preserving all existing generation defaults and public APIs.
+
+### Deferred
+
+- Spark-native workload witness materialization, generic cyclic and composite relational generation, unified temporal validation, broad mutation suites, and complete SQL or query-oracle support remain planned phases rather than current claims.
 
 
 ## 0.1.8 - 2026-09-16

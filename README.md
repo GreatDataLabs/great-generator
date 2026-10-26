@@ -100,6 +100,7 @@ The same semantic layer recognizes IDs, email addresses, phone numbers, addresse
 - inspect the semantic generation plan before generating data
 - validate generated values and cross-field consistency
 - generate query-aware data with required values, partition dates, selectivity, and join coverage
+- compile supported SQL workloads into deterministic predicate, join, NULL, and boundary witnesses with measurable coverage
 - inspect permitted Databricks Unity Catalog metadata and generate single or related synthetic tables without reading source records
 - return Pandas or Spark DataFrames for downstream writes
 - generate custom relational parent-child tables with valid keys
@@ -175,6 +176,7 @@ Online and offline advisors are separate from generation. Anthropic, Ollama, and
 - [Data dictionary ingestion](docs/DATA_DICTIONARY.md)
 - [SQL contracts and DDL](docs/CONTRACTS_AND_DDL.md)
 - [Query-aware generation](docs/QUERY_AWARE_GENERATION.md)
+- [Contract-to-Test SQL workload generation](docs/CONTRACT_TO_TEST.md)
 - [Determinism and reproducibility](docs/DETERMINISM.md)
 - [Generation manifest](docs/GENERATION_MANIFEST.md)
 - [Optional MCP server](docs/MCP_SERVER.md)
@@ -496,6 +498,56 @@ df = generate_from_schema(
 For relational datasets, use table-qualified columns and `ensure_join_coverage=True` when fact rows must join to required dimension values.
 
 See [Query-Aware Generation](docs/QUERY_AWARE_GENERATION.md).
+
+## Contract-to-Test synthetic data generation
+
+When required values are not enough, `compile_test_dataset(...)` analyzes a documented SQL subset
+and creates bounded witness rows that exercise predicate truth states, join paths, NULL behavior,
+and thresholds. It returns normal Pandas DataFrames plus validation, coverage, expected bounded
+outcomes, and reproducibility artifacts.
+
+```python
+from great_generator.testing import compile_test_dataset
+
+tables = {
+    "customers": "customer_id int primary key, region string not null",
+    "orders": (
+        "order_id int primary key, "
+        "customer_id int references customers.customer_id, "
+        "status string not null, order_date date not null"
+    ),
+}
+
+query = """
+SELECT *
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE c.region = 'EAST'
+  AND o.status = 'COMPLETED'
+  AND o.order_date >= DATE '2026-01-01'
+"""
+
+result = compile_test_dataset(
+    schema=tables,
+    queries=[query],
+    rows={"customers": 30, "orders": 60},
+    coverage=["predicates", "joins", "boundaries"],
+    seed=42,
+)
+
+datasets = result.datasets
+assert result.validate()["passed"]
+print(result.coverage_report())
+```
+
+The compiler parses SQL but does not execute it. Phase 1 supports Pandas and a bounded SELECT
+subset; OR/NOT combined guarantees, Spark-native witnesses, generic composite/cyclic generation,
+and full-query equivalence remain later phases. Coverage percentages always state their supported
+denominator.
+
+See [Contract-to-Test](docs/CONTRACT_TO_TEST.md), the
+[feature-gap analysis](docs/engineering/FEATURE_GAP_ANALYSIS.md), and the
+[executed local mutation fixture](benchmarks/reports/contract_to_test_missing_filter_local.json).
 
 
 ## Hugging Face integration
@@ -1293,6 +1345,7 @@ Domain packs include relationships and domain behaviors. They are useful for dem
 | I have a Unity Catalog table | `generate_from_unity_catalog` | Uses permitted table metadata without reading source records |
 | I have related Unity Catalog tables | `generate_relational_from_unity_catalog` | Discovers declared keys and validates generated joins |
 | I need query values and partitions present | `generate_from_schema` with query-aware options | Ensures SQL filters and partitions have coverage |
+| I need data that exercises supported SQL conditions | `compile_test_dataset` | Compiles SQL predicates, joins, NULL states, and boundaries into validated witnesses |
 | I need a quick enterprise demo dataset | `generate_domain` | Prebuilt related tables are immediately available |
 | I am learning SQL or data modeling | `generate_domain` | Domain packs provide understandable examples |
 | I need data for my project's schema | `generate_from_schema` | This is the primary industry workflow |
@@ -1341,6 +1394,7 @@ Tracking these as explicit roadmap items keeps the current API trustworthy while
 - Unity Catalog metadata is permission-filtered and constraints are informational. Missing metadata may mean not declared or not visible.
 - Cloud storage and database access require separate connectors, credentials, permissions, and runtime configuration.
 - Domain packs are engineered simulations, not statistical models fitted to source data.
+- Contract-to-Test Phase 1 supports Pandas and a documented SQL subset. It does not claim complete SQL coverage, arbitrary query-result oracles, native Spark witness generation, or generic cyclic relationship support.
 
 ## Roadmap
 

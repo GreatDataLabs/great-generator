@@ -40,8 +40,25 @@ from .integrations.databricks import (
     generate_uc_ingestion_code,
     inspect_unity_catalog_table,
 )
+from .testing import (
+    ContractTestResult,
+    CoverageScenario,
+    QueryContract,
+    QueryDiagnostic,
+    UnsatisfiableScenarioError,
+    WorkloadContract,
+    compile_test_dataset,
+    parse_sql_workload,
+)
 
 __all__ = [
+    "ContractTestResult",
+    "CoverageScenario",
+    "QueryContract",
+    "QueryDiagnostic",
+    "UnsatisfiableScenarioError",
+    "WorkloadContract",
+    "compile_test_dataset",
     "export_data",
     "export_dataset",
     "explain_generation_plan",
@@ -63,6 +80,7 @@ __all__ = [
     "list_domains",
     "load_data_dictionary",
     "parse_ddl",
+    "parse_sql_workload",
     "review_realism",
     "tag_schema",
     "to_hf_dataset",

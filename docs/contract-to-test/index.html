@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contract-to-Test | Coverage-driven synthetic data for SQL pipeline testing</title>
+  <meta name="description" content="Compile supported SQL predicates, joins, NULL behavior, and boundaries into deterministic relational synthetic test data with measured coverage reports." />
+  <link rel="canonical" href="https://greatdatalabs.github.io/great-generator/contract-to-test/" />
+  <meta property="og:title" content="Contract-to-Test | Coverage-driven synthetic data testing" />
+  <meta property="og:description" content="Generate deterministic SQL workload witnesses from schema contracts with explicit predicate, join, NULL, and boundary coverage." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://greatdatalabs.github.io/great-generator/contract-to-test/" />
+  <meta property="og:site_name" content="Great Generator" />
+  <meta property="og:image" content="https://greatdatalabs.github.io/great-generator/assets/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contract-to-Test | Coverage-driven synthetic data testing" />
+  <meta name="twitter:description" content="Compile supported SQL workloads into deterministic relational test witnesses and measured coverage reports." />
+  <meta name="twitter:image" content="https://greatdatalabs.github.io/great-generator/assets/og.png" />
+  <link rel="stylesheet" href="../assets/site.css?v=20260822-seo" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="../" aria-label="Great Generator home"><span class="brand-mark">GG</span><span>Great Generator</span></a>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="../getting-started/">Getting Started</a>
+        <a href="../schema-generation/">Schema</a>
+        <a href="../sql-ddl/">SQL DDL</a>
+        <a href="../relational-generation/">Relational</a>
+        <a href="../query-aware-generation/">Query-aware</a>
+        <a href="../api-reference/">API</a>
+        <a class="nav-pill" href="https://github.com/GreatDataLabs/great-generator">GitHub</a>
+        <a class="nav-pill primary" href="https://pypi.org/project/great-generator/">PyPI</a>
+      </div>
+    </nav>
+  </header>
+  <main id="main" class="doc-main">
+    <section class="section doc-hero">
+      <p class="eyebrow">Pipeline testing</p>
+      <h1>Contract-to-Test synthetic data</h1>
+      <p class="lede">Turn schema contracts and a supported SQL workload into deterministic Pandas datasets containing bounded predicate, join, NULL, and boundary witnesses.</p>
+      <p class="safety-callout">The compiler parses SQL but does not execute it or read production rows. Coverage applies only to the documented Phase 1 subset.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/CONTRACT_TO_TEST.md">Read the full guide</a>
+        <a class="button secondary" href="../api-reference/">API reference</a>
+      </div>
+    </section>
+    <section class="section doc-content-grid">
+      <article class="doc-card">
+        <h2>Compile a workload</h2>
+        <pre><code>from great_generator.testing import compile_test_dataset
+
+result = compile_test_dataset(
+    schema=tables,
+    queries=[sql],
+    coverage=["predicates", "joins", "boundaries"],
+    seed=42,
+)
+
+assert result.validate()["passed"]
+print(result.coverage_report())</code></pre>
+      </article>
+      <article class="doc-card">
+        <h2>Measured artifacts</h2>
+        <p>The result includes clean DataFrames, separate labeled negative cases, parsed query contracts, scenario row bindings, bounded expected outcomes, explicit coverage denominators, and a reproducibility manifest.</p>
+      </article>
+      <article class="doc-card">
+        <h2>Current execution boundary</h2>
+        <p>Phase 1 validates Pandas and acyclic simple relationships. Spark-native workload witnesses, generic composite/cyclic generation, temporal consistency, and arbitrary full-query oracles remain gated later phases.</p>
+      </article>
+      <article class="doc-card">
+        <h2>Evidence, not claims</h2>
+        <p>The repository includes one controlled missing-filter mutation fixture. It is a reproducible local result, not a universal benchmark or originality claim.</p>
+      </article>
+    </section>
+    <section class="section">
+      <div class="section-heading"><p class="eyebrow">Related documentation</p><h2>Implementation and research details</h2></div>
+      <div class="doc-grid">
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/docs/engineering/FEATURE_GAP_ANALYSIS.md"><strong>Feature-gap analysis</strong><span>Code-evidenced baseline and phased gaps.</span></a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/research/PRIOR_ART_AND_TECHNICAL_DIFFERENTIATION.md"><strong>Prior art</strong><span>Related tools, published approaches, overlaps, and testable differences.</span></a>
+        <a href="https://github.com/GreatDataLabs/great-generator/blob/main/benchmarks/methodology/benchmark_protocol.md"><strong>Evaluation protocol</strong><span>Controls for fair, reproducible mutation experiments.</span></a>
+        <a href="../query-aware-generation/"><strong>Query-aware generation</strong><span>Use required values, selectivity, partitions, and basic join coverage without SQL compilation.</span></a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../">Home</a><a href="../getting-started/">Getting Started</a><a href="../api-reference/">API Reference</a><a href="https://github.com/GreatDataLabs/great-generator">GitHub</a><a href="https://pypi.org/project/great-generator/">PyPI</a></div>
+    <p>Great Generator is MIT licensed and maintained by Ravi Kiran Pagidi.</p>
+  </footer>
+</body>
+</html>

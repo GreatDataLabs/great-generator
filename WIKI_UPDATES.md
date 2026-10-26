@@ -477,3 +477,112 @@ Yes, but v1 generates local dataset/card artifacts and leaves publishing to the 
 #### Is Great Generator part of Hugging Face Transformers?
 
 No. It is an independent open-source project with optional Hugging Face ecosystem integrations.
+
+---
+
+# Contract-to-Test Wiki Updates
+
+The sections below are copy-ready for the live GitHub Wiki. They describe the implemented Phase 1 subset and label later phases honestly.
+
+## Home.md addition
+
+- **Contract-to-Test generation**: Parse a documented SQL `SELECT` subset and create deterministic witness rows for predicates, joins, boundaries, and SQL NULL behavior, with explicit coverage reports.
+
+## Contract-to-Test.md
+
+# Contract-to-Test
+
+Great Generator can compile a normalized schema contract and supported SQL workload into synthetic test datasets:
+
+```python
+from great_generator.testing import compile_test_dataset
+
+result = compile_test_dataset(
+    schema={
+        "customers": {
+            "customer_id": {"type": "integer", "primary_key": True},
+            "region": {"type": "string", "allowed_values": ["EAST", "WEST"]},
+        },
+        "orders": {
+            "order_id": {"type": "integer", "primary_key": True},
+            "customer_id": {"type": "integer", "nullable": False},
+            "status": {"type": "string", "allowed_values": ["OPEN", "COMPLETED"]},
+            "amount": {"type": "number", "minimum": 0},
+        },
+    },
+    relationships=["customers.customer_id -> orders.customer_id"],
+    queries="""
+        SELECT o.order_id
+        FROM orders o
+        JOIN customers c ON o.customer_id = c.customer_id
+        WHERE c.region = 'EAST'
+          AND o.status = 'COMPLETED'
+          AND o.amount >= 100
+    """,
+    rows={"customers": 20, "orders": 40},
+    coverage=["predicates", "joins", "boundaries", "null_handling"],
+    seed=42,
+)
+
+assert result.validate()["passed"]
+coverage = result.coverage_report()
+result.generate_report(format="html", output="reports/coverage.html")
+```
+
+Phase 1 uses the existing Pandas generation path. It does not claim arbitrary SQL compatibility, complete query-result oracles, native Spark witness generation, or generic cyclic relationship support.
+
+## SQL-Workload-Analysis.md
+
+# SQL Workload Analysis
+
+`parse_sql_workload(...)` parses SQL without executing it. The implemented subset covers top-level `SELECT`, table aliases, qualified columns, inner and left equality joins, comparison operators, `IN`, `NOT IN`, `BETWEEN`, NULL predicates, basic `GROUP BY`, common aggregates, and date literals. Unsupported CTE, subquery, window, `HAVING`, non-equality join, or ambiguous-column cases produce diagnostics.
+
+## Constraint-Planning.md
+
+# Constraint Planning
+
+The planner merges schema constraints with extracted query requirements, searches deterministic candidate values, allocates a bounded set of witness scenarios, and refuses unsatisfiable requests rather than weakening the schema. For example, a query requiring `COMPLETED` conflicts with an enum that permits only `OPEN` and `CLOSED`.
+
+## Relational-Coverage.md
+
+# Relational Coverage
+
+The compiler creates valid equality-join witnesses and validates declared primary-key and foreign-key relationships for supported acyclic schemas. Advanced multi-column joins, bridge-table multiplicity, self references, and cycles remain planned relational phases.
+
+## Coverage-Reports.md
+
+# Coverage Reports
+
+`result.coverage_report()` reports explicit covered and total counts for predicate states, joins, boundaries, and requested negative cases. Unsupported requirements, uncovered states, warnings, and validation status remain visible. Percentages apply only to the documented supported subset.
+
+## Evaluation-Methodology.md
+
+# Evaluation Methodology
+
+The repository includes a reproducible missing-filter experiment comparing schema-only, query-aware, and contract-to-test generation on one controlled fixture. Treat it as a method demonstration, not a universal performance or defect-detection claim. See `benchmarks/methodology/benchmark_protocol.md` and `research/EXPERIMENTAL_METHODOLOGY.md`.
+
+## Spark-Native-Generation.md
+
+# Spark-Native Generation
+
+Great Generator supports Spark in its established generation APIs. Contract-to-test witness materialization is Pandas-only in Phase 1 and fails clearly for `engine="spark"`; it does not silently collect a large Spark dataset on the driver. A native distributed implementation is planned and must pass a no-driver-materialization gate before it is documented as supported.
+
+## Temporal-Consistency.md
+
+# Temporal Consistency
+
+SCD2 and CDC capabilities already exist in Great Generator, but a unified workload-aware temporal consistency engine is planned. Phase 1 contract-to-test reports do not claim historical dimension lookup or CDC-sequence coverage.
+
+## FAQ.md additions
+
+### Does contract-to-test execute my SQL?
+
+No. It parses supported SQL into a workload contract. The compiler does not connect to a database or run supplied SQL.
+
+### Is 100% in the coverage report the same as complete SQL coverage?
+
+No. It means every measured requirement in the explicit supported denominator was covered. Unsupported SQL constructs remain listed separately.
+
+### Are invalid records mixed into the valid dataset?
+
+No. Requested invalid examples are returned as separately labeled negative datasets so the valid baseline remains suitable for integrity checks.

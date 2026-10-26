@@ -14,6 +14,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 EXPECTED_FILES = [
+    "examples/contract_to_test/01_schema_to_test_dataset.ipynb",
+    "examples/contract_to_test/schema_to_test_dataset.py",
+    "examples/contract_to_test/README.md",
     "examples/pandas/01_generate_from_schema.ipynb",
     "examples/pandas/02_generate_from_json_schema.ipynb",
     "examples/pandas/03_generate_from_dbt_schema.ipynb",
@@ -61,6 +64,11 @@ EXPECTED_FILES = [
     "examples/huggingface/04_transformers_advisor_schema_plan.ipynb",
     "examples/huggingface/README.md",
     "benchmarks/README.md",
+    "benchmarks/contract_to_test/run_missing_filter_evaluation.py",
+    "benchmarks/methodology/benchmark_protocol.md",
+    "benchmarks/methodology/fairness_guidelines.md",
+    "benchmarks/methodology/environment_capture.md",
+    "benchmarks/reports/contract_to_test_missing_filter_local.json",
     "benchmarks/datasets/retail_star_schema/schema.yml",
     "benchmarks/datasets/retail_star_schema/query_profile.yml",
     "benchmarks/datasets/retail_star_schema/generate_dataset.py",

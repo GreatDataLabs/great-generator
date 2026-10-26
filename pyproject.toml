@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "great-generator"
 version = "0.1.8"
-description = "Generate realistic synthetic data from schemas, SQL DDL, JSON Schema, dbt metadata, data dictionaries, relationships, and generation plans for Pandas and Spark."
+description = "Schema-first synthetic data and contract-driven SQL test dataset generation for Pandas and Spark."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
@@ -50,6 +50,9 @@ keywords = [
   "mock-data",
   "analytics-engineering",
   "data-quality",
+  "contract-testing",
+  "sql-testing",
+  "pipeline-testing",
   "open-source",
 ]
 classifiers = [
@@ -146,8 +149,10 @@ include = [
   "/docs",
   "/enterprise_synth",
   "/great_generator",
+  "/impact",
   "/examples",
   "/pyproject.toml",
+  "/research",
   "/skills",
   "/scripts/validate_skills.py",
   "/tests",

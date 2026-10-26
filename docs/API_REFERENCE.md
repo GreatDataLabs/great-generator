@@ -510,6 +510,78 @@ report = validate_query_coverage(
 
 The report includes required-value status, partition coverage, partition counts, selectivity actuals and targets, join coverage status, warnings, and an overall `passed` flag.
 
+## `compile_test_dataset(...)`
+
+Compiles a supported relational schema and SQL SELECT workload into deterministic Pandas test
+datasets with bounded predicate, join, NULL, and boundary witnesses.
+
+```python
+from great_generator.testing import compile_test_dataset
+
+result = compile_test_dataset(
+    schema={
+        "customers": "customer_id int primary key, region string not null",
+        "orders": (
+            "order_id int primary key, "
+            "customer_id int references customers.customer_id, "
+            "status string not null"
+        ),
+    },
+    queries=[
+        """
+        SELECT * FROM orders o
+        JOIN customers c ON o.customer_id = c.customer_id
+        WHERE c.region = 'EAST' AND o.status = 'COMPLETED'
+        """
+    ],
+    rows={"customers": 20, "orders": 40},
+    coverage=["predicates", "joins", "boundaries"],
+    seed=42,
+)
+
+datasets = result.datasets
+validation = result.validate()
+coverage = result.coverage_report()
+```
+
+Parameters:
+
+- `schema`: `DomainSchema`, `ContractSchema`, relational table mapping, SQL DDL/string/file, or
+  JSON/YAML contract file.
+- `queries`: SQL string/file or a sequence of strings/files.
+- `rows`: one count or a per-table mapping.
+- `coverage`: any of `predicates`, `joins`, `boundaries`, `null_handling`, and `negative_cases`.
+- `engine`: currently `pandas`; Spark raises a clear phase-gate error without driver fallback.
+- `seed`: optional deterministic seed.
+- `relationships`: optional explicit schema relationships.
+- `dialect`: optional SQLGlot read dialect.
+- `realism`: existing generation realism mode.
+- `generate_expected_results`: include bounded three-valued reference assertions.
+
+`ContractTestResult` includes clean `datasets`, separate `negative_datasets`, parsed `workload`,
+`scenarios`, validation, coverage, expected bounded assertions, and a reproducibility `manifest`.
+Use `export(...)` for dataset/artifact output and `generate_report(...)` for JSON or static HTML.
+
+The compiler parses but does not execute supplied SQL. See
+[`docs/CONTRACT_TO_TEST.md`](CONTRACT_TO_TEST.md) for the supported subset and limitations.
+
+## `parse_sql_workload(...)`
+
+Parses SQL strings or files into an inspectable `WorkloadContract` without executing SQL.
+
+```python
+from great_generator.testing import parse_sql_workload
+
+contract = parse_sql_workload(
+    "SELECT * FROM orders WHERE status = 'COMPLETE'",
+    schema={"orders": ["order_id", "status"]},
+)
+
+print(contract.to_dict())
+```
+
+Unsupported SQL remains visible in structured diagnostics.
+
 ## `explain_generation_plan(...)`
 
 Explains how each schema field will be interpreted before generation.
