@@ -1,0 +1,150 @@
+{
+  "project": "great-generator",
+  "benchmark_version": "1",
+  "great_generator_version": "0.1.8",
+  "git_commit": "13f0288f6ef8e98bce3610762416a3e4bd66cc68",
+  "synthetic": true,
+  "measured": true,
+  "measured_at": "2026-10-26T01:51:05.830427+00:00",
+  "methodology": "benchmarks/methodology/benchmark_protocol.md",
+  "experiment": "controlled missing order_status filter",
+  "query_hash": "sha256:32dbf47ce0a08d7e91ef71b47b975ba9fee8638a54fc66794dc3cd491e6e853d",
+  "schema_hash": "sha256:0a5652a5d1adbba611a072792386f26b5ebb2adefca82af631871a88ea38aedd",
+  "seed": 12,
+  "repetitions": 1,
+  "environment": {
+    "python_version": "3.13.13",
+    "pandas_version": "3.0.5",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "logical_cpu_count": 12,
+    "physical_memory_bytes": 16849256448,
+    "execution_engine": "pandas"
+  },
+  "results": {
+    "schema_only": {
+      "rows": {
+        "dim_customer": 30,
+        "fact_orders": 60
+      },
+      "reference_row_count": 0,
+      "mutant_row_count": 0,
+      "defect_detected": false,
+      "generation_seconds": 0.17247549997409806,
+      "execution_seconds": 0.003580200020223856
+    },
+    "query_aware": {
+      "rows": {
+        "dim_customer": 30,
+        "fact_orders": 60
+      },
+      "reference_row_count": 0,
+      "mutant_row_count": 0,
+      "defect_detected": false,
+      "generation_seconds": 0.016599099966697395,
+      "execution_seconds": 0.002529799996409565
+    },
+    "contract_to_test": {
+      "rows": {
+        "dim_customer": 30,
+        "fact_orders": 60
+      },
+      "reference_row_count": 3,
+      "mutant_row_count": 4,
+      "defect_detected": true,
+      "generation_seconds": 0.06829530000686646,
+      "execution_seconds": 0.003474899975117296,
+      "coverage": {
+        "report_version": "1.0",
+        "coverage_scope": "documented Phase 1 SQL subset",
+        "requested_coverage": [
+          "predicates",
+          "joins",
+          "boundaries"
+        ],
+        "extracted_testable_requirements": {
+          "predicates": 3,
+          "joins": 1,
+          "boundaries": 1
+        },
+        "supported_requirements": [
+          "query_001.predicate_001",
+          "query_001.predicate_002",
+          "query_001.predicate_003",
+          "query_001.join_001"
+        ],
+        "unsupported_requirements": [],
+        "scenarios_generated": 6,
+        "scenarios_validated": 6,
+        "scenarios_passed": 6,
+        "predicate_coverage": {
+          "covered": 6,
+          "total": 6,
+          "percentage": 100.0
+        },
+        "predicate_details": {
+          "query_001.predicate_001": {
+            "expression": "c.region = 'EAST'",
+            "required_states": [
+              "FALSE",
+              "TRUE"
+            ],
+            "covered_states": [
+              "FALSE",
+              "TRUE"
+            ],
+            "uncovered_states": []
+          },
+          "query_001.predicate_002": {
+            "expression": "f.order_status = 'COMPLETED'",
+            "required_states": [
+              "FALSE",
+              "TRUE"
+            ],
+            "covered_states": [
+              "FALSE",
+              "TRUE"
+            ],
+            "uncovered_states": []
+          },
+          "query_001.predicate_003": {
+            "expression": "f.order_date >= CAST('2026-01-01' AS DATE)",
+            "required_states": [
+              "FALSE",
+              "TRUE"
+            ],
+            "covered_states": [
+              "FALSE",
+              "TRUE"
+            ],
+            "uncovered_states": []
+          }
+        },
+        "join_path_coverage": {
+          "covered": 1,
+          "total": 1,
+          "percentage": 100.0
+        },
+        "boundary_coverage": {
+          "covered": 1,
+          "total": 1,
+          "percentage": 100.0
+        },
+        "negative_case_coverage": {
+          "covered": 0,
+          "total": 0,
+          "percentage": null
+        },
+        "uncovered_conditions": [],
+        "constraint_conflicts": [],
+        "generation_warnings": [],
+        "clean_dataset_validation_passed": true
+      }
+    }
+  },
+  "limitations": [
+    "This is one local deterministic fixture, not a general performance benchmark.",
+    "Mutation detection is measured by a row-count difference between the reference filter and a controlled missing-filter mutant.",
+    "Durations are informative for this run only and are not cross-platform claims."
+  ]
+}

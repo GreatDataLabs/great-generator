@@ -2,6 +2,20 @@
 
 These benchmark examples are designed to help users generate repeatable synthetic datasets and query templates for their own environments. They are not universal performance claims. Results depend on warehouse size, cluster configuration, storage layout, file format, statistics, clustering, caching, concurrency, and query engine settings.
 
+## Contract-to-Test defect-detection evaluation
+
+The first executed research fixture compares schema-only, existing query-aware, and
+contract-to-test generation against one controlled missing-filter defect:
+
+```bash
+python benchmarks/contract_to_test/run_missing_filter_evaluation.py \
+  --output benchmarks/reports/contract_to_test_missing_filter_local.json
+```
+
+Read `benchmarks/methodology/benchmark_protocol.md` and
+`benchmarks/methodology/fairness_guidelines.md` before interpreting or extending the result. The
+committed JSON is one measured local run, not a general benchmark or platform ranking.
+
 ## Implemented dataset
 
 | Dataset | Status | Tables |
