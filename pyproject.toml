@@ -93,21 +93,21 @@ ollama = ["pydantic>=2.7"]
 llamacpp = ["llama-cpp-python>=0.2.90", "pydantic>=2.7"]
 ai = ["anthropic>=0.39", "pydantic>=2.7"]
 mcp = ["mcp>=1.0.0"]
-dbt = ["pyyaml>=6.0"]
+dbt = ["pyyaml>=6.0.3"]
 databricks = ["databricks-sdk>=0.38.0"]
-schema-ingest = ["pyyaml>=6.0"]
+schema-ingest = ["pyyaml>=6.0.3"]
 cloud = ["fsspec>=2024.0.0", "s3fs>=2024.0.0", "gcsfs>=2024.0.0", "adlfs>=2024.0.0"]
 hf = ["datasets>=2.0.0", "huggingface_hub>=0.20.0"]
 transformers = ["transformers>=4.0.0", "torch>=2.0.0"]
 hf-full = ["datasets>=2.0.0", "huggingface_hub>=0.20.0", "transformers>=4.0.0", "torch>=2.0.0"]
-ingest = ["pyyaml>=6.0"]
+ingest = ["pyyaml>=6.0.3"]
 streaming = []
 quality = []
 vectors = []
 llm = []
 fit = []
 dp = []
-all = ["pyspark>=3.4", "delta-spark>=3.0", "pyyaml>=6.0", "databricks-sdk>=0.38.0", "fsspec>=2024.0.0", "s3fs>=2024.0.0", "gcsfs>=2024.0.0", "adlfs>=2024.0.0", "datasets>=2.0.0", "huggingface_hub>=0.20.0", "transformers>=4.0.0", "torch>=2.0.0"]
+all = ["pyspark>=3.4", "delta-spark>=3.0", "pyyaml>=6.0.3", "databricks-sdk>=0.38.0", "fsspec>=2024.0.0", "s3fs>=2024.0.0", "gcsfs>=2024.0.0", "adlfs>=2024.0.0", "datasets>=2.0.0", "huggingface_hub>=0.20.0", "transformers>=4.0.0", "torch>=2.0.0"]
 dev = [
   "black==25.11.0",
   "build>=1.2",
@@ -115,7 +115,7 @@ dev = [
   "pandas-stubs>=2.0",
   "pytest>=8.0",
   "pytest-cov>=5.0",
-  "pyyaml>=6.0",
+  "pyyaml>=6.0.3",
   "ruff>=0.5",
   "twine>=5.1",
 ]
