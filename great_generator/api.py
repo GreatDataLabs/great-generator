@@ -57,6 +57,7 @@ from great_generator.schemas.generation import (
     normalize_single_table_schema,
 )
 from great_generator.schemas.models import ContractSchema, DomainSchema, TableSchema
+from great_generator.schemas.nested import flatten_nested_spec
 from great_generator.schemas.relational import relational_schema_from_specs
 from great_generator.schemas.semantic import explain_generation_plan as _explain_generation_plan
 from great_generator.schemas.semantic import validate_generated_data as _validate_generated_data
@@ -234,6 +235,57 @@ def generate_domain(
             partition_strategy=partition_strategy,
         )
     return data
+
+
+def generate_nested(
+    nested_spec: Mapping[str, Any],
+    rows: Mapping[str, int] | int | None = None,
+    engine: str = "pandas",
+    spark: Any | None = None,
+    seed: int | None = None,
+    realism: str = "realistic",
+    anomalies: Mapping[str, float] | None = None,
+    output_path: str | Path | None = None,
+    output_format: str | None = None,
+    partition_by: list[str] | Mapping[str, Any] | None = None,
+    mode: str = "overwrite",
+    writer_options: Mapping[str, str] | None = None,
+    num_partitions: int | None = None,
+    partition_strategy: str = "repartition",
+    return_labels: bool = False,
+    required_values: Mapping[str, Any] | None = None,
+    target_selectivity: Mapping[str, Mapping[str, float]] | None = None,
+    ensure_join_coverage: bool = False,
+    query_profile: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Generate a relational dataset from a hierarchical nested specification.
+
+    The structure of the `nested_spec` dictionary encodes parent-child relationships.
+    If a child node omits the 'fk' key, it is auto-inferred as '{parent_table}_id'.
+    """
+    tables, relationships = flatten_nested_spec(nested_spec)
+    return generate_relational(
+        tables=tables,
+        relationships=relationships,
+        rows=rows,
+        engine=engine,
+        spark=spark,
+        seed=seed,
+        realism=realism,
+        anomalies=anomalies,
+        output_path=output_path,
+        output_format=output_format,
+        partition_by=partition_by,
+        mode=mode,
+        writer_options=writer_options,
+        num_partitions=num_partitions,
+        partition_strategy=partition_strategy,
+        return_labels=return_labels,
+        required_values=required_values,
+        target_selectivity=target_selectivity,
+        ensure_join_coverage=ensure_join_coverage,
+        query_profile=query_profile,
+    )
 
 
 def generate_relational(
