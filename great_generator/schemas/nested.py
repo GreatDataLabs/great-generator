@@ -3,75 +3,86 @@
 from collections.abc import Mapping
 from typing import Any
 
+from great_generator.schemas.relational import relational_schema_from_specs
+
 
 def flatten_nested_spec(nested_spec: Mapping[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    """Flatten a hierarchical specification into table specs and FK relationships.
+
+    A child table may set ``fk`` to choose its foreign-key column. The default FK
+    name is ``{parent_table}_id``. Parent primary keys are resolved from their
+    schema, including non-conventional names.
     """
-    Flatten a hierarchical nested dictionary into a flat tables dictionary
-    and a list of relationships.
+    if not isinstance(nested_spec, Mapping):
+        raise ValueError("nested_spec must be a mapping of table names to table specifications.")
 
-    Args:
-        nested_spec: The nested specification.
+    tables: dict[str, Any] = {}
+    relationships: list[str] = []
 
-    Returns:
-        A tuple of (tables_dict, relationships_list).
+    def walk(node: Mapping[str, Any], parent: tuple[str, str] | None = None) -> None:
+        if not isinstance(node, Mapping):
+            raise ValueError("'children' must be a mapping of table names to table specifications.")
 
-    Raises:
-        ValueError: If a table specification is missing the 'schema' key.
-    """
-    tables = {}
-    relationships = []
-
-    def walk(node: Mapping[str, Any], parent_name: str | None = None):
         for table_name, spec in node.items():
-            if not isinstance(spec, dict):
-                raise ValueError(f"Table specification for '{table_name}' must be a dictionary.")
-
-            if "schema" not in spec:
+            if not isinstance(spec, Mapping):
+                raise ValueError(f"Table specification for '{table_name}' must be a mapping.")
+            if not isinstance(table_name, str) or not table_name.strip():
+                raise ValueError("Table names must be non-empty strings.")
+            if table_name in tables:
+                raise ValueError(f"Duplicate table name '{table_name}' in nested specification.")
+            if "schema" not in spec and "columns" not in spec:
                 raise ValueError(f"Table '{table_name}' is missing the required 'schema' key.")
 
-            # Copy spec to avoid mutating the input
             table_spec = dict(spec)
             children = table_spec.pop("children", {})
+            table_spec.pop("fk", None)
 
-            # Handle FK and Schema Injection
-            if parent_name:
-                # Determine FK column name
-                fk_col = table_spec.get("fk", f"{parent_name}_id")
+            # Resolve primary-key metadata using the same parser used by generation.
+            parsed_schema, _ = relational_schema_from_specs({table_name: table_spec}, rows=0)
+            parsed_table = parsed_schema.tables[table_name]
+            primary_key = parsed_table.primary_key
 
-                # Inject FK into schema if not present
-                schema = table_spec["schema"]
-                # Simple check for presence of column name in schema string
-                # (e.g. "id int, name string")
-                if fk_col not in schema:
-                    # Append the FK column.
-                    # We assume 'int' as a safe default for ID columns.
-                    # In a real system, we might look at the parent's PK type.
-                    schema = f"{schema}, {fk_col} int"
-                    table_spec["schema"] = schema
+            if parent is not None:
+                parent_name, parent_pk = parent
+                fk_col = spec.get("fk", f"{parent_name}_id")
+                if not isinstance(fk_col, str) or not fk_col.strip():
+                    raise ValueError(
+                        f"The 'fk' value for table '{table_name}' must be a non-empty string."
+                    )
+                fk_col = fk_col.strip()
 
-                # Add relationship
-                # Format: "parent_table.pk -> child_table.fk"
-                # We assume the parent PK is {parent_name}_id or the primary key defined.
-                # For generate_relational, the format is often "parent_table.pk -> child_table.fk"
-                # or a dict. Let's use the simple string format.
-                # Note: the parent PK is typically inferred by great-generator
-                # from the schema if not explicit.
-                # We'll use the convention: "parent_table.pk -> child_table.fk"
-                # where .pk is often omitted or implied.
-                # Actually, generate_relational's relationships list can take
-                # "parent_table.id -> child_table.parent_id".
-                # We'll use a simple "parent -> child" if the system supports it,
-                # but the prompt says "wire to the parent's primary key".
-                # Let's use the format: "parent_table.pk -> child_table.fk"
-                # We'll assume the parent's PK is its own id (e.g. faculty_id).
-                parent_pk = f"{parent_name}_id"
-                relationships.append(f"{parent_name}.{parent_pk} -> {table_name}.{fk_col}")
+                child_column_names = {column.name for column in parsed_table.columns}
+                if fk_col not in child_column_names:
+                    schema = table_spec.get("schema", table_spec.get("columns"))
+                    if not isinstance(schema, str):
+                        raise ValueError(
+                            f"Cannot automatically add foreign key '{fk_col}' to non-string schema "
+                            f"for table '{table_name}'. Declare the FK column in the schema."
+                        )
+                    table_spec["schema"] = f"{schema}, {fk_col} int"
+                else:
+                    child_column = next(
+                        column for column in parsed_table.columns if column.name == fk_col
+                    )
+                    parent_table = relational_schema_from_specs(
+                        {parent_name: tables[parent_name]}, rows=0
+                    )[0].tables[parent_name]
+                    parent_column = next(
+                        column for column in parent_table.columns if column.name == parent_pk
+                    )
+                    if child_column.dtype != parent_column.dtype:
+                        raise ValueError(
+                            f"Foreign key column '{table_name}.{fk_col}' has type "
+                            f"'{child_column.dtype}', but parent key '{parent_name}.{parent_pk}' "
+                            f"has type '{parent_column.dtype}'."
+                        )
 
-            # Store the flattened table spec
+                # Store the relationship in the parent->child format expected by
+                # generate_relational, preserving the actual parent PK name.
+                relationships.append(f"{table_name}.{fk_col} -> {parent_name}.{parent_pk}")
+
             tables[table_name] = table_spec
-
-            # Recurse into children
-            walk(children, parent_name=table_name)
+            walk(children, (table_name, primary_key))
 
     walk(nested_spec)
     return tables, relationships
